@@ -82,28 +82,24 @@ T get_value(const std::string& key) {
     size_t pos = 0;
 
     YAML::Node current_config = YAML::Clone(config); // FIXME
-    YAML::Node current_default_config = YAML::Clone(default_config); // FIXME
 
     std::string s = key;
     while ((pos = s.find(delimiter)) != std::string::npos) {
         std::string token = s.substr(0, pos);
-        if (!current_config || !current_config[token] || !current_config[token].IsDefined()) {
-            return current_default_config[key].as<T>();
-        }
+        if (!current_config[token]) break;
+
         current_config = current_config[token];
-        current_default_config = current_default_config[token];
+        if (!current_config) break;
+
         s.erase(0, pos + delimiter.length());
     }
 
-    if (!current_config || !current_config[s] || !current_config[s].IsDefined()) {
-        return current_default_config[s].as<T>();
+    if (!current_config || !current_config[s]) {
+        qDebug() << "*** ERROR: Key not found: " << key.c_str();
+        exit(1);
     }
 
-    try {
-        return current_config[s].as<T>();
-    } catch (const std::exception& e) {
-        return current_default_config[s].as<T>();
-    }
+    return current_config[s].as<T>();
 }
 
 int config_get_int(const std::string& key) {
