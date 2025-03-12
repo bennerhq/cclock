@@ -86,7 +86,8 @@ int main(int argc, char *argv[]) {
         config_path = find_config_file(argv[0]);
     }
 
-    qDebug() << "Config file: " << config_path.c_str();
+    std::cout << "Config file: " << config_path.c_str() << std::endl;
+    
     config_load(config_path);
 
     ClockWindow win;
