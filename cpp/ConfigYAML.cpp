@@ -10,6 +10,9 @@
 // ----------------------------------------------------------------------------
 
 #include <filesystem>
+#include <yaml-cpp/yaml.h>
+
+#include <QDebug>
 
 #include "h/ConfigYAML.h"
 

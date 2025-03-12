@@ -17,8 +17,6 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 #include <QMouseEvent>
-#include <QScreen>
-#include <QGuiApplication>
 
 #include "h/ClockWidget.h"
 

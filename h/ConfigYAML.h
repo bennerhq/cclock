@@ -13,13 +13,8 @@
 #define CONFIG_UTILS_H
 
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <yaml-cpp/yaml.h>
 
 #include <QColor>
-#include <QDebug>
-#include <QDebug>
 
 void config_load(const std::string& yaml_filename);
 

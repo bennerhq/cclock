@@ -9,6 +9,12 @@
 // /benner
 // ----------------------------------------------------------------------------
 
+
+#include <QTimer>
+#include <QDateTime>
+#include <QPen>
+#include <QFont>
+
 #include "h/ConfigYAML.h"
 #include "h/ClockWindow.h"
 #include "h/ClockWidget.h"

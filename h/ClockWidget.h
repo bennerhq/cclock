@@ -13,12 +13,8 @@
 #define CLOCKWIDGET_H
 
 #include <QWidget>
-#include <QTimer>
 #include <QColor>
-#include <QDateTime>
 #include <QPainter>
-#include <QPen>
-#include <QFont>
 
 class ClockWidget : public QWidget {
     Q_OBJECT

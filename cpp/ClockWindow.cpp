@@ -9,6 +9,9 @@
 // /benner
 // ----------------------------------------------------------------------------
 
+#include <QScreen>
+#include <QGuiApplication>
+
 #include "h/ConfigYAML.h"
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
