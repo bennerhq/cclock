@@ -83,24 +83,20 @@ void config_load(const QString& yaml_filename) {
 
 template <typename T>
 T get_value(const QString& key) {
-    std::string s = key.toStdString();
-    size_t pos = 0;
-    YAML::Node current_config = YAML::Clone(config); // FIXME
+    QString s = key;
+    QStringList tokens = s.split('.');
+    YAML::Node current_config = YAML::Clone(config);
 
-    while (current_config && (pos = s.find(".")) != std::string::npos) {
-        std::string token = s.substr(0, pos);
-        if (!current_config[token]) break;
-
-        current_config = current_config[token];
-        s.erase(0, pos + 1);
+    for (const QString& token : tokens) {
+        std::string token_std = token.toStdString();
+        if (!current_config || !current_config[token_std]) {
+            qDebug() << "*** ERROR: Key not found: " << key;
+            exit(1);
+        }
+        current_config = current_config[token_std];
     }
 
-    if (!current_config || !current_config[s]) {
-        qDebug() << "*** ERROR: Key not found: " << key;
-        exit(1);
-    }
-
-    return current_config[s].as<T>();
+    return current_config.as<T>();
 }
 
 int config_get_int(const QString& key) {

@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
+#include <cstdlib>
 
 #include <QCommandLineParser>
 #include <QApplication>
@@ -51,6 +52,9 @@ QString find_config_file(char* arg_path) {
 }
 
 int main(int argc, char *argv[]) {
+    // Set the QT_QPA_PLATFORM environment variable to xcb
+    ::setenv("QT_QPA_PLATFORM", "xcb", 1);
+
     QApplication app(argc, argv);
 
     QCommandLineParser parser;
