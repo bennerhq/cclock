@@ -9,7 +9,6 @@
 // /benner
 // ----------------------------------------------------------------------------
 
-
 #include <QTimer>
 #include <QDateTime>
 #include <QPen>
