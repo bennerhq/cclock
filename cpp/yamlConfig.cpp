@@ -115,7 +115,7 @@ std::string config_get_str(const std::string& key) {
 }
 
 QColor config_get_qcolor(const std::string& key) {
-    std::string value = get_value<std::string>(key);
+    std::string value = config_get_str(key);
 
     std::transform(value.begin(), value.end(), value.begin(), ::tolower);
 

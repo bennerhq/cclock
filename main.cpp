@@ -12,29 +12,9 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
-#include <optional>
 
-#include <yaml-cpp/yaml.h>
-
-#include <QApplication>
-#include <QMainWindow>
-#include <QVBoxLayout>
-#include <QWidget>
-#include <QTimer>
-#include <QTime>
-#include <QDateTime>
-#include <QPoint>
-#include <QRect>
-#include <QPainter>
-#include <QPen>
-#include <QColor>
-#include <QScreen>
-#include <QGuiApplication>
 #include <QCommandLineParser>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMouseEvent>
+#include <QApplication>
 
 #include "h/yamlConfig.h"
 #include "h/ClockWidget.h"
