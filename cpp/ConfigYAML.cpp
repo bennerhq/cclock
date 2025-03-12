@@ -11,7 +11,7 @@
 
 #include <filesystem>
 
-#include "h/yamlConfig.h"
+#include "h/ConfigYAML.h"
 
 namespace fs = std::filesystem;
 

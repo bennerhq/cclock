@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------------------
 
 TARGET = cclock
-SOURCES = main.cpp cpp/ClockWidget.cpp cpp/ClockWindow.cpp cpp/yamlConfig.cpp
-HEADERS = h/ClockWidget.h h/ClockWindow.h h/yamlConfig.h
+SOURCES = main.cpp cpp/ClockWidget.cpp cpp/ClockWindow.cpp cpp/ConfigYAML.cpp
+HEADERS = h/ClockWidget.h h/ClockWindow.h h/ConfigYAML.h
 OBJECTS_DIR = ./obj/
 CXXFLAGS = -pipe -O2 -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 INCPATH = -I. -I/usr/include/yaml-cpp -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore

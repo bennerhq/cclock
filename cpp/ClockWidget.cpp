@@ -9,7 +9,7 @@
 // /benner
 // ----------------------------------------------------------------------------
 
-#include "h/yamlConfig.h"
+#include "h/ConfigYAML.h"
 #include "h/ClockWindow.h"
 #include "h/ClockWidget.h"
 
