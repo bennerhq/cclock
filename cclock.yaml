@@ -1,0 +1,27 @@
+# 
+# This is the configuration file for cclock.
+#
+window:
+  frameless: True
+  always_on_top: True
+  tool: True
+
+  x: -1000 
+  y: -1000 
+  width: 200 
+  height: 200
+
+colors:
+  background: "none"
+  dial: "none"
+
+  hour_mark: "black"
+  minute_mark: "black"
+
+  second_hand: "red"
+  hour_hand: "black"
+  minute_hand: "black"
+
+  date_background: "black"
+  date: "white"
+  date_font: "Areal"
