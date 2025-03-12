@@ -78,20 +78,16 @@ void config_load(const std::string& yaml_filename) {
 
 template <typename T>
 T get_value(const std::string& key) {
-    const std::string delimiter = ".";
+    std::string s = key;
     size_t pos = 0;
-
     YAML::Node current_config = YAML::Clone(config); // FIXME
 
-    std::string s = key;
-    while ((pos = s.find(delimiter)) != std::string::npos) {
+    while (current_config && (pos = s.find(".")) != std::string::npos) {
         std::string token = s.substr(0, pos);
         if (!current_config[token]) break;
 
         current_config = current_config[token];
-        if (!current_config) break;
-
-        s.erase(0, pos + delimiter.length());
+        s.erase(0, pos + 1);
     }
 
     if (!current_config || !current_config[s]) {
