@@ -32,6 +32,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void wheelEvent(QWheelEvent *event) override;
+    void onScreenGeometryChanged(const QRect &geometry);
 
 private:
     ClockWidget* clock_widget;

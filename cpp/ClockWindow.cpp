@@ -23,15 +23,7 @@ ClockWindow::ClockWindow()
     setWindowTitle("Analog Clock");
 
     QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
-
-    int x = config_get_int("window.x"); 
-    if (x < 0) x = screenGeometry.width() + x;
-
-    int y = config_get_int("window.y");
-    if (y < 0) y = screenGeometry.height() + y;
-
-    int width = config_get_int("window.width");
-    int height = config_get_int("window.height");
+    onScreenGeometryChanged(screenGeometry);
 
     Qt::WindowFlags winFlags = Qt::Widget;
     if (config_get_bool("window.frameless")) {
@@ -44,7 +36,6 @@ ClockWindow::ClockWindow()
         winFlags |= Qt::Tool;
     }
     setWindowFlags(winFlags);
-    setGeometry(x, y, width, height);
 
     QColor background_color = config_get_qcolor("colors.background");
     if (background_color.alpha() == 0) {
@@ -64,6 +55,22 @@ ClockWindow::ClockWindow()
 
     clock_widget = new ClockWidget();
     layout->addWidget(clock_widget);
+
+    // Connect to the screenGeometryChanged signal
+    connect(QGuiApplication::primaryScreen(), &QScreen::geometryChanged, this, &ClockWindow::onScreenGeometryChanged);
+}
+
+void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {
+    int x = config_get_int("window.x"); 
+    if (x < 0) x = geometry.width() + x;
+
+    int y = config_get_int("window.y");
+    if (y < 0) y = geometry.height() + y;
+
+    int width = config_get_int("window.width");
+    int height = config_get_int("window.height");
+
+    setGeometry(x, y, width, height);
 }
 
 bool ClockWindow::is_on_edge(const QPoint& pos) {

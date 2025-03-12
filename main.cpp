@@ -15,6 +15,9 @@
 
 #include <QCommandLineParser>
 #include <QApplication>
+#include <QCoreApplication>
+#include <QString>
+#include <QDebug>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWidget.h"
@@ -25,20 +28,21 @@ namespace fs = std::filesystem;
 // ----------------------------------------------------------------------------
 // Main entry point
 //
-std::string find_config_file(char* exec_filename) {
+QString find_config_file(char* arg_path) {
     // Find the name of the script
-    std::string script_name = std::string(exec_filename) + ".yaml";
+    fs::path exec_path(arg_path);
+    std::string exec_name = exec_path.stem().string();
+    QString script_name = QString::fromStdString(exec_name + ".yaml");
 
     // Check for a config file in the user's home directory
-    std::string home_config_path = std::string(getenv("HOME")) + "/." + script_name;
-    if (fs::exists(home_config_path)) {
+    QString home_config_path = QString(getenv("HOME")) + "/." + script_name;
+    if (fs::exists(home_config_path.toStdString())) {
         return home_config_path;
     }  
 
     // Check for a config file with the same name as the script
-    auto current_path = fs::current_path();
-    std::string local_config_path = current_path.string() + "/" + script_name;
-    if (fs::exists(local_config_path)) {
+    QString local_config_path = QCoreApplication::applicationDirPath() + "/" + script_name;
+    if (fs::exists(local_config_path.toStdString())) {
         return local_config_path;
     }
 
@@ -57,18 +61,18 @@ int main(int argc, char *argv[]) {
     parser.addPositionalArgument("config", "Path to the configuration file.");
     parser.process(app);
 
-    std::string config_path;
+    QString config_path;
     if (parser.isSet(configOption)) {
-        config_path = parser.value(configOption).toStdString();
+        config_path = parser.value(configOption);
     } else if (parser.positionalArguments().size() > 0) {
-        config_path = parser.positionalArguments().at(0).toStdString();
+        config_path = parser.positionalArguments().at(0);
     } else {
         config_path = find_config_file(argv[0]);
     }
 
-    std::cout << "Config file: " << config_path.c_str() << std::endl;
+    std::cout << "Config file: " << config_path.toStdString() << std::endl;
     
-    config_load(config_path);
+    config_load(config_path.toStdString());
 
     ClockWindow win;
     win.show();
