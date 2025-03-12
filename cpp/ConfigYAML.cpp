@@ -9,15 +9,12 @@
 // /benner
 // ----------------------------------------------------------------------------
 
-#include <filesystem>
 #include <yaml-cpp/yaml.h>
 
 #include <QFileInfo>
 #include <QDebug>
 
 #include "h/ConfigYAML.h"
-
-namespace fs = std::filesystem;
 
 YAML::Node config;
 

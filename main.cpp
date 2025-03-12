@@ -19,6 +19,7 @@
 #include <QCoreApplication>
 #include <QString>
 #include <QDebug>
+#include <QFileInfo>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWidget.h"
@@ -37,13 +38,15 @@ QString find_config_file(char* arg_path) {
 
     // Check for a config file in the user's home directory
     QString home_config_path = QString(getenv("HOME")) + "/." + script_name;
-    if (fs::exists(home_config_path.toStdString())) {
+    QFileInfo fileInfo1(home_config_path);
+    if (fileInfo1.isFile()) {
         return home_config_path;
     }  
 
     // Check for a config file with the same name as the script
     QString local_config_path = QCoreApplication::applicationDirPath() + "/" + script_name;
-    if (fs::exists(local_config_path.toStdString())) {
+    QFileInfo fileInfo2(local_config_path);
+    if (fileInfo2.isFile()) {
         return local_config_path;
     }
 
