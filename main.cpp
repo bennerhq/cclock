@@ -53,7 +53,7 @@ std::string find_config_file(char* exec_filename) {
     std::string home_config_path = std::string(getenv("HOME")) + "/." + script_name;
     if (fs::exists(home_config_path)) {
         return home_config_path;
-    }
+    }  
 
     // Check for a config file with the same name as the script
     auto current_path = fs::current_path();
