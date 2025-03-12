@@ -1,4 +1,4 @@
-# Widget Clock (wclock)
+# Widget Clock written in C++/Qt (clock)
 
 ## Overview
 `cclock` is a simple command line tool that displays the current time in analog format. 
