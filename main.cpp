@@ -25,16 +25,13 @@
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
-namespace fs = std::filesystem;
-
 // ----------------------------------------------------------------------------
 // Main entry point
 //
 QString find_config_file(char* arg_path) {
     // Find the name of the script
-    fs::path exec_path(arg_path);
-    QString exec_name = QString::fromStdString(exec_path.stem().string());
-    QString script_name = exec_name + ".yaml";
+    QFileInfo fileInfo0(arg_path);
+    QString script_name = fileInfo0.fileName() + ".yaml";
 
     // Check for a config file in the user's home directory
     QString home_config_path = QString(getenv("HOME")) + "/." + script_name;
