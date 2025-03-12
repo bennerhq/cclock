@@ -36,7 +36,7 @@ private:
     QColor second_hand_color;
     QColor date_background_color;
     QColor date_color;
-    std::string date_font;
+    QString date_font;
 };
 
 #endif // CLOCKWIDGET_H

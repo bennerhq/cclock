@@ -12,6 +12,7 @@
 #include <filesystem>
 #include <yaml-cpp/yaml.h>
 
+#include <QFileInfo>
 #include <QDebug>
 
 #include "h/ConfigYAML.h"
@@ -65,12 +66,13 @@ YAML::Node merge_configs(const YAML::Node& default_config, const YAML::Node& con
     return merged_config;
 }
 
-void config_load(const std::string& yaml_filename) {
+void config_load(const QString& yaml_filename) {
     try {
-        if (fs::exists(yaml_filename)) {
-            config = YAML::LoadFile(yaml_filename);
+        QFileInfo fileInfo(yaml_filename);
+        if (fileInfo.isFile()) {
+            config = YAML::LoadFile(yaml_filename.toStdString());
         } else {
-            qDebug() << "Configuration file not found: " << yaml_filename.c_str() << ". Using default settings.";
+            qDebug() << "Configuration file not found: " << yaml_filename << ". Using default settings.";
         }
     } catch (const std::exception& e) {
         qDebug() << "An unexpected error occurred: " << e.what() << ". Using default settings.";
@@ -80,8 +82,8 @@ void config_load(const std::string& yaml_filename) {
 }
 
 template <typename T>
-T get_value(const std::string& key) {
-    std::string s = key;
+T get_value(const QString& key) {
+    std::string s = key.toStdString();
     size_t pos = 0;
     YAML::Node current_config = YAML::Clone(config); // FIXME
 
@@ -94,33 +96,31 @@ T get_value(const std::string& key) {
     }
 
     if (!current_config || !current_config[s]) {
-        qDebug() << "*** ERROR: Key not found: " << key.c_str();
+        qDebug() << "*** ERROR: Key not found: " << key;
         exit(1);
     }
 
     return current_config[s].as<T>();
 }
 
-int config_get_int(const std::string& key) {
+int config_get_int(const QString& key) {
     return get_value<int>(key);
 }
 
-bool config_get_bool(const std::string& key) {
+bool config_get_bool(const QString& key) {
     return get_value<bool>(key);
 }
 
-std::string config_get_str(const std::string& key) {
-    return get_value<std::string>(key);
+QString config_get_str(const QString& key) {
+    return get_value<std::string>(key).c_str();
 }
 
-QColor config_get_qcolor(const std::string& key) {
-    std::string value = config_get_str(key);
-
-    std::transform(value.begin(), value.end(), value.begin(), ::tolower);
+QColor config_get_qcolor(const QString& key) {
+    QString value = config_get_str(key);
 
     if (value == "" || value == "none" || value == "transparent") {
         return QColor(0, 0, 0, 0);
     }
 
-    return QColor(value.c_str());
+    return QColor(value);
 }

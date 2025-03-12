@@ -31,8 +31,8 @@ namespace fs = std::filesystem;
 QString find_config_file(char* arg_path) {
     // Find the name of the script
     fs::path exec_path(arg_path);
-    std::string exec_name = exec_path.stem().string();
-    QString script_name = QString::fromStdString(exec_name + ".yaml");
+    QString exec_name = QString::fromStdString(exec_path.stem().string());
+    QString script_name = exec_name + ".yaml";
 
     // Check for a config file in the user's home directory
     QString home_config_path = QString(getenv("HOME")) + "/." + script_name;
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "Config file: " << config_path.toStdString() << std::endl;
     
-    config_load(config_path.toStdString());
+    config_load(config_path);
 
     ClockWindow win;
     win.show();

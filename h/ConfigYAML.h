@@ -16,11 +16,11 @@
 
 #include <QColor>
 
-void config_load(const std::string& yaml_filename);
+void config_load(const QString& yaml_filename);
 
-int config_get_int(const std::string& key);
-bool config_get_bool(const std::string& key);
-std::string config_get_str(const std::string& key);
-QColor config_get_qcolor(const std::string& key);
+int config_get_int(const QString& key);
+bool config_get_bool(const QString& key);
+QString config_get_str(const QString& key);
+QColor config_get_qcolor(const QString& key);
 
 #endif // CONFIG_UTILS_H
