@@ -22,4 +22,8 @@ Thumbs.db
 # Ignore IDE/editor specific files
 .vscode/
 .idea/
+obj/
 *.swp
+
+cclock
+.qmake.stash
