@@ -8,6 +8,7 @@
 #
 # /benner
 # ----------------------------------------------------------------------------
+
 TARGET = cclock
 SOURCES = main.cpp cpp/ClockWidget.cpp cpp/ClockWindow.cpp cpp/yamlConfig.cpp
 HEADERS = h/ClockWidget.h h/ClockWindow.h h/yamlConfig.h
@@ -29,15 +30,7 @@ $(OBJECTS_DIR)%.o: %.cpp $(HEADERS)
 	@mkdir -p $(OBJECTS_DIR)
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
 
-$(OBJECTS_DIR)ClockWidget.o: cpp/ClockWidget.cpp $(HEADERS)
-	@mkdir -p $(OBJECTS_DIR)
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
-
-$(OBJECTS_DIR)ClockWindow.o: cpp/ClockWindow.cpp $(HEADERS)
-	@mkdir -p $(OBJECTS_DIR)
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
-
-$(OBJECTS_DIR)yamlConfig.o: cpp/yamlConfig.cpp $(HEADERS)
+$(OBJECTS_DIR)%.o: cpp/%.cpp $(HEADERS)
 	@mkdir -p $(OBJECTS_DIR)
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
 
