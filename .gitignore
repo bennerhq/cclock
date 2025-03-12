@@ -1,0 +1,25 @@
+# Ignore build directories
+build/
+dist/
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore compiled object files
+*.o
+*.obj
+
+# Ignore executable files
+*.exe
+*.out
+*.app
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor specific files
+.vscode/
+.idea/
+*.swp
