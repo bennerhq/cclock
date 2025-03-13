@@ -75,7 +75,7 @@ bool ClockWindow::is_on_edge(const QPoint& pos) {
 
 void ClockWindow::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        old_pos = event->globalPos(); // Change globalPosition to globalPos
+        old_pos = event->globalPos();
         if (is_on_edge(event->pos())) {
             resizing = true;
         }
@@ -90,10 +90,10 @@ void ClockWindow::mouseMoveEvent(QMouseEvent* event) {
             int new_height = this->height() + delta.y();
             setGeometry(this->x(), this->y(), new_width, new_height);
         } else {
-            QPointF delta = event->globalPos() - old_pos.value(); // Change globalPosition to globalPos
+            QPointF delta = event->globalPos() - old_pos.value();
             move(this->x() + delta.x(), this->y() + delta.y());
         }
-        old_pos = event->globalPos(); // Change globalPosition to globalPos
+        old_pos = event->globalPos();
     }
 }
 

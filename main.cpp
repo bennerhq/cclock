@@ -25,24 +25,31 @@
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
-QString script_name;
-QString home_config_path;
+QString script_name = fileInfo0.fileName() + ".yaml";
+QString home_config_path = QString(getenv("HOME")) + "/." + script_name + ".yaml";
 
+// ----------------------------------------------------------------------------
+// Main entry point
+//
 QString find_config_file(char* arg_path) {
+    // Find the name of the script
+    QFileInfo fileInfo0(arg_path);
+    QString script_name = fileInfo0.fileName() + ".yaml";
+
     // Check for a config file in the user's home directory
     QFileInfo fileInfo1(home_config_path);
     if (fileInfo1.isFile()) {
         return home_config_path;
     }  
 
-    // Check for a config file with the same name as the script
+    // Check for a config file is places where the script is run from
     QString local_config_path = QCoreApplication::applicationDirPath() + "/" + script_name;
     QFileInfo fileInfo2(local_config_path);
     if (fileInfo2.isFile()) {
         return local_config_path;
     }
 
-    // If no config file is found, return a default name
+    // If no config file is found, return a default sceipt name
     return script_name;
 }
 
