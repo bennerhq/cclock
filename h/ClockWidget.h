@@ -34,6 +34,7 @@ private:
     QColor hour_hand_color;
     QColor minute_hand_color;
     QColor second_hand_color;
+    QColor middle_dot_color;
     QColor date_background_color;
     QColor date_color;
     QString date_font;

@@ -23,15 +23,17 @@ YAML::Node default_config = YAML::Load(R"(
         background: '#00FFFFFF'
         dial: '#00FFFFFF'
 
-        hour_mark: '#000000'
-        minute_mark: '#000000'
-        second_hand: '#FF0000'
-        hour_hand: '#000000'
-        minute_hand: '#000000'
-
         date_background: '#000000'
         date: '#FFFFFF'
         date_font: 'Courier New'
+
+        hour_mark: '#000000'
+        minute_mark: '#000000'
+
+        second_hand: '#FF0000'
+        hour_hand: '#000000'
+        minute_hand: '#000000'
+        middle_dot: '#000000'
 
     window:
         frameless: true

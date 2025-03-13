@@ -21,6 +21,7 @@ colors:
   second_hand: "red"
   hour_hand: "black"
   minute_hand: "black"
+  middle_dot: "black"
 
   date_background: "black"
   date: "white"

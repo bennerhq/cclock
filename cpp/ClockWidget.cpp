@@ -31,6 +31,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     hour_hand_color = config_get_qcolor("colors.hour_hand");
     minute_hand_color = config_get_qcolor("colors.minute_hand");
     second_hand_color = config_get_qcolor("colors.second_hand");
+    middle_dot_color = config_get_qcolor("colors.middle_dot");
     date_background_color = config_get_qcolor("colors.date_background");
     date_color = config_get_qcolor("colors.date");
     date_font = config_get_str("colors.date_font");
@@ -135,5 +136,12 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         painter.rotate(6 * seconds_with_fraction);
         painter.drawLine(0, 0, 0, -90);
         painter.restore();
+    }
+
+    // Draw center circle on top of all hands
+    if (middle_dot_color.alpha() != 0) {
+        painter.setBrush(middle_dot_color);
+        painter.setPen(Qt::NoPen);
+        painter.drawEllipse(-5, -5, 10, 10);
     }
 }
