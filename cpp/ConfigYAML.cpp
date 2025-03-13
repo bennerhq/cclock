@@ -49,15 +49,12 @@ YAML::Node merge_configs(const YAML::Node& default_config, const YAML::Node& con
         const std::string& key = entry.first.as<std::string>();
         if (default_config[key]) {
             if (default_config[key].IsMap() && config[key].IsMap()) {
-                // Recursively merge nested maps
                 merged_config[key] = merge_configs(default_config[key], config[key]);
             } else {
-                // Otherwise, overwrite with the value from config
-                merged_config[key] = config[key];
+                merged_config[key] = config[key]; // Overwrite
             }
         } else {
-            // Add the key-value pair from config to merged_config
-            merged_config[key] = config[key];
+            merged_config[key] = config[key]; // New key value pair
         }
     }
     return merged_config;
@@ -82,18 +79,18 @@ template <typename T>
 T get_value(const QString& key) {
     QString s = key;
     QStringList tokens = s.split('.');
-    YAML::Node current_config = YAML::Clone(config);
+    YAML::Node current = YAML::Clone(config);
 
     for (const QString& token : tokens) {
         std::string token_std = token.toStdString();
-        if (!current_config || !current_config[token_std]) {
+        if (!current || !current[token_std]) {
             qDebug() << "*** ERROR: Key not found: " << key;
             exit(1);
         }
-        current_config = current_config[token_std];
+        current = current[token_std];
     }
 
-    return current_config.as<T>();
+    return current.as<T>();
 }
 
 int config_get_int(const QString& key) {

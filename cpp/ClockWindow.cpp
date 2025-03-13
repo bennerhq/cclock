@@ -26,15 +26,9 @@ ClockWindow::ClockWindow()
     onScreenGeometryChanged(screenGeometry);
 
     Qt::WindowFlags winFlags = Qt::Widget;
-    if (config_get_bool("window.frameless")) {
-        winFlags |= Qt::FramelessWindowHint;
-    }
-    if (config_get_bool("window.always_on_top")) {
-        winFlags |= Qt::WindowStaysOnTopHint;
-    }
-    if (config_get_bool("window.tool")) {
-        winFlags |= Qt::Tool;
-    }
+    if (config_get_bool("window.frameless"))        winFlags |= Qt::FramelessWindowHint;
+    if (config_get_bool("window.always_on_top"))    winFlags |= Qt::WindowStaysOnTopHint;
+    if (config_get_bool("window.tool"))             winFlags |= Qt::Tool;
     setWindowFlags(winFlags);
 
     QColor background_color = config_get_qcolor("colors.background");
