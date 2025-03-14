@@ -49,7 +49,9 @@ QString find_config_file(char* arg_path) {
 }
 
 int main(int argc, char *argv[]) {
-    ::setenv("QT_QPA_PLATFORM", "xcb", 1);
+    #ifdef __linux__
+        ::setenv("QT_QPA_PLATFORM", "xcb", 1);
+    #endif
 
     QApplication app(argc, argv);
 
