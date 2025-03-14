@@ -37,19 +37,22 @@ UNAME_S := $(shell uname -s)
 
 # Set paths and libraries based on the operating system
 ifeq ($(UNAME_S), Linux)
+	QT_INC_PATH = /usr/include/x86_64-linux-gnu
+	QT_LIB_PATH = /usr/lib/x86_64-linux-gnu
+
 	INCPATH = \
+		-I$(QT_INC_PATH)/qt5 \
+		-I$(QT_INC_PATH)/qt5/QtWidgets \
+		-I$(QT_INC_PATH)/qt5/QtGui \
+		-I$(QT_INC_PATH)/qt5/QtCore \
 		-I. \
-		-I/usr/include/yaml-cpp \
-		-I/usr/include/x86_64-linux-gnu/qt5 \
-		-I/usr/include/x86_64-linux-gnu/qt5/QtWidgets \
-		-I/usr/include/x86_64-linux-gnu/qt5/QtGui \
-		-I/usr/include/x86_64-linux-gnu/qt5/QtCore
+		-I/usr/include/yaml-cpp
 
 	LIBS = \
+		$(QT_LIB_PATH)/libQt5Widgets.so \
+		$(QT_LIB_PATH)/libQt5Gui.so \
+		$(QT_LIB_PATH)/libQt5Core.so \
 		-lyaml-cpp \
-		/usr/lib/x86_64-linux-gnu/libQt5Widgets.so \
-		/usr/lib/x86_64-linux-gnu/libQt5Gui.so \
-		/usr/lib/x86_64-linux-gnu/libQt5Core.so \
 		-lGL \
 		-lpthread
 else ifeq ($(UNAME_S), Darwin)
