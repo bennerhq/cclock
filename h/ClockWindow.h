@@ -24,7 +24,7 @@ class ClockWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    ClockWindow();
+    ClockWindow(QString& config_save_filename);
 
 protected:
     bool is_on_edge(const QPoint& pos);
@@ -35,6 +35,7 @@ protected:
     void onScreenGeometryChanged(const QRect &geometry);
 
 private:
+    QString config_save_filename;
     ClockWidget* clock_widget;
     QWidget* central_widget;
     QVBoxLayout* layout;

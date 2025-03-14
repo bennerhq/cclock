@@ -11,13 +11,15 @@
 
 #include <QScreen>
 #include <QGuiApplication>
+#include <QDebug>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
-ClockWindow::ClockWindow()
+ClockWindow::ClockWindow(QString& config_save_filename)
     : QMainWindow(nullptr), 
+        config_save_filename(config_save_filename),
         resizing(false), 
         resize_margin(5) {
     setWindowTitle("Analog Clock");
@@ -26,12 +28,12 @@ ClockWindow::ClockWindow()
     onScreenGeometryChanged(screenGeometry);
 
     Qt::WindowFlags winFlags = Qt::Widget;
-    if (config_get_bool("window.frameless")) winFlags |= Qt::FramelessWindowHint;
-    if (config_get_bool("window.always_on_top")) winFlags |= Qt::WindowStaysOnTopHint;
-    if (config_get_bool("window.tool")) winFlags |= Qt::Tool;
+    if (config["window"]["frameless"].as<bool>()) winFlags |= Qt::FramelessWindowHint;
+    if (config["window"]["always_on_top"].as<bool>()) winFlags |= Qt::WindowStaysOnTopHint;
+    if (config["window"]["tool"].as<bool>()) winFlags |= Qt::Tool;
     setWindowFlags(winFlags);
 
-    QColor background_color = config_get_qcolor("colors.background");
+    QColor background_color = config_qcolor(config["colors"]["background"]);
     if (background_color.alpha() == 0) {
         setAttribute(Qt::WA_TranslucentBackground);
     } else {
@@ -55,14 +57,14 @@ ClockWindow::ClockWindow()
 }
 
 void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {
-    int x = config_get_int("window.x"); 
+    int x = config["window"]["x"].as<int>(); 
     if (x < 0) x = geometry.width() + x;
 
-    int y = config_get_int("window.y");
+    int y = config["window"]["y"].as<int>(); 
     if (y < 0) y = geometry.height() + y;
 
-    int width = config_get_int("window.width");
-    int height = config_get_int("window.height");
+    int width = config["window"]["width"].as<int>();
+    int height = config["window"]["height"].as<int>();
 
     setGeometry(x, y, width, height);
 }
@@ -82,6 +84,17 @@ void ClockWindow::mousePressEvent(QMouseEvent* event) {
     }
 }
 
+void ClockWindow::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        old_pos.reset();
+        resizing = false;
+    }
+
+    if (config_save_filename != nullptr) {
+        config_save(config_save_filename);
+    }
+}
+
 void ClockWindow::mouseMoveEvent(QMouseEvent* event) {
     if (old_pos.has_value()) {
         if (resizing) {
@@ -94,17 +107,22 @@ void ClockWindow::mouseMoveEvent(QMouseEvent* event) {
             move(this->x() + delta.x(), this->y() + delta.y());
         }
         old_pos = event->globalPos();
-    }
-}
 
-void ClockWindow::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::LeftButton) {
-        old_pos.reset();
-        resizing = false;
+        if (config_save_filename != nullptr) {
+            config["window"]["x"] = this->x();
+            config["window"]["y"] = this->y();
+        }
     }
 }
 
 void ClockWindow::wheelEvent(QWheelEvent *event) {
     int dir = event->angleDelta().y() > 0 ? 10 : -10;
-    resize(this->width() + dir, this->height() + dir);
+    int width = this->width() + dir;
+    int height = this->height() + dir;
+    resize(width, height);
+
+    if (config_save_filename != nullptr) {
+        config["window"]["width"] = width;
+        config["window"]["height"] = height;
+    }
 }

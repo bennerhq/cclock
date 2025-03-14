@@ -13,15 +13,14 @@
 #define CONFIG_UTILS_H
 
 #include <string>
-
+#include <yaml-cpp/yaml.h>
 #include <QColor>
+
+extern YAML::Node config;
 
 void config_load(const QString& yaml_filename);
 bool config_save(const QString& yaml_filename);
 
-int config_get_int(const QString& key);
-bool config_get_bool(const QString& key);
-QString config_get_str(const QString& key);
-QColor config_get_qcolor(const QString& key);
+QColor config_qcolor(const YAML::Node& node);
 
 #endif // CONFIG_UTILS_H

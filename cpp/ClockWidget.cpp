@@ -13,6 +13,7 @@
 #include <QDateTime>
 #include <QPen>
 #include <QFont>
+#include <QColor>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWindow.h"
@@ -25,16 +26,16 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dial_color = config_get_qcolor("colors.dial");
-    hour_mark_color = config_get_qcolor("colors.hour_mark");
-    minute_mark_color = config_get_qcolor("colors.minute_mark");
-    hour_hand_color = config_get_qcolor("colors.hour_hand");
-    minute_hand_color = config_get_qcolor("colors.minute_hand");
-    second_hand_color = config_get_qcolor("colors.second_hand");
-    middle_dot_color = config_get_qcolor("colors.middle_dot");
-    date_background_color = config_get_qcolor("colors.date_background");
-    date_color = config_get_qcolor("colors.date");
-    date_font = config_get_str("colors.date_font");
+    dial_color = config_qcolor(config["colors"]["dial"]);
+    hour_mark_color = config_qcolor(config["colors"]["hour_mark"]);
+    minute_mark_color = config_qcolor(config["colors"]["minute_mark"]);
+    hour_hand_color = config_qcolor(config["colors"]["hour_hand"]);
+    minute_hand_color = config_qcolor(config["colors"]["minute_hand"]);
+    second_hand_color = config_qcolor(config["colors"]["second_hand"]);
+    middle_dot_color = config_qcolor(config["colors"]["middle_dot"]);
+    date_background_color = config_qcolor(config["colors"]["date_background"]);
+    date_color = config_qcolor(config["colors"]["date"]);
+    date_font = config["colors"]["date_font"].as<std::string>().c_str();
 
     if (second_hand_color.alpha() != 0) {
         timer->start(100);  // Update every 100 milliseconds

@@ -60,17 +60,20 @@ int main(int argc, char *argv[]) {
     QCommandLineOption configLoad(QStringList() << "c" << "config", "Path to the configuration file.", "config");
     parser.addOption(configLoad);
 
-    QCommandLineOption configSave(QStringList() << "d" << "default", "Save default configuration to a file.", "config");
+    QCommandLineOption configDefault(QStringList() << "d" << "default", "Save default configuration to a file.", "config");
+    parser.addOption(configDefault);
+
+    QCommandLineOption configSave(QStringList() << "s" << "save", "Save config file, If 'config' same as loaded config.", "config");
     parser.addOption(configSave);
 
-    QCommandLineOption configShow(QStringList() << "s" << "show", "Show config file path.");
-    parser.addOption(configShow);
+    QCommandLineOption configVerbose(QStringList() << "v" << "verbose", "Show config file path.");
+    parser.addOption(configVerbose);
 
     parser.addPositionalArgument("config", "Path to the configuration file.");
     parser.process(app);
 
-    if (parser.isSet(configSave)) {
-        QString config_path = parser.value(configSave);
+    if (parser.isSet(configDefault)) {
+        QString config_path = parser.value(configDefault);
         bool res = config_save(config_path);
         std::cout
             << (res ? "Saved" : "Can't save") 
@@ -88,11 +91,23 @@ int main(int argc, char *argv[]) {
     }
     config_load(config_path);
 
-    if (parser.isSet(configShow)) {
-        std::cout << "Config file: " << config_path.toStdString() << std::endl;
+    QString config_save_filename = nullptr;
+    if (parser.isSet(configSave)) {
+        config_save_filename = parser.value(configSave);
+        if (config_save_filename == "config") {
+            config_save_filename = config_path;
+        } 
     }
 
-    ClockWindow win;
+    if (parser.isSet(configVerbose)) {
+        std::cout << "Read config file: " << config_path.toStdString() << std::endl;
+
+        if (config_save_filename != nullptr) {
+            std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
+        }   
+    }
+
+    ClockWindow win(config_save_filename);
     win.show();
 
     return app.exec();

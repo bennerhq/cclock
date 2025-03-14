@@ -82,7 +82,7 @@ bool config_save(const QString& yaml_filename) {
         QFile file(yaml_filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
-            out << QString::fromStdString(YAML::Dump(default_config));
+            out << QString::fromStdString(YAML::Dump(config));
             file.close();
 
             return true;
@@ -94,40 +94,13 @@ bool config_save(const QString& yaml_filename) {
     }
 }
 
-template <typename T>
-T get_value(const QString& key) {
-    YAML::Node current = YAML::Clone(config); // FIXME: Use a reference
-    QStringList tokens = key.split('.');
-    for (const QString& token : tokens) {
-        std::string token_std = token.toStdString();
-        if (!current || !current[token_std]) {
-            qDebug() << "*** ERROR: Key not found: " << key;
-            exit(1);
-        }
-        current = current[token_std];
-    }
+QColor config_qcolor(const YAML::Node& node) {
+    std::string color = node.as<std::string>();
 
-    return current.as<T>();
-}
-
-int config_get_int(const QString& key) {
-    return get_value<int>(key);
-}
-
-bool config_get_bool(const QString& key) {
-    return get_value<bool>(key);
-}
-
-QString config_get_str(const QString& key) {
-    return get_value<std::string>(key).c_str();
-}
-
-QColor config_get_qcolor(const QString& key) {
-    QString value = config_get_str(key);
-
-    if (value == "" || value == "none" || value == "transparent") {
+    if (color == "transparent" || color == "none" || color == "null" || color == "") {
         return QColor(0, 0, 0, 0);
+ 
     }
 
-    return QColor(value);
+    return QColor(color.c_str());
 }
