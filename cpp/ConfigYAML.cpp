@@ -12,7 +12,6 @@
 #include <yaml-cpp/yaml.h>
 
 #include <QFileInfo>
-#include <QDebug>
 
 #include "h/ConfigYAML.h"
 
@@ -40,8 +39,8 @@ YAML::Node default_config = YAML::Load(R"(
         frameless: true
         always_on_top: true
         tool: true
-        x: -200
-        y: -200
+        x: 20
+        y: 20
         width: 200
         height: 200
 )");
@@ -63,19 +62,20 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
     return merged_config;
 }
 
-void config_load(const QString& yaml_filename) {
+bool config_load(const QString& yaml_filename) {
+    bool res = false;
     try {
         QFileInfo fileInfo(yaml_filename);
         if (fileInfo.isFile()) {
             config = YAML::LoadFile(yaml_filename.toStdString());
-        } else {
-            qDebug() << "Configuration file not found: " << yaml_filename << ". Using default settings.";
+            res = true;
         }
     } catch (const std::exception& e) {
-        qDebug() << "An unexpected error occurred: " << e.what() << ". Using default settings.";
+        // ...
     }
 
     config = config_merge(default_config, config);
+    return res;
 }
 
 bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {

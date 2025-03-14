@@ -11,7 +11,6 @@
 
 #include <QScreen>
 #include <QGuiApplication>
-#include <QDebug>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWidget.h"

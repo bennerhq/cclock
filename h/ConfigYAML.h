@@ -18,7 +18,7 @@
 
 extern YAML::Node config;
 
-void config_load(const QString& yaml_filename);
+bool config_load(const QString& yaml_filename);
 bool config_save(const QString& yaml_filename);
 bool config_save_default(const QString& yaml_filename);
 

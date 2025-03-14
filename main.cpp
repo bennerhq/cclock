@@ -18,7 +18,6 @@
 #include <QApplication>
 #include <QCoreApplication>
 #include <QString>
-#include <QDebug>
 #include <QFileInfo>
 
 #include "h/ConfigYAML.h"
@@ -91,22 +90,26 @@ int main(int argc, char *argv[]) {
     } else {
         config_path = find_config_file(argv[0]);
     }
-    config_load(config_path);
+
+    if (parser.isSet(configVerbose)) {
+        std::cout << "Read config file: " << config_path.toStdString() << std::endl;
+    }
+    if (!config_load(config_path)) {
+        std::cout << "Can't load config file: " << config_path.toStdString() << std::endl;
+    }
 
     QString config_save_filename = nullptr;
     if (parser.isSet(configSave)) {
         config_save_filename = parser.value(configSave);
         if (config_save_filename == "config") {
             config_save_filename = config_path;
-        } 
-    }
+        }
 
-    if (parser.isSet(configVerbose)) {
-        std::cout << "Read config file: " << config_path.toStdString() << std::endl;
-
-        if (config_save_filename != nullptr) {
-            std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
-        }   
+        if (parser.isSet(configVerbose)) {
+            if (config_save_filename != nullptr) {
+                std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
+            }   
+        }
     }
 
     ClockWindow win(config_save_filename);
