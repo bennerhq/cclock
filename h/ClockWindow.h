@@ -27,12 +27,11 @@ public:
     ClockWindow(QString& config_save_filename);
 
 protected:
-    bool is_on_edge(const QPoint& pos);
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void wheelEvent(QWheelEvent *event) override;
     void onScreenGeometryChanged(const QRect &geometry);
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent *event) override;
 
 private:
     QString config_save_filename;
@@ -42,6 +41,8 @@ private:
     std::optional<QPointF> old_pos;
     bool resizing;
     int resize_margin;
+
+    bool is_on_edge(const QPoint& pos);
 };
 
 #endif // CLOCKWINDOW_H
