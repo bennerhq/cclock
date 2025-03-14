@@ -36,8 +36,8 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     date_background_color = config_qcolor(config["colors"]["date_background"]);
     date_color = config_qcolor(config["colors"]["date"]);
     date_font = config["colors"]["date_font"].as<std::string>().c_str();
-    QString animate = config["window"]["animate"].as<std::string>().c_str();
 
+    QString animate = config["window"]["animate"].as<std::string>().c_str();
     if (animate == "float") {
         timer->start(100);  // Update every 100 milliseconds
     } else {
