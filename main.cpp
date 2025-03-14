@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Analog Clock");
+    parser.setApplicationDescription("Displayes an analog clock. The clock can be configured using a YAML file.");
     parser.addHelpOption();
 
     QCommandLineOption configLoad(QStringList() << "c" << "config", "Path to the configuration file.", "config");
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     QCommandLineOption configSave(QStringList() << "d" << "default", "Save default configuration to a file.", "config");
     parser.addOption(configSave);
 
-    QCommandLineOption configShow(QStringList() << "s" << "show", "Show configuration.");
+    QCommandLineOption configShow(QStringList() << "s" << "show", "Show config file path.");
     parser.addOption(configShow);
 
     parser.addPositionalArgument("config", "Path to the configuration file.");
