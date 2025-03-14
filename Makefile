@@ -13,9 +13,24 @@ TARGET = cclock
 SOURCES = main.cpp cpp/ClockWidget.cpp cpp/ClockWindow.cpp cpp/ConfigYAML.cpp
 HEADERS = h/ClockWidget.h h/ClockWindow.h h/ConfigYAML.h
 OBJECTS_DIR = ./obj/
-CXXFLAGS = -pipe -O2 -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-INCPATH = -I. -I/usr/include/yaml-cpp -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore
-LIBS = -lyaml-cpp /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread
+
+CXXFLAGS = \
+	-pipe -O2 -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC \
+	-DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+
+INCPATH = \
+	-I. \
+	-I/usr/include/yaml-cpp \
+	-I/usr/include/x86_64-linux-gnu/qt5 \
+	-I/usr/include/x86_64-linux-gnu/qt5/QtWidgets \
+	-I/usr/include/x86_64-linux-gnu/qt5/QtGui \
+	-I/usr/include/x86_64-linux-gnu/qt5/QtCore
+
+LIBS = \
+	-lyaml-cpp \
+	/usr/lib/x86_64-linux-gnu/libQt5Widgets.so \
+	/usr/lib/x86_64-linux-gnu/libQt5Gui.so \
+	/usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread
 
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
 MOC_SOURCES = $(addprefix $(OBJECTS_DIR), $(notdir $(HEADERS:.h=.moc.cpp)))
