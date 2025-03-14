@@ -15,22 +15,50 @@ HEADERS = h/ClockWidget.h h/ClockWindow.h h/ConfigYAML.h
 OBJECTS_DIR = ./obj/
 
 CXXFLAGS = \
-	-pipe -O2 -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC \
-	-DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+    -pipe -O2 -std=gnu++1z -Wall -Wextra -D_REENTRANT -fPIC \
+    -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 
-INCPATH = \
-	-I. \
-	-I/usr/include/yaml-cpp \
-	-I/usr/include/x86_64-linux-gnu/qt5 \
-	-I/usr/include/x86_64-linux-gnu/qt5/QtWidgets \
-	-I/usr/include/x86_64-linux-gnu/qt5/QtGui \
-	-I/usr/include/x86_64-linux-gnu/qt5/QtCore
+# Detect the operating system
+UNAME_S := $(shell uname -s)
 
-LIBS = \
-	-lyaml-cpp \
-	/usr/lib/x86_64-linux-gnu/libQt5Widgets.so \
-	/usr/lib/x86_64-linux-gnu/libQt5Gui.so \
-	/usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread
+# Set paths and libraries based on the operating system
+ifeq ($(UNAME_S), Linux)
+	INCPATH = \
+		-I. \
+		-I/usr/include/yaml-cpp \
+		-I/usr/include/x86_64-linux-gnu/qt5 \
+		-I/usr/include/x86_64-linux-gnu/qt5/QtWidgets \
+		-I/usr/include/x86_64-linux-gnu/qt5/QtGui \
+		-I/usr/include/x86_64-linux-gnu/qt5/QtCore
+
+	LIBS = \
+		-lyaml-cpp \
+		/usr/lib/x86_64-linux-gnu/libQt5Widgets.so \
+		/usr/lib/x86_64-linux-gnu/libQt5Gui.so \
+		/usr/lib/x86_64-linux-gnu/libQt5Core.so \
+		-lGL \
+		-lpthread
+else ifeq ($(UNAME_S), Darwin)
+	QT_DIR = ~/Qt/6.10.0/macos
+
+	INCPATH = \
+		-I. \
+		-I/usr/include/yaml-cpp \
+		-I$(QT_DIR)/lib/QtCore.framework \
+		-I$(QT_DIR)/lib/QtCore.framework/Headers \
+		-I$(QT_DIR)/lib/QtGui.framework \
+		-I$(QT_DIR)/lib/QtGui.framework/Headers \
+		-I$(QT_DIR)/lib/QtWidgets.framework \
+		-I$(QT_DIR)/lib/QtWidgets.framework/Headers
+
+	LIBS = \
+		-lyaml-cpp \
+		$(QT_DIR)/lib/QtWidgets.framework/QtWidgets \
+		$(QT_DIR)/lib/QtGui.framework/QtGui \
+		$(QT_DIR)/lib/QtCore.framework/QtCore \
+		-framework OpenGL \
+		-lpthread
+endif
 
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
 MOC_SOURCES = $(addprefix $(OBJECTS_DIR), $(notdir $(HEADERS:.h=.moc.cpp)))

@@ -39,7 +39,8 @@ ClockWindow::ClockWindow(QString& config_save_filename)
         QPalette palette = this->palette();
         palette.setColor(this->backgroundRole(), background_color);
         this->setPalette(palette);
-    } else {
+    }
+    else {
         setAttribute(Qt::WA_TranslucentBackground);
     }
 
