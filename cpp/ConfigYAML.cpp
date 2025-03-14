@@ -96,10 +96,8 @@ bool config_save(const QString& yaml_filename) {
 
 template <typename T>
 T get_value(const QString& key) {
-    QString s = key;
-    QStringList tokens = s.split('.');
-    YAML::Node current = YAML::Clone(config);
-
+    YAML::Node current = YAML::Clone(config); // FIXME: Use a reference
+    QStringList tokens = key.split('.');
     for (const QString& token : tokens) {
         std::string token_std = token.toStdString();
         if (!current || !current[token_std]) {
