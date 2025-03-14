@@ -17,7 +17,7 @@
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 13)
 #   define gPos globalPos
 #else
 #   define gPos  globalPosition
