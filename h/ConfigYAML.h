@@ -17,6 +17,7 @@
 #include <QColor>
 
 void config_load(const QString& yaml_filename);
+bool config_save(const QString& yaml_filename);
 
 int config_get_int(const QString& key);
 bool config_get_bool(const QString& key);

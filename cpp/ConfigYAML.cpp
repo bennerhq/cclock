@@ -77,6 +77,23 @@ void config_load(const QString& yaml_filename) {
     config = merge_configs(default_config, config);
 }
 
+bool config_save(const QString& yaml_filename) {
+    try {
+        QFile file(yaml_filename);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << QString::fromStdString(YAML::Dump(default_config));
+            file.close();
+
+            return true;
+        } else {
+            return false;
+        }
+    } catch (const std::exception& e) {
+        return false;
+    }
+}
+
 template <typename T>
 T get_value(const QString& key) {
     QString s = key;
