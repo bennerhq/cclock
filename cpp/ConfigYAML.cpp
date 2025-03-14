@@ -45,13 +45,13 @@ YAML::Node default_config = YAML::Load(R"(
         height: 200
 )");
 
-YAML::Node merge_configs(const YAML::Node& default_config, const YAML::Node& config) {
+YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& config) {
     YAML::Node merged_config = default_config;
     for (const auto& entry : config) {
         const std::string& key = entry.first.as<std::string>();
         if (default_config[key]) {
             if (default_config[key].IsMap() && config[key].IsMap()) {
-                merged_config[key] = merge_configs(default_config[key], config[key]);
+                merged_config[key] = config_merge(default_config[key], config[key]);
             } else {
                 merged_config[key] = config[key]; // Overwrite
             }
@@ -74,10 +74,10 @@ void config_load(const QString& yaml_filename) {
         qDebug() << "An unexpected error occurred: " << e.what() << ". Using default settings.";
     }
 
-    config = merge_configs(default_config, config);
+    config = config_merge(default_config, config);
 }
 
-bool config_save(const QString& yaml_filename) {
+bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {
     try {
         QFile file(yaml_filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -92,6 +92,14 @@ bool config_save(const QString& yaml_filename) {
     } catch (const std::exception& e) {
         return false;
     }
+}
+
+bool config_save(const QString& yaml_filename) {
+    return config_save_yaml(yaml_filename, config);
+}
+
+bool config_save_default(const QString& yaml_filename) {
+    return config_save_yaml(yaml_filename, default_config);
 }
 
 QColor config_qcolor(const YAML::Node& node) {

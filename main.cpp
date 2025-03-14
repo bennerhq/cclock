@@ -74,10 +74,10 @@ int main(int argc, char *argv[]) {
 
     if (parser.isSet(configDefault)) {
         QString config_path = parser.value(configDefault);
-        bool res = config_save(config_path);
+        bool res = config_save_default(config_path);
         std::cout
             << (res ? "Saved" : "Can't save") 
-            << " config file: " << config_path.toStdString() 
+            << " default config file: " << config_path.toStdString() 
             << std::endl;
     }
 
