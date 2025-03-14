@@ -36,6 +36,7 @@ YAML::Node default_config = YAML::Load(R"(
         middle_dot: '#000000'
 
     window:
+        animate: "float"
         frameless: true
         always_on_top: true
         tool: true
