@@ -107,8 +107,7 @@ QColor config_qcolor(const YAML::Node& node) {
     std::string color = node.as<std::string>();
 
     if (color == "transparent" || color == "none" || color == "null" || color == "") {
-        return QColor(0, 0, 0, 0);
- 
+        return QColor();
     }
 
     return QColor(color.c_str());

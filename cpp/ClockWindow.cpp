@@ -34,13 +34,13 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     setWindowFlags(winFlags);
 
     QColor background_color = config_qcolor(config["colors"]["background"]);
-    if (background_color.alpha() == 0) {
-        setAttribute(Qt::WA_TranslucentBackground);
-    } else {
+    if (background_color.isValid()) {
         setAutoFillBackground(true);
         QPalette palette = this->palette();
         palette.setColor(this->backgroundRole(), background_color);
         this->setPalette(palette);
+    } else {
+        setAttribute(Qt::WA_TranslucentBackground);
     }
 
     central_widget = new QWidget(this);
