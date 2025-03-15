@@ -1,8 +1,9 @@
 # Widget Clock written in C++/Qt (clock)
 
 ## Overview
-`cclock` is a simple command line tool that displays the current time in analog format. 
-It is being refactored from Python/Qt (https://github.com/bennerhq/wclock) to C++/Qt 
+
+`cclock` is a simple command line tool that displays the current time in analog format.
+It is being refactored from Python/Qt (<https://github.com/bennerhq/wclock>) to C++/Qt
 with Github Co-polit.
 
 The code is compiled, validated and tested on Ubuntu Linux and MacOS / Qt v6.10.0.
@@ -10,11 +11,13 @@ The code is compiled, validated and tested on Ubuntu Linux and MacOS / Qt v6.10.
 Github Co-pilot is the lead programmer!
 
 ## Features
+
 - Easy-to-use command-line interface
 - Lightweight and fast
 - Clock colors can be customized in .yaml file
 
 ## Installation
+
 To install `cclock`, clone the repository and build the project:
 
 ```bash
@@ -24,7 +27,8 @@ make all
 ```
 
 ## yaml configuration file
-The `cclock` tool uses a `.yaml` configuration file to customize the 
+
+The `cclock` tool uses a `.yaml` configuration file to customize the
 appearance of the clock. Below is an example configuration file:
 
 ```yaml
@@ -70,6 +74,7 @@ window:
 You can modify the colors and sizes to suit your preferences.
 
 ## Usage
+
 Run `cclock` with the desired yaml config file
 
 ```bash
@@ -77,12 +82,15 @@ Run `cclock` with the desired yaml config file
 ```
 
 ## Contributing
+
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## License
+
 This project is licensed under the "Beerware" software license.
 
 ```
+
 # ----------------------------------------------------------------------------
 # "THE BEER-WARE LICENSE" (Revision 43):
 #
@@ -96,4 +104,5 @@ This project is licensed under the "Beerware" software license.
 ```
 
 ## Contact
+
 For any questions or suggestions, please open an issue on GitHub.
