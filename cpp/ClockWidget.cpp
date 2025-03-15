@@ -79,8 +79,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw hour marks
     if (hour_mark_color.isValid()) {
-        painter.save();
         QPen hour_mark_pen(hour_mark_color, 2);
+
+        painter.save();
         painter.setPen(hour_mark_pen);
         for (int i = 0; i < 12; ++i) {
             painter.drawLine(88, 0, 96, 0);
@@ -91,8 +92,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw minute marks
     if (minute_mark_color.isValid()) {
-        painter.save();
         QPen minute_mark_pen(minute_mark_color, 1);
+
+        painter.save();
         painter.setPen(minute_mark_pen);
         for (int i = 0; i < 60; ++i) {
             if (i % 5 != 0) {
@@ -108,13 +110,14 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         QRect rect(80, -10, 20, 20);
         QString today = QDateTime::currentDateTime().toString("dd");
 
+        QFont font = painter.font();
+        font.setFamily(date_font);
+        font.setPointSize(10);
+
         painter.save();
         painter.setPen(Qt::NoPen);
         painter.setBrush(date_background_color);
         painter.drawRoundedRect(rect, 5, 5);
-        QFont font = painter.font();
-        font.setFamily(date_font);
-        font.setPointSize(10);
         painter.setFont(font);
         painter.setPen(QPen(date_color, 1));
         painter.drawText(rect, Qt::AlignCenter, today);
@@ -123,8 +126,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw hour hand
     if (hour_hand_color.isValid()) {
-        painter.save();
         QPen hour_hand_pen(hour_hand_color, 6, Qt::SolidLine, Qt::RoundCap);
+
+        painter.save();
         painter.setPen(hour_hand_pen);
         painter.rotate(30 * (current_time.hour() + current_time.minute() / 60.0));
         painter.drawLine(0, 0, 0, -50);
@@ -133,8 +137,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw minute hand
     if (minute_hand_color.isValid()) {
-        painter.save();
         QPen minute_hand_pen(minute_hand_color, 4, Qt::SolidLine, Qt::RoundCap);
+
+        painter.save();
         painter.setPen(minute_hand_pen);
         painter.rotate(6 * (current_time.minute() + current_time.second() / 60.0));
         painter.drawLine(0, 0, 0, -70);
@@ -143,10 +148,11 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw second hand
     if (second_hand_color.isValid()) {
-        painter.save();
-        QPen second_hand_pen(second_hand_color, 2, Qt::SolidLine, Qt::RoundCap);
-        painter.setPen(second_hand_pen);
         qreal seconds_with_fraction = current_time.second() + current_time.msec() / 1000.0;
+        QPen second_hand_pen(second_hand_color, 2, Qt::SolidLine, Qt::RoundCap);
+
+        painter.save();
+        painter.setPen(second_hand_pen);
         painter.rotate(6 * seconds_with_fraction);
         painter.drawLine(0, 0, 0, -90);
         painter.restore();
