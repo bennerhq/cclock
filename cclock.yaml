@@ -4,7 +4,7 @@
 # clock window and the behavior of the application.
 
 # ----
-# The section 'coloc:' contains the colors of the clock.
+# The section 'clock:' contains the colors of the clock.
 colors:
   background: "none"          # Background color of the clock window
 
