@@ -1,27 +1,36 @@
+# ---------------------------------------------------------------------------
+# This is the configuration file for the cclock application. It is written in
+# YAML format. The configuration file is used to set the appearance of the
+# clock window and the behavior of the application.
+
+# ----
+# The section 'coloc:' contains the colors of the clock.
 colors:
-  background: "none"
+  background: "none"          # Background color of the clock window
 
-  dial: "none"
-  dial_frame: "none"
+  dial: "none"                # Color of the clock dial
+  dial_frame: "none"          # Color of the clock dial frame
 
-  date_background: "#000000"
-  date: "#FFFFFF"
-  date_font: Courier New
+  date_background: "#000000"  # Background color of the date display
+  date: "#FFFFFF"             # Color of the date text
+  date_font: Courier New      # Font used for the date display
 
-  hour_mark: "#000000"
-  minute_mark: "#000000"
+  hour_mark: "#000000"        # Color of the hour marks on the clock
+  minute_mark: "#000000"      # Color of the minute marks on the clock
 
-  second_hand: "#FF0000"
-  hour_hand: "#000000"
-  minute_hand: "#000000" 
-  middle_dot: "#000000"
+  second_hand: "#FF0000"      # Color of the second hand
+  hour_hand: "#000000"        # Color of the hour hand
+  minute_hand: "#000000"      # Color of the minute hand
+  middle_dot: "#000000"       # Color of the middle dot
 
+# ----
+# The section 'window:' contains the window settings of the clock
 window:
-  animate: float
-  frameless: true
-  always_on_top: true
-  tool: true
-  x: 20
-  y: 20
-  width: 200
-  height: 200
+  animate: float              # Animation type for the window
+  frameless: true             # Whether the window is frameless
+  always_on_top: true         # Whether the window is always on top
+  tool: true                  # Whether the window is a tool window
+  x: 20                       # X position of the window
+  y: 20                       # Y position of the window
+  width: 200                  # Width of the window
+  height: 200                 # Height of the window
