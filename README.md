@@ -32,6 +32,7 @@ The `cclock` tool uses a `.yaml` configuration file to customize the
 appearance of the clock. Below is an example configuration file:
 
 ```yaml
+
 # ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
 # YAML format. The configuration file is used to set the appearance of the
@@ -65,10 +66,11 @@ window:
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window
-  x: 20                       # X position of the window
-  y: 20                       # Y position of the window
+  x: -210                     # X position of the window; positie for left, negative for right
+  y: -210                     # Y position of the window; positive for top, negative for bottom
   width: 200                  # Width of the window
   height: 200                 # Height of the window
+
 ```
 
 You can modify the colors and sizes to suit your preferences.
