@@ -16,10 +16,8 @@
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 13)
-#   define gPos globalPos
-#else
-#   define gPos  globalPosition
+#if QT_VERSION > QT_VERSION_CHECK(5, 15, 13)
+#   define globalPos     globalPosition
 #endif
 
 ClockWindow::ClockWindow(QString& config_save_filename)
@@ -83,7 +81,7 @@ bool ClockWindow::is_on_edge(const QPoint& pos) {
 
 void ClockWindow::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        old_pos = event->gPos();
+        old_pos = event->globalPos();
         if (is_on_edge(event->pos())) {
             resizing = true;
         }
@@ -109,10 +107,10 @@ void ClockWindow::mouseMoveEvent(QMouseEvent* event) {
             int new_height = this->height() + delta.y();
             setGeometry(this->x(), this->y(), new_width, new_height);
         } else {
-            QPointF delta = event->gPos() - old_pos.value();
+            QPointF delta = event->globalPos() - old_pos.value();
             move(this->x() + delta.x(), this->y() + delta.y());
         }
-        old_pos = event->gPos();
+        old_pos = event->globalPos();
 
         if (config_save_filename != nullptr) {
             config["window"]["x"] = this->x();
