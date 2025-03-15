@@ -3,8 +3,7 @@
  * Don't edit, changes will be lost.
  *
  * Edit cclock.yaml to change the content of this file.
- *
- * By running ./yaml2config the content of this file is generate.
+ * By running yaml2config the content of this file is generate.
  */
 
 R"(
