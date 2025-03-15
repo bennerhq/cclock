@@ -61,29 +61,37 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw dial background
     if (dial_color.isValid()) {
+        painter.save();
         painter.setBrush(dial_color);
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(-100, -100, 200, 200);
+        painter.restore();
     }
 
+    // Draw dial frame
     if (dial_frame_color.isValid()) {
+        painter.save();
         painter.setPen(QPen(dial_frame_color, 3));
         painter.setBrush(Qt::NoBrush);
         painter.drawEllipse(-99, -99, 198, 198);
+        painter.restore();
     }
 
     // Draw hour marks
     if (hour_mark_color.isValid()) {
+        painter.save();
         QPen hour_mark_pen(hour_mark_color, 2);
         painter.setPen(hour_mark_pen);
         for (int i = 0; i < 12; ++i) {
             painter.drawLine(88, 0, 96, 0);
             painter.rotate(30);
         }
+        painter.restore();
     }
 
     // Draw minute marks
     if (minute_mark_color.isValid()) {
+        painter.save();
         QPen minute_mark_pen(minute_mark_color, 1);
         painter.setPen(minute_mark_pen);
         for (int i = 0; i < 60; ++i) {
@@ -92,6 +100,7 @@ void ClockWidget::paintEvent(QPaintEvent*) {
             }
             painter.rotate(6);
         }
+        painter.restore();
     }
 
     // Draw day number at 15:00 o'clock
@@ -99,28 +108,24 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         QRect rect(80, -10, 20, 20);
         QString today = QDateTime::currentDateTime().toString("dd");
 
+        painter.save();
         painter.setPen(Qt::NoPen);
         painter.setBrush(date_background_color);
-        painter.save();
         painter.drawRoundedRect(rect, 5, 5);
-        painter.restore();
-
-        painter.setPen(QPen(date_color, 1));
-
         QFont font = painter.font();
         font.setFamily(date_font);
         font.setPointSize(10);
         painter.setFont(font);
-        painter.save();
+        painter.setPen(QPen(date_color, 1));
         painter.drawText(rect, Qt::AlignCenter, today);
         painter.restore();
     }
 
     // Draw hour hand
     if (hour_hand_color.isValid()) {
+        painter.save();
         QPen hour_hand_pen(hour_hand_color, 6, Qt::SolidLine, Qt::RoundCap);
         painter.setPen(hour_hand_pen);
-        painter.save();
         painter.rotate(30 * (current_time.hour() + current_time.minute() / 60.0));
         painter.drawLine(0, 0, 0, -50);
         painter.restore();
@@ -128,9 +133,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw minute hand
     if (minute_hand_color.isValid()) {
+        painter.save();
         QPen minute_hand_pen(minute_hand_color, 4, Qt::SolidLine, Qt::RoundCap);
         painter.setPen(minute_hand_pen);
-        painter.save();
         painter.rotate(6 * (current_time.minute() + current_time.second() / 60.0));
         painter.drawLine(0, 0, 0, -70);
         painter.restore();
@@ -138,9 +143,9 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw second hand
     if (second_hand_color.isValid()) {
+        painter.save();
         QPen second_hand_pen(second_hand_color, 2, Qt::SolidLine, Qt::RoundCap);
         painter.setPen(second_hand_pen);
-        painter.save();
         qreal seconds_with_fraction = current_time.second() + current_time.msec() / 1000.0;
         painter.rotate(6 * seconds_with_fraction);
         painter.drawLine(0, 0, 0, -90);
@@ -149,8 +154,10 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw center circle on top of all hands
     if (middle_dot_color.isValid()) {
+        painter.save();
         painter.setBrush(middle_dot_color);
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(-5, -5, 10, 10);
+        painter.restore();
     }
 }
