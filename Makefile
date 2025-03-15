@@ -84,7 +84,10 @@ MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
 all: yaml2config $(TARGET)
 
-yaml2config:
+yaml2config: h/ConfigDefault.txt
+	./yaml2config
+
+h/ConfigDefault.txt: cclock.yaml
 	./yaml2config
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
@@ -106,7 +109,7 @@ $(OBJECTS_DIR)%.moc.cpp: h/%.h
 	moc $< -o $@
 
 clean:
-	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET)
+	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET) h/ConfigDefault.txt
 
 mocables: \
 	$(MOC_SOURCES)
