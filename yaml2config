@@ -42,5 +42,5 @@ then
     # Set the output file's timestamp to match the input file's timestamp
     touch -r "$input_file" "$output_file"
 
-    echo "Content from $input_file has been written to $output_file."
+    echo "$input_file: content written to $output_file."
 fi
