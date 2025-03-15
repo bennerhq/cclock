@@ -86,7 +86,7 @@ MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 all: $(TARGET)
 
 h/ConfigDefault.h: cclock.yaml
-	./yaml2config
+	./yaml2config $< $@
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
 	$(CXX) -o $(TARGET) $(OBJECTS) $(MOC_OBJECTS) $(LIBS)
