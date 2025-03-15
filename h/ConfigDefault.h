@@ -18,15 +18,15 @@ R"(
 # ----
 # The section 'clock:' contains the colors of the clock.
 colors:
-  background: "none"          # Background color of the clock window
+  background: none            # Background color of the clock window
 
   dial: "#10FFFFFF"           # Color of the clock dial
-  dial_frame: "none"          # Color of the clock dial frame
+  dial_frame: none            # Color of the clock dial frame
 
   date_background: "#000000"  # Background color of the date display
   date_position: 3            # Position of the date display; 1 to 12 o'clock
   date_text: "#FFFFFF"        # Color of the date text
-  date_font: "Courier New"    # Font used for the date display
+  date_font: Courier New      # Font used for the date display
 
   hour_mark: "#000000"        # Color of the hour marks on the clock
   minute_mark: "#000000"      # Color of the minute marks on the clock
