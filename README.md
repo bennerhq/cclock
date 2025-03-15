@@ -22,33 +22,47 @@ make all
 ```
 
 ## yaml configuration file
-The `cclock` tool uses a `.yaml` configuration file to customize the appearance of the clock. 
-Below is an example configuration file:
+The `cclock` tool uses a `.yaml` configuration file to customize the 
+appearance of the clock. Below is an example configuration file:
 
 ```yaml
-# cclock.yaml
-    colors:
-        background: '#00FFFFFF'
-        dial: '#00FFFFFF'
+# ---------------------------------------------------------------------------
+# This is the configuration file for the cclock application. It is written in
+# YAML format. The configuration file is used to set the appearance of the
+# clock window and the behavior of the application.
 
-        hour_mark: '#000000'
-        minute_mark: '#000000'
-        second_hand: '#FF0000'
-        hour_hand: '#000000'
-        minute_hand: '#000000'
+# ----
+# The section 'clock:' contains the colors of the clock.
+colors:
+  background: none            # Background color of the clock window
 
-        date_background: '#000000'
-        date: '#FFFFFF'
-        date_font: 'Courier New'
+  dial: "#10FFFFFF"           # Color of the clock dial
+  dial_frame: none            # Color of the clock dial frame
 
-    window:
-        frameless: true
-        always_on_top: true
-        tool: true
-        x: -200
-        y: -200
-        width: 200
-        height: 200
+  date_background: "#000000"  # Background color of the date display
+  date_position: 3            # Position of the date display; 1 to 12 o'clock
+  date_text: "#FFFFFF"        # Color of the date text
+  date_font: Courier New      # Font used for the date display
+
+  hour_mark: "#000000"        # Color of the hour marks on the clock
+  minute_mark: "#000000"      # Color of the minute marks on the clock
+
+  second_hand: "#FF0000"      # Color of the second hand
+  hour_hand: "#000000"        # Color of the hour hand
+  minute_hand: "#000000"      # Color of the minute hand
+  middle_dot: "#000000"       # Color of the middle dot
+
+# ----
+# The section 'window:' contains the window settings of the clock
+window:
+  animate: float              # Animation type for the second hand; float or tick
+  frameless: true             # Whether the window is frameless
+  always_on_top: true         # Whether the window is always on top
+  tool: true                  # Whether the window is a tool window
+  x: 20                       # X position of the window
+  y: 20                       # Y position of the window
+  width: 200                  # Width of the window
+  height: 200                 # Height of the window
 ```
 
 You can modify the colors and sizes to suit your preferences.
