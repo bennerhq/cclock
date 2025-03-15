@@ -91,7 +91,7 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 This project is licensed under the "Beerware" software license.
 
-```
+```bash
 
 # ----------------------------------------------------------------------------
 # "THE BEER-WARE LICENSE" (Revision 43):
