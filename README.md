@@ -3,7 +3,9 @@
 ## Overview
 `cclock` is a simple command line tool that displays the current time in analog format. 
 It is being refactored from Python/Qt (https://github.com/bennerhq/wclock) to C++/Qt 
-with Github Co-polit and tested on Ubuntu Linux.
+with Github Co-polit.
+
+The code is compiled, validated and tested on Ubuntu Linux and MacOS / Qt v6.10.0.
 
 Github Co-pilot is the lead programmer!
 
