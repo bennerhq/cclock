@@ -20,7 +20,7 @@ colors:
   dial_frame: "none"          # Color of the clock dial frame
 
   date_background: "#000000"  # Background color of the date display
-  date_position: 3            # Position of the date display; 1 to 12
+  date_position: 9            # Position of the date display; 1 to 12
   date_text: "#FFFFFF"        # Color of the date text
   date_font: Courier New      # Font used for the date display
 

@@ -108,10 +108,10 @@ void ClockWidget::paintEvent(QPaintEvent*) {
     // Draw day number at 15:00 o'clock
     if (date_background_color.isValid()) {
         int hour_marker = config["colors"]["date_position"].as<int>();
-        int angle = hour_marker * 30 - 30*3;
-        int x = 80 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
-        int y = 80 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
-        QRect rect(x - 10, y - 10, 20, 20); // Center the rectangle around the hour marker
+        int angle = hour_marker * 30 - 30*3; // ?
+        int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
+        int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
+        QRect rect(x - 10, y - 10, 20, 20);
         QString today = QDateTime::currentDateTime().toString("dd");
 
         QFont font = painter.font();
