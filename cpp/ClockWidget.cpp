@@ -27,6 +27,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setAttribute(Qt::WA_TranslucentBackground);
 
     dial_color = config_qcolor(config["colors"]["dial"]);
+    dial_frame_color = config_qcolor(config["colors"]["dial_frame"]);
     hour_mark_color = config_qcolor(config["colors"]["hour_mark"]);
     minute_mark_color = config_qcolor(config["colors"]["minute_mark"]);
     hour_hand_color = config_qcolor(config["colors"]["hour_hand"]);
@@ -63,6 +64,12 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         painter.setBrush(dial_color);
         painter.setPen(Qt::NoPen);
         painter.drawEllipse(-100, -100, 200, 200);
+    }
+
+    if (dial_frame_color.isValid()) {
+        painter.setPen(QPen(dial_frame_color, 3));
+        painter.setBrush(Qt::NoBrush);
+        painter.drawEllipse(-99, -99, 198, 198);
     }
 
     // Draw hour marks

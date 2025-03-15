@@ -21,6 +21,7 @@ YAML::Node default_config = YAML::Load(R"(
     colors:
         background: '#00FFFFFF'
         dial: '#00FFFFFF'
+        dial_frame: "black"
 
         date_background: '#000000'
         date: '#FFFFFF'

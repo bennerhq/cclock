@@ -29,6 +29,7 @@ private:
     QTimer* timer;
 
     QColor dial_color;
+    QColor dial_frame_color;
     QColor hour_mark_color;
     QColor minute_mark_color;
     QColor hour_hand_color;

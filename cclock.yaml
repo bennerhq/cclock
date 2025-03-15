@@ -2,6 +2,7 @@ colors:
   background: "#00FFFFFF"
   dial: "#90FFFFFF"
   date_background: "#000000"
+  dial_frame: "#000000"
   date: "#FFFFFF"
   date_font: Courier New
   hour_mark: "#000000"
