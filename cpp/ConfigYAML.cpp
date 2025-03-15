@@ -59,7 +59,7 @@ NodeType config_node_type(const YAML::Node& node) {
                         node.as<std::string>();
                         return NodeType::String;
                     } catch (...) {
-                        return NodeType::Scalar;
+                        // ...
                     }
                 }
             }
