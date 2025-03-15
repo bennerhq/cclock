@@ -82,7 +82,10 @@ OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
 MOC_SOURCES = $(addprefix $(OBJECTS_DIR), $(notdir $(HEADERS:.h=.moc.cpp)))
 MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
-all: $(TARGET)
+all: yaml2config $(TARGET)
+
+yaml2config:
+	./yaml2config
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
 	$(CXX) -o $(TARGET) $(OBJECTS) $(MOC_OBJECTS) $(LIBS)

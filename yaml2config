@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Define the input and output file paths
+input_file="./cclock.yaml"
+output_file="./h/ConfigDefault.h"
+
+# Check if the input file is newer than the output file
+if [ "$input_file" -nt "$output_file" ]; 
+then
+    # Read the content of the input file
+    content=$(<"$input_file")
+
+    # Write the content to the output file in the specified format
+    echo 'R"(' > "$output_file"
+    echo "$content" >> "$output_file"
+    echo ')"' >> "$output_file"
+
+    # Set the output file's timestamp to match the input file's timestamp
+    touch -r "$input_file" "$output_file"
+
+    echo "Content from $input_file has been written to $output_file in the specified format."
+else
+    echo "No update needed. $output_file is up to date."
+fi
