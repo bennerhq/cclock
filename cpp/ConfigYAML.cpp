@@ -23,7 +23,7 @@ YAML::Node default_config = YAML::Load(
     #include "h/ConfigDefault.h"
 );
 
-enum class YamlNodeType {
+enum class NodeType {
     Null,
     String,
     Bool,
@@ -33,42 +33,52 @@ enum class YamlNodeType {
     Map,
     Undefined
 };
+static const char* NodeTypeStr[] = {
+    "Null",         // NodeType::Null
+    "String",       // NodeType::String
+    "true | false", // NodeType::Bool
+    "Number",       // NodeType::Double
+    "Scalar",       // NodeType::Scalar
+    "Sequence",     // NodeType::Sequence
+    "Map",          // NodeType::Map
+    "Undefined"     // NodeType::Undefined
+};
 
-YamlNodeType config_node_type(const YAML::Node& node) {
+NodeType config_node_type(const YAML::Node& node) {
     switch (node.Type()) {
         case YAML::NodeType::Null:
-            return YamlNodeType::Null;
+            return NodeType::Null;
 
         case YAML::NodeType::Scalar:
             if (node.IsScalar()) {
                 try {
                     node.as<double>();
-                    return YamlNodeType::Double;
+                    return NodeType::Double;
                 } catch (...) {
                     try {
                         node.as<bool>();
-                        return YamlNodeType::Bool;
+                        return NodeType::Bool;
                     } catch (...) {
                         try {
                             node.as<std::string>();
-                            return YamlNodeType::String;
+                            return NodeType::String;
                         } catch (...) {
-                            return YamlNodeType::Scalar;
+                            return NodeType::Scalar;
                         }
                     }
                 }
             }
-            return YamlNodeType::Scalar;
+            return NodeType::Scalar;
 
         case YAML::NodeType::Sequence:
-            return YamlNodeType::Sequence;
+            return NodeType::Sequence;
 
         case YAML::NodeType::Map:
-            return YamlNodeType::Map;
+            return NodeType::Map;
 
         case YAML::NodeType::Undefined:
         default:
-            return YamlNodeType::Undefined;
+            return NodeType::Undefined;
     }
 }
 
@@ -80,12 +90,15 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
             if (default_config[key].IsMap() && config[key].IsMap()) {
                 merged_config[key] = config_merge(default_config[key], config[key]);
             } else {
-                YamlNodeType left = config_node_type(default_config[key]);
-                YamlNodeType right = config_node_type(config[key]);
+                NodeType left = config_node_type(default_config[key]);
+                NodeType right = config_node_type(config[key]);
                 if (left != right) {
                     std::cout
                         << "*** Error: Incompatible types for key "
-                        << "'" << key << "' in config file"
+                        << "'" << key << "' in yaml config file.\n"
+                        << "           "
+                        << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
+                        << " but is of type " << NodeTypeStr[static_cast<int>(right)]
                         << std::endl;
                 }
                 else {

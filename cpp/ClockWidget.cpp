@@ -116,7 +116,7 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
         QFont font = painter.font();
         font.setFamily(date_font);
-        font.setPointSize(10);
+        font.setPointSize(14);
 
         painter.save();
         painter.setPen(Qt::NoPen);

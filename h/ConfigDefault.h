@@ -16,7 +16,7 @@ R"(
 colors:
   background: "none"          # Background color of the clock window
 
-  dial: "none"                # Color of the clock dial
+  dial: "#10FFFFFF"           # Color of the clock dial
   dial_frame: "none"          # Color of the clock dial frame
 
   date_background: "#000000"  # Background color of the date display
