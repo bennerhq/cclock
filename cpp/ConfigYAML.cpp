@@ -47,21 +47,19 @@ NodeType config_node_type(const YAML::Node& node) {
             return NodeType::Null;
 
         case YAML::NodeType::Scalar:
-            if (node.IsScalar()) {
+            try {
+                node.as<double>();
+                return NodeType::Double;
+            } catch (...) {
                 try {
-                    node.as<double>();
-                    return NodeType::Double;
+                    node.as<bool>();
+                    return NodeType::Bool;
                 } catch (...) {
                     try {
-                        node.as<bool>();
-                        return NodeType::Bool;
+                        node.as<std::string>();
+                        return NodeType::String;
                     } catch (...) {
-                        try {
-                            node.as<std::string>();
-                            return NodeType::String;
-                        } catch (...) {
-                            return NodeType::Scalar;
-                        }
+                        return NodeType::Scalar;
                     }
                 }
             }
