@@ -32,7 +32,7 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     QRect screenGeometry = QGuiApplication::primaryScreen()->geometry();
     onScreenGeometryChanged(screenGeometry);
 
-    Qt::WindowFlags winFlags = Qt::Widget;
+    Qt::WindowFlags winFlags = Qt::Widget | Qt::WindowSystemMenuHint;
     if (config["window"]["frameless"].as<bool>()) winFlags |= Qt::FramelessWindowHint;
     if (config["window"]["always_on_top"].as<bool>()) winFlags |= Qt::WindowStaysOnTopHint;
     if (config["window"]["tool"].as<bool>()) winFlags |= Qt::Tool;
