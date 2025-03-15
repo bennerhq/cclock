@@ -14,6 +14,7 @@
 #include <QPen>
 #include <QFont>
 #include <QColor>
+#include <QtMath>
 
 #include "h/ConfigYAML.h"
 #include "h/ClockWindow.h"
@@ -116,7 +117,7 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
         QFont font = painter.font();
         font.setFamily(date_font);
-        font.setPointSize(14);
+        font.setPointSize(11);
 
         painter.save();
         painter.setPen(Qt::NoPen);

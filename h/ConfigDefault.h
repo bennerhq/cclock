@@ -24,7 +24,7 @@ colors:
   date_background: "#000000"  # Background color of the date display
   date_position: 3            # Position of the date display; 1 to 12 o'clock
   date_text: "#FFFFFF"        # Color of the date text
-  date_font: Courier New      # Font used for the date display
+  date_font: "Courier New"    # Font used for the date display
 
   hour_mark: "#000000"        # Color of the hour marks on the clock
   minute_mark: "#000000"      # Color of the minute marks on the clock
@@ -41,8 +41,8 @@ window:
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window
-  x: -210                     # X position of the window
-  y: -210                     # Y position of the window
+  x: -210                     # X position of the window; positie for left, negative for right
+  y: -210                     # Y position of the window; positive for top, negative for bottom
   width: 200                  # Width of the window
   height: 200                 # Height of the window
 )"
