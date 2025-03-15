@@ -1,7 +1,7 @@
 colors:
   background: "none"
 
-  dial: "#none"
+  dial: "none"
   dial_frame: "none"
 
   date_background: "#000000"
