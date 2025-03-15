@@ -37,7 +37,8 @@ private:
     QColor second_hand_color;
     QColor middle_dot_color;
     QColor date_background_color;
-    QColor date_color;
+    QColor date_text_color;
+    int date_position;
     QString date_font;
 };
 

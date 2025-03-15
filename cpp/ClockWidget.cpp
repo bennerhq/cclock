@@ -35,7 +35,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     second_hand_color = config_qcolor(config["colors"]["second_hand"]);
     middle_dot_color = config_qcolor(config["colors"]["middle_dot"]);
     date_background_color = config_qcolor(config["colors"]["date_background"]);
-    date_color = config_qcolor(config["colors"]["date"]);
+    date_text_color = config_qcolor(config["colors"]["date_text"]);
     date_font = config["colors"]["date_font"].as<std::string>().c_str();
 
     QString animate = config["window"]["animate"].as<std::string>().c_str();
@@ -107,7 +107,11 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw day number at 15:00 o'clock
     if (date_background_color.isValid()) {
-        QRect rect(80, -10, 20, 20);
+        int hour_marker = config["colors"]["date_position"].as<int>();
+        int angle = hour_marker * 30 - 30*3;
+        int x = 80 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
+        int y = 80 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
+        QRect rect(x - 10, y - 10, 20, 20); // Center the rectangle around the hour marker
         QString today = QDateTime::currentDateTime().toString("dd");
 
         QFont font = painter.font();
@@ -119,7 +123,7 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         painter.setBrush(date_background_color);
         painter.drawRoundedRect(rect, 5, 5);
         painter.setFont(font);
-        painter.setPen(QPen(date_color, 1));
+        painter.setPen(QPen(date_text_color, 1));
         painter.drawText(rect, Qt::AlignCenter, today);
         painter.restore();
     }
