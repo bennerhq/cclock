@@ -31,7 +31,7 @@ window:
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window
-  x: 20                       # X position of the window
-  y: 20                       # Y position of the window
+  x: -210                     # X position of the window
+  y: -210                     # Y position of the window
   width: 200                  # Width of the window
   height: 200                 # Height of the window
