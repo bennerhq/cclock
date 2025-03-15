@@ -13,6 +13,8 @@
 
 #include <QFileInfo>
 #include <QTextStream>
+#include <QString>
+#include <iostream>
 #include "h/ConfigYAML.h"
 
 YAML::Node config;
@@ -20,6 +22,55 @@ YAML::Node config;
 YAML::Node default_config = YAML::Load(
     #include "h/ConfigDefault.h"
 );
+
+enum class YamlNodeType {
+    Null,
+    String,
+    Bool,
+    Double,
+    Scalar,
+    Sequence,
+    Map,
+    Undefined
+};
+
+YamlNodeType get_yaml_node_type(const YAML::Node& node) {
+    switch (node.Type()) {
+        case YAML::NodeType::Null:
+            return YamlNodeType::Null;
+
+        case YAML::NodeType::Scalar:
+            if (node.IsScalar()) {
+                try {
+                    node.as<double>();
+                    return YamlNodeType::Double;
+                } catch (...) {
+                    try {
+                        node.as<bool>();
+                        return YamlNodeType::Bool;
+                    } catch (...) {
+                        try {
+                            node.as<std::string>();
+                            return YamlNodeType::String;
+                        } catch (...) {
+                            return YamlNodeType::Scalar;
+                        }
+                    }
+                }
+            }
+            return YamlNodeType::Scalar;
+
+        case YAML::NodeType::Sequence:
+            return YamlNodeType::Sequence;
+
+        case YAML::NodeType::Map:
+            return YamlNodeType::Map;
+
+        case YAML::NodeType::Undefined:
+        default:
+            return YamlNodeType::Undefined;
+    }
+}
 
 YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& config) {
     YAML::Node merged_config = default_config;
@@ -29,6 +80,13 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
             if (default_config[key].IsMap() && config[key].IsMap()) {
                 merged_config[key] = config_merge(default_config[key], config[key]);
             } else {
+                YamlNodeType left = get_yaml_node_type(default_config[key]);
+                YamlNodeType right = get_yaml_node_type(config[key]);
+                if (left != right) {
+                    std::cerr << "*** Error: Incompatible types for key '" << key << "'" << std::endl;
+                    exit(-1);
+                }
+
                 merged_config[key] = config[key]; // Overwrite
             }
         } else {

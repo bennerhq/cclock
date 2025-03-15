@@ -27,7 +27,7 @@ colors:
 # ----
 # The section 'window:' contains the window settings of the clock
 window:
-  animate: float              # Animation type for the window
+  animate: float              # Animation type for the second hand; float or tick
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window

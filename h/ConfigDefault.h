@@ -20,7 +20,7 @@ colors:
   dial_frame: "none"          # Color of the clock dial frame
 
   date_background: "#000000"  # Background color of the date display
-  date_position: 3            # Position of the date display; 1 to 12
+  date_position: 1            # Position of the date display; 1 to 12 o'clock
   date_text: "#FFFFFF"        # Color of the date text
   date_font: Courier New      # Font used for the date display
 
@@ -35,7 +35,7 @@ colors:
 # ----
 # The section 'window:' contains the window settings of the clock
 window:
-  animate: float              # Animation type for the window
+  animate: float              # Animation type for the second hand; float or tick
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window
