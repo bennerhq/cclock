@@ -19,9 +19,9 @@
 
 YAML::Node config;
 
-YAML::Node default_config = YAML::Load(
+YAML::Node default_config = YAML::Load(std::string(
     #include "h/ConfigDefault.h"
-);
+));
 
 enum class NodeType {
     Null,
