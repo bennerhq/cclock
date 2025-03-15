@@ -93,7 +93,8 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
                         << "'" << key << "' in yaml config file.\n"
                         << "           "
                         << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
-                        << " but is of type " << NodeTypeStr[static_cast<int>(right)]
+                        << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
+                        << "           Using default value: " << default_config[key]
                         << std::endl;
                 }
                 else {
