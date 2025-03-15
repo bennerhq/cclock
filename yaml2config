@@ -14,7 +14,7 @@
 
 input_file="./cclock.yaml"
 output_file="./h/ConfigDefault.h"
-include_file="./cpp/ConfigDefault.cpp"
+include_file="./cpp/ConfigYAML.cpp"
 script_name=$(basename "$0")
 
 # Check if the input file is newer than the output file

@@ -6,7 +6,7 @@
  *
  * By running ./yaml2config the content of this file is generate.
  *
- * This file is included in ./cpp/ConfigDefault.cpp
+ * This file is included in ./cpp/ConfigYAML.cpp
  */
 
 R"(
