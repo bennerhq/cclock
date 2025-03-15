@@ -67,8 +67,8 @@ void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {
     int y = config["window"]["y"].as<int>(); 
     if (y < 0) y = geometry.height() + y;
 
-    int width = (int) (config["window"]["width"].as<int>()/2) * 2 + 1;
-    int height = (int) (config["window"]["height"].as<int>()/2) * 2 + 1;
+    int width = config["window"]["width"].as<int>() | 1;
+    int height = config["window"]["height"].as<int>() | 1;
 
     setGeometry(x, y, width, height);
 }
