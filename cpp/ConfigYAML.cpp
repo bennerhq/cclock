@@ -34,7 +34,7 @@ enum class YamlNodeType {
     Undefined
 };
 
-YamlNodeType get_yaml_node_type(const YAML::Node& node) {
+YamlNodeType config_node_type(const YAML::Node& node) {
     switch (node.Type()) {
         case YAML::NodeType::Null:
             return YamlNodeType::Null;
@@ -80,8 +80,8 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
             if (default_config[key].IsMap() && config[key].IsMap()) {
                 merged_config[key] = config_merge(default_config[key], config[key]);
             } else {
-                YamlNodeType left = get_yaml_node_type(default_config[key]);
-                YamlNodeType right = get_yaml_node_type(config[key]);
+                YamlNodeType left = config_node_type(default_config[key]);
+                YamlNodeType right = config_node_type(config[key]);
                 if (left != right) {
                     std::cout
                         << "*** Error: Incompatible types for key "
