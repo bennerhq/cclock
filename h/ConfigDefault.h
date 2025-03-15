@@ -6,6 +6,9 @@
  * yaml2config the content of this file is generate.
  */
 
+#ifndef __H_CONFIGDEFAULT_H__
+#define __H_CONFIGDEFAULT_H__
+
 YAML::Node default_config = YAML::Load(std::string(R"(
 # ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
@@ -45,3 +48,5 @@ window:
   width: 200                  # Width of the window
   height: 200                 # Height of the window
 )"));
+
+#endif /* __H_CONFIGDEFAULT_H__ */

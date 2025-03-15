@@ -20,6 +20,9 @@ fi
 input_file="$1"
 output_file="$2"
 
+# Convert the output file name to uppercase and assign it to FIDO
+def_include=$(echo "__${output_file}__" | tr '[:lower:]' '[:upper:]' | tr '/' '_' | tr '.' '_')
+
 # Check if the input file is newer than the output file
 if [ "$input_file" -nt "$output_file" ]; 
 then
@@ -35,9 +38,14 @@ then
     echo " * $script_name the content of this file is generate." >> "$output_file"
     echo ' */' >> "$output_file"
     echo '' >> "$output_file"
+    echo "#ifndef $def_include" >> "$output_file"
+    echo "#define $def_include" >> "$output_file"
+    echo '' >> "$output_file"
     echo 'YAML::Node default_config = YAML::Load(std::string(R"(' >> "$output_file"
     echo "$content" >> "$output_file"
     echo ')"));' >> "$output_file"
+    echo '' >> "$output_file"
+    echo "#endif /* $def_include */" >> "$output_file"
 
     # Set the output file's timestamp to match the input file's timestamp
     touch -r "$input_file" "$output_file"
