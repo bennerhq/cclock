@@ -83,9 +83,9 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
                 YamlNodeType left = get_yaml_node_type(default_config[key]);
                 YamlNodeType right = get_yaml_node_type(config[key]);
                 if (left != right) {
-                    std::cout  
-                        << "*** Error: Incompatible types for key '"
-                        << key << "' in config file"
+                    std::cout
+                        << "*** Error: Incompatible types for key "
+                        << "'" << key << "' in config file"
                         << std::endl;
                 }
                 else {
