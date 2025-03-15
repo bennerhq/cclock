@@ -21,7 +21,7 @@ input_file="$1"
 output_file="$2"
 
 # Convert the output file name to uppercase and assign it to FIDO
-def_include=$(echo "__${output_file}__" | tr '[:lower:]' '[:upper:]' | tr '/' '_' | tr '.' '_')
+def_include=$(echo "${output_file}" | tr '[:lower:]' '[:upper:]' | tr '/' '_' | tr '.' '_')
 
 # Check if the input file is newer than the output file
 if [ "$input_file" -nt "$output_file" ]; 

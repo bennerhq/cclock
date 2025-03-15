@@ -6,8 +6,8 @@
  * yaml2config the content of this file is generate.
  */
 
-#ifndef __H_CONFIGDEFAULT_H__
-#define __H_CONFIGDEFAULT_H__
+#ifndef H_CONFIGDEFAULT_H
+#define H_CONFIGDEFAULT_H
 
 YAML::Node default_config = YAML::Load(std::string(R"(
 # ---------------------------------------------------------------------------
@@ -49,4 +49,4 @@ window:
   height: 200                 # Height of the window
 )"));
 
-#endif /* __H_CONFIGDEFAULT_H__ */
+#endif /* H_CONFIGDEFAULT_H */
