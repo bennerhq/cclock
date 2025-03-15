@@ -6,7 +6,7 @@
  * By running yaml2config the content of this file is generate.
  */
 
-R"(
+YAML::Node default_config = YAML::Load(std::string(R"(
 # ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
 # YAML format. The configuration file is used to set the appearance of the
@@ -44,4 +44,4 @@ window:
   y: -210                     # Y position of the window; positive for top, negative for bottom
   width: 200                  # Width of the window
   height: 200                 # Height of the window
-)"
+)"));

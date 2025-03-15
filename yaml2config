@@ -35,9 +35,9 @@ then
     echo " * By running $script_name the content of this file is generate." >> "$output_file"
     echo ' */' >> "$output_file"
     echo '' >> "$output_file"
-    echo 'R"(' >> "$output_file"
+    echo 'YAML::Node default_config = YAML::Load(std::string(R"(' >> "$output_file"
     echo "$content" >> "$output_file"
-    echo ')"' >> "$output_file"
+    echo ')"));' >> "$output_file"
 
     # Set the output file's timestamp to match the input file's timestamp
     touch -r "$input_file" "$output_file"
