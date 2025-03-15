@@ -1,16 +1,21 @@
 colors:
-  background: "#00FFFFFF"
-  dial: "#90FFFFFF"
+  background: "none"
+
+  dial: "#none"
+  dial_frame: "none"
+
   date_background: "#000000"
-  dial_frame: "#000000"
   date: "#FFFFFF"
   date_font: Courier New
+
   hour_mark: "#000000"
   minute_mark: "#000000"
+
   second_hand: "#FF0000"
   hour_hand: "#000000"
   minute_hand: "#000000"
   middle_dot: "#000000"
+
 window:
   animate: float
   frameless: true

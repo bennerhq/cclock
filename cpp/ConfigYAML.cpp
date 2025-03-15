@@ -12,7 +12,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <QFileInfo>
-
+#include <QTextStream>
 #include "h/ConfigYAML.h"
 
 YAML::Node config;
