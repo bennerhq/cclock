@@ -28,11 +28,11 @@ then
 
     # Write the content to the output file in the specified format
     echo '/*' > "$output_file"
-    echo " * This file is auto generated." >> "$output_file"
-    echo " * Don't edit, changes will be lost." >> "$output_file"
+    echo " * THIS FILE IS AUTO GENERATED!" >> "$output_file"
+    echo " * DON'T EDIT, CHANGES WILL BE LOST!" >> "$output_file"
     echo " *" >> "$output_file"
-    echo " * Edit $input_file to change the content of this file." >> "$output_file"
-    echo " * By running $script_name the content of this file is generate." >> "$output_file"
+    echo " * Edit $input_file to change the content of this file. By running" >> "$output_file"
+    echo " * $script_name the content of this file is generate." >> "$output_file"
     echo ' */' >> "$output_file"
     echo '' >> "$output_file"
     echo 'YAML::Node default_config = YAML::Load(std::string(R"(' >> "$output_file"

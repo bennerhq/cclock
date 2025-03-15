@@ -1,9 +1,9 @@
 /*
- * This file is auto generated.
- * Don't edit, changes will be lost.
+ * THIS FILE IS AUTO GENERATED!
+ * DON'T EDIT, CHANGES WILL BE LOST!
  *
- * Edit cclock.yaml to change the content of this file.
- * By running yaml2config the content of this file is generate.
+ * Edit cclock.yaml to change the content of this file. By running
+ * yaml2config the content of this file is generate.
  */
 
 YAML::Node default_config = YAML::Load(std::string(R"(
