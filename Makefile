@@ -20,7 +20,8 @@ SOURCES = \
 HEADERS = \
 	h/ClockWidget.h \
 	h/ClockWindow.h \
-	h/ConfigYAML.h
+	h/ConfigYAML.h \
+	h/ConfigDefault.h
 
 OBJECTS_DIR = \
 	./obj/
@@ -82,12 +83,9 @@ OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
 MOC_SOURCES = $(addprefix $(OBJECTS_DIR), $(notdir $(HEADERS:.h=.moc.cpp)))
 MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
-all: yaml2config $(TARGET)
+all: $(TARGET)
 
-yaml2config: h/ConfigDefault.txt
-	./yaml2config
-
-h/ConfigDefault.txt: cclock.yaml
+h/ConfigDefault.h: cclock.yaml
 	./yaml2config
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
@@ -109,7 +107,7 @@ $(OBJECTS_DIR)%.moc.cpp: h/%.h
 	moc $< -o $@
 
 clean:
-	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET) h/ConfigDefault.txt
+	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET) h/ConfigDefault.h
 
 mocables: \
 	$(MOC_SOURCES)

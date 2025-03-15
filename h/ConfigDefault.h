@@ -32,7 +32,7 @@ colors:
   middle_dot: "#000000"       # Color of the middle dot
 
 # ----
-# This section 'window:' contains the window settings for the clock
+# The section 'window:' contains the window settings of the clock
 window:
   animate: float              # Animation type for the window
   frameless: true             # Whether the window is frameless

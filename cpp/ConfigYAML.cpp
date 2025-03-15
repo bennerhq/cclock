@@ -18,7 +18,7 @@
 YAML::Node config;
 
 YAML::Node default_config = YAML::Load(
-    #include "h/ConfigDefault.txt"
+    #include "h/ConfigDefault.h"
 );
 
 YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& config) {
