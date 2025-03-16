@@ -12,9 +12,8 @@ Github Co-pilot is the lead programmer!
 
 ## Features
 
-- Easy-to-use command-line interface
-- Lightweight and fast
-- Clock colors can be customized in .yaml file
+- Easy-to-use command-line interface - just a analog clock!
+- Clock behavior, design and colors can be customized in .yaml file
 
 ## Installation
 
@@ -72,13 +71,11 @@ window:
 
 ```
 
-You can modify the colors and sizes to suit your preferences.
-
 ## Usage
 
 ```console
 # ./cclock --help
-Usage: ./cclock [options] config
+Usage: ./cclock [options] [config]
 Displayes an analog clock. The clock can be configured using a YAML file.
 
 Options:
