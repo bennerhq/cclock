@@ -14,16 +14,16 @@ Github Co-pilot is the lead programmer!
 
 - Easy-to-use command-line interface
 - Lightweight and fast
-- Clock colors can be customized in .yaml file
+- Clock behavior, design and colors can be customized in .yaml file
 
 ## Installation
 
 To install `cclock`, clone the repository and build the project:
 
-```bash
-git clone https://github.com/bennerhq/cclock.git
-cd cclock
-make all
+```console
+# git clone https://github.com/bennerhq/cclock.git
+# cd cclock
+# make all
 ```
 
 ## yaml configuration file
@@ -32,7 +32,6 @@ The `cclock` tool uses a `.yaml` configuration file to customize the
 appearance of the clock. Below is an example configuration file:
 
 ```yaml
-
 # ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
 # YAML format. The configuration file is used to set the appearance of the
@@ -77,10 +76,23 @@ You can modify the colors and sizes to suit your preferences.
 
 ## Usage
 
-Run `cclock` with the desired yaml config file
+```console
+# ./cclock --help
+Usage: ./cclock [options] [config.yaml]
+Displayes an analog clock. The clock can be configured using a YAML file.
 
-```bash
-./cclock ./cclock.yaml
+Options:
+  -h, --help              Displays help on commandline options.
+  --help-all              Displays help, including generic Qt options.
+  -c, --config <config>   Path to the configuration file.
+  -d, --default <config>  Save default configuration to a file.
+  -s, --save <config>     Save config file, If 'config' same as loaded config.
+  -v, --verbose           Show config file path.
+
+Arguments:
+  config                  Path to the configuration file.
+
+#./cclock ./cclock.yaml
 ```
 
 ## TO-DO
@@ -97,7 +109,6 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 This project is licensed under the "Beerware" software license.
 
 ```bash
-
 # ----------------------------------------------------------------------------
 # "THE BEER-WARE LICENSE" (Revision 43):
 #
