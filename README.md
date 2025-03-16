@@ -1,4 +1,4 @@
-# Widget Clock written in C++/Qt
+# Analog Clock written in C++/Qt
 
 ## Overview
 
