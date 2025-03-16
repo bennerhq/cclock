@@ -9,12 +9,12 @@
 // /benner
 // ----------------------------------------------------------------------------
 
-#include <yaml-cpp/yaml.h>
-
+#include <iostream>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QString>
-#include <iostream>
+#include <QFile>
+#include <yaml-cpp/yaml.h>
 #include "h/ConfigYAML.h"
 #include "h/ConfigDefault.h"
 
@@ -131,6 +131,11 @@ bool config_load(const QString& yaml_filename) {
 
 bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {
     try {
+        QFileInfo fileInfo(yaml_filename);
+        if (fileInfo.isFile()) {
+            return false;
+        }
+
         QFile file(yaml_filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
@@ -138,9 +143,9 @@ bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {
             file.close();
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     } catch (const std::exception& e) {
         return false;
     }
@@ -162,4 +167,30 @@ QColor config_qcolor(const YAML::Node& node) {
     }
 
     return QColor(color.c_str());
+}
+
+QSvgRenderer* config_svg(YAML::Node config) {
+    QString svg_str = config.as<std::string>().c_str();
+    if (svg_str == "null" || svg_str == "none" || svg_str == "") {
+        return nullptr;
+    }
+
+    QByteArray svg_byte;
+    QFile file(svg_str);
+    if (file.open(QIODevice::ReadOnly)) {
+        svg_byte = file.readAll();
+        file.close();
+    }
+    else {
+        svg_byte = svg_str.toUtf8();
+    }
+
+    QSvgRenderer* renderer = new QSvgRenderer();
+    try {
+        renderer->load(svg_byte);
+        return renderer;
+    } catch (...) {
+        delete renderer;
+        return nullptr;
+    }
 }

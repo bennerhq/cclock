@@ -15,6 +15,7 @@
 #include <QWidget>
 #include <QColor>
 #include <QPainter>
+#include <QSvgRenderer>
 
 class ClockWidget : public QWidget {
     Q_OBJECT
@@ -32,14 +33,14 @@ private:
     QColor dial_frame_color;
     QColor hour_mark_color;
     QColor minute_mark_color;
-    QColor hour_hand_color;
-    QColor minute_hand_color;
-    QColor second_hand_color;
-    QColor middle_dot_color;
     QColor date_background_color;
     QColor date_text_color;
     int date_position;
     QString date_font;
+
+    QSvgRenderer* hourHandRenderer;
+    QSvgRenderer* minuteHandRenderer;
+    QSvgRenderer* secondHandRenderer; 
 };
 
 #endif // CLOCKWIDGET_H

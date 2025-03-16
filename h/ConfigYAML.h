@@ -15,6 +15,7 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 #include <QColor>
+#include <QSvgRenderer>
 
 extern YAML::Node config;
 
@@ -23,5 +24,6 @@ bool config_save(const QString& yaml_filename);
 bool config_save_default(const QString& yaml_filename);
 
 QColor config_qcolor(const YAML::Node& node);
+QSvgRenderer* config_svg(YAML::Node config);
 
 #endif // CONFIG_UTILS_H

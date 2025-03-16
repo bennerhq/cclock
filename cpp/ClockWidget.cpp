@@ -31,20 +31,16 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     dial_frame_color = config_qcolor(config["colors"]["dial_frame"]);
     hour_mark_color = config_qcolor(config["colors"]["hour_mark"]);
     minute_mark_color = config_qcolor(config["colors"]["minute_mark"]);
-    hour_hand_color = config_qcolor(config["colors"]["hour_hand"]);
-    minute_hand_color = config_qcolor(config["colors"]["minute_hand"]);
-    second_hand_color = config_qcolor(config["colors"]["second_hand"]);
-    middle_dot_color = config_qcolor(config["colors"]["middle_dot"]);
     date_background_color = config_qcolor(config["colors"]["date_background"]);
     date_text_color = config_qcolor(config["colors"]["date_text"]);
     date_font = config["colors"]["date_font"].as<std::string>().c_str();
 
-    QString animate = config["window"]["animate"].as<std::string>().c_str();
-    if (animate == "float") {
-        timer->start(100);  // Update every 100 milliseconds
-    } else {
-        timer->start(1000); // Update every second
-    }
+    hourHandRenderer = config_svg(config["hands"]["hour"]);
+    minuteHandRenderer = config_svg(config["hands"]["minute"]);
+    secondHandRenderer = config_svg(config["hands"]["second"]);
+
+    int animate_msecs = config["hands"]["animate_msecs"].as<int>();
+    timer->start(animate_msecs);
 }
 
 void ClockWidget::paintEvent(QPaintEvent*) {
@@ -130,45 +126,38 @@ void ClockWidget::paintEvent(QPaintEvent*) {
     }
 
     // Draw hour hand
-    if (hour_hand_color.isValid()) {
-        QPen hour_hand_pen(hour_hand_color, 6, Qt::SolidLine, Qt::RoundCap);
-
+    if (hourHandRenderer != nullptr) {
         painter.save();
-        painter.setPen(hour_hand_pen);
+
         painter.rotate(30 * (current_time.hour() + current_time.minute() / 60.0));
-        painter.drawLine(0, 0, 0, -50);
+        QSize hourHandSize = hourHandRenderer->defaultSize();
+        QRectF hourHandRect(-hourHandSize.width() / 2, -hourHandSize.height(), hourHandSize.width(), hourHandSize.height());
+        hourHandRenderer->render(&painter, hourHandRect);
+
         painter.restore();
     }
 
     // Draw minute hand
-    if (minute_hand_color.isValid()) {
-        QPen minute_hand_pen(minute_hand_color, 4, Qt::SolidLine, Qt::RoundCap);
-
+    if (minuteHandRenderer != nullptr) {
         painter.save();
-        painter.setPen(minute_hand_pen);
+
         painter.rotate(6 * (current_time.minute() + current_time.second() / 60.0));
-        painter.drawLine(0, 0, 0, -70);
+        QSize minuteHandSize = minuteHandRenderer->defaultSize();
+        QRectF minuteHandRect(-minuteHandSize.width() / 2, -minuteHandSize.height(), minuteHandSize.width(), minuteHandSize.height());
+        minuteHandRenderer->render(&painter, minuteHandRect);
+
         painter.restore();
     }
 
     // Draw second hand
-    if (second_hand_color.isValid()) {
-        qreal seconds_with_fraction = current_time.second() + current_time.msec() / 1000.0;
-        QPen second_hand_pen(second_hand_color, 2, Qt::SolidLine, Qt::RoundCap);
-
+    if (secondHandRenderer != nullptr) {
         painter.save();
-        painter.setPen(second_hand_pen);
-        painter.rotate(6 * seconds_with_fraction);
-        painter.drawLine(0, 0, 0, -90);
-        painter.restore();
-    }
 
-    // Draw center circle on top of all hands
-    if (middle_dot_color.isValid()) {
-        painter.save();
-        painter.setBrush(middle_dot_color);
-        painter.setPen(Qt::NoPen);
-        painter.drawEllipse(-5, -5, 10, 10);
+        painter.rotate(6 * (current_time.second() + current_time.msec() / 1000.0));  
+        QSize secondHandSize = secondHandRenderer->defaultSize();
+        QRectF secondHandRect(-secondHandSize.width() / 2, -secondHandSize.height(), secondHandSize.width(), secondHandSize.height());
+        secondHandRenderer->render(&painter, secondHandRect);
+
         painter.restore();
     }
 }

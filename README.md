@@ -38,6 +38,27 @@ appearance of the clock. Below is the default configuration file:
 # clock window and the behavior of the application.
 
 # ----
+# The section 'hands:' contains the svg drawings for the hands
+hands:
+  animate_msecs: 100          # Update clock every "animate_msecs" milliseconds
+
+  hour: |
+    <svg width="5" height="50" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="5" height="50" fill="#000000" rx="2" ry="2"/>
+    </svg>
+
+  minute: |
+    <svg width="3" height="70" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="3" height="70" fill="#000000" rx="2" ry="2"/>
+    </svg>
+
+  second: |
+    <svg width="10" height="90" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="0" width="2" height="90" fill="#FF0000" rx="2" ry="2"/>
+      <circle cx="5" cy="90" r="5" fill="#000000"/>
+    </svg>
+
+# ----
 # The section 'clock:' contains the colors of the clock.
 colors:
   background: none            # Background color of the clock window
@@ -48,20 +69,14 @@ colors:
   date_background: "#000000"  # Background color of the date display
   date_position: 3            # Position of the date display; 1 to 12 o'clock
   date_text: "#FFFFFF"        # Color of the date text
-  date_font: Courier New      # Font used for the date display
+  date_font: "Courier New"    # Font used for the date display
 
   hour_mark: "#000000"        # Color of the hour marks on the clock
   minute_mark: "#000000"      # Color of the minute marks on the clock
 
-  second_hand: "#FF0000"      # Color of the second hand
-  hour_hand: "#000000"        # Color of the hour hand
-  minute_hand: "#000000"      # Color of the minute hand
-  middle_dot: "#000000"       # Color of the middle dot
-
 # ----
 # The section 'window:' contains the window settings of the clock
 window:
-  animate: float              # Animation type for the second hand; float or tick
   frameless: true             # Whether the window is frameless
   always_on_top: true         # Whether the window is always on top
   tool: true                  # Whether the window is a tool window
@@ -69,7 +84,6 @@ window:
   y: -210                     # Y position of the window; positive for top, negative for bottom
   width: 200                  # Width of the window
   height: 200                 # Height of the window
-
 ```
 
 ## Usage
@@ -94,7 +108,7 @@ Arguments:
 
 ## TO-DO
 
-- Use SVG to decorate clock; hands, backgrund, etc
+- Use SVG to decorate dial
 - MacOS: Clock always onto (bug)
 
 ## Contributing
