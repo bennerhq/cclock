@@ -15,7 +15,7 @@ Github Co-pilot is the lead programmer!
 - Easy-to-use command-line interface - just a analog clock!
 - Clock behavior, design and colors can be customized in .yaml file
 
-## Installation
+## Compile & run
 
 To install `cclock`, clone the repository and build the project:
 
