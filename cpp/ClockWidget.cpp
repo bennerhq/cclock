@@ -127,39 +127,24 @@ void ClockWidget::paintEvent(QPaintEvent*) {
         painter.restore();
     }
 
-    // Draw hour hand
-    if (hourHandRenderer != nullptr) {
-        painter.save();
+    paintHand(&painter, hourHandRenderer, 30 * (current_time.hour() + current_time.minute() / 60.0));
+    paintHand(&painter, minuteHandRenderer, 6 * (current_time.minute() + current_time.second() / 60.0));
+    paintHand(&painter, secondHandRenderer, 6 * (current_time.second() + current_time.msec() / 1000.0));
+}
 
-        painter.rotate(30 * (current_time.hour() + current_time.minute() / 60.0));
-        QSize hourHandSize = hourHandRenderer->defaultSize();
-        QRectF hourHandRect(-hourHandSize.width() / 2, -hourHandSize.height(), hourHandSize.width(), hourHandSize.height());
-        hourHandRenderer->render(&painter, hourHandRect);
-
-        painter.restore();
+void ClockWidget::paintHand(QPainter* painter, QSvgRenderer* renderer, int angle) {
+    if (renderer == nullptr) {
+        return;
     }
 
-    // Draw minute hand
-    if (minuteHandRenderer != nullptr) {
-        painter.save();
+    QSize size = renderer->defaultSize();
+    QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
+    QRect rect = rectF.toRect();
 
-        painter.rotate(6 * (current_time.minute() + current_time.second() / 60.0));
-        QSize minuteHandSize = minuteHandRenderer->defaultSize();
-        QRectF minuteHandRect(-minuteHandSize.width() / 2, -minuteHandSize.height(), minuteHandSize.width(), minuteHandSize.height());
-        minuteHandRenderer->render(&painter, minuteHandRect);
+    painter->save();
 
-        painter.restore();
-    }
+    painter->rotate(angle);
+    renderer->render(painter, rect);
 
-    // Draw second hand
-    if (secondHandRenderer != nullptr) {
-        painter.save();
-
-        painter.rotate(6 * (current_time.second() + current_time.msec() / 1000.0));  
-        QSize secondHandSize = secondHandRenderer->defaultSize();
-        QRectF secondHandRect(-secondHandSize.width() / 2, -secondHandSize.height(), secondHandSize.width(), secondHandSize.height());
-        secondHandRenderer->render(&painter, secondHandRect);
-
-        painter.restore();
-    }
+    painter->restore();
 }

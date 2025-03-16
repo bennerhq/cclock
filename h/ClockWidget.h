@@ -41,6 +41,8 @@ private:
     QSvgRenderer* hourHandRenderer;
     QSvgRenderer* minuteHandRenderer;
     QSvgRenderer* secondHandRenderer; 
+
+    void paintHand(QPainter* painter, QSvgRenderer* renderer, int angle);
 };
 
 #endif // CLOCKWIDGET_H
