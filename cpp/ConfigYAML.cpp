@@ -188,6 +188,7 @@ QSvgRenderer* config_svg(YAML::Node config) {
     QSvgRenderer* renderer = new QSvgRenderer();
     try {
         renderer->load(svg_byte);
+
         return renderer;
     } catch (...) {
         delete renderer;
