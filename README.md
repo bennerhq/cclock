@@ -23,6 +23,7 @@ To install `cclock`, clone the repository and build the project:
 # git clone https://github.com/bennerhq/cclock.git
 # cd cclock
 # make all
+# ./cclock
 ```
 
 ## yaml configuration file
