@@ -83,6 +83,12 @@ Run `cclock` with the desired yaml config file
 ./cclock ./cclock.yaml
 ```
 
+## TO-DO
+
+- Use SVG to decorate clock; hands, backgrund, etc
+- MacOS: Clock always onto (bug)
+- 
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request.
