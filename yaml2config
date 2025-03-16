@@ -12,7 +12,8 @@
 
 # This script reads the content of a YAML file and writes it to a C++ header
 script_name=$(basename "$0")
-if [ $# -lt 2 ]; then
+if [ $# -lt 2 ]; 
+then
     echo "Usage: $script_name <input_file> <output_file>"
     exit 1
 fi
