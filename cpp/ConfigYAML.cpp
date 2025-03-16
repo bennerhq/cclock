@@ -81,30 +81,33 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
     YAML::Node merged_config = default_config;
     for (const auto& entry : config) {
         const std::string& key = entry.first.as<std::string>();
-        if (default_config[key]) {
-            if (default_config[key].IsMap() && config[key].IsMap()) {
-                merged_config[key] = config_merge(default_config[key], config[key]);
-            } else {
-                NodeType left = config_node_type(default_config[key]);
-                NodeType right = config_node_type(config[key]);
-                if (left != right) {
-                    std::cout
-                        << "*** Error: Incompatible types for key "
-                        << "'" << key << "' in yaml config file.\n"
-                        << "           "
-                        << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
-                        << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
-                        << "           Using default value: " << default_config[key]
-                        << std::endl;
 
-                        merged_config[key] = default_config[key]; // Overwrite
-                }
-                else {
-                    merged_config[key] = config[key]; // Overwrite
-                }
-            }
-        } else {
+        if (!default_config[key]) {
             merged_config[key] = config[key]; // New key value pair
+            continue;
+        }
+
+        if (default_config[key].IsMap() && config[key].IsMap()) {
+            merged_config[key] = config_merge(default_config[key], config[key]);
+            continue;
+        }
+
+        NodeType left = config_node_type(default_config[key]);
+        NodeType right = config_node_type(config[key]);
+        if (left != right) {
+            std::cout
+                << "*** Error: Incompatible types for key "
+                << "'" << key << "' in yaml config file.\n"
+                << "           "
+                << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
+                << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
+                << "           Using default value: " << default_config[key]
+                << std::endl;
+
+                merged_config[key] = default_config[key]; // Overwrite
+        }
+        else {
+            merged_config[key] = config[key]; // Overwrite
         }
     }
     return merged_config;
