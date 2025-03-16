@@ -29,7 +29,7 @@ To install `cclock`, clone the repository and build the project:
 ## yaml configuration file
 
 The `cclock` tool uses a `.yaml` configuration file to customize the
-appearance of the clock. Below is an example configuration file:
+appearance of the clock. Below is the default configuration file:
 
 ```yaml
 # ---------------------------------------------------------------------------
