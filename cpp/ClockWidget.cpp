@@ -29,8 +29,10 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
 
     dial_color = config_qcolor(config["colors"]["dial"]);
     dial_frame_color = config_qcolor(config["colors"]["dial_frame"]);
+
     hour_mark_color = config_qcolor(config["colors"]["hour_mark"]);
     minute_mark_color = config_qcolor(config["colors"]["minute_mark"]);
+
     date_background_color = config_qcolor(config["colors"]["date_background"]);
     date_text_color = config_qcolor(config["colors"]["date_text"]);
     date_font = config["colors"]["date_font"].as<std::string>().c_str();
