@@ -96,6 +96,8 @@ YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& conf
                         << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
                         << "           Using default value: " << default_config[key]
                         << std::endl;
+
+                        merged_config[key] = default_config[key]; // Overwrite
                 }
                 else {
                     merged_config[key] = config[key]; // Overwrite
