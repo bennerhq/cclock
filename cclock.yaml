@@ -48,7 +48,7 @@ hands:
 # The section 'date:' contains the settings for the date display
 date:
   position: 3                         # Position of the date display; 1 to 12 o'clock
-  backgroud_color: "${farver.base}"    # Background color of the date display
+  backgroud_color: "${farver.base}"   # Background color of the date display
   text_color: "${farver.text}"        # Color of the date text
   font: "Courier New"                 # Font used for the date display
 
