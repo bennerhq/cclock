@@ -160,7 +160,7 @@ bool config_save_default(const QString& yaml_filename) {
     return config_save_yaml(yaml_filename, default_config);
 }
 
-QString config_find_string(const QString& key) {
+QString config_find_key(const QString& key) {
     YAML::Node node = YAML::Clone(config); // FIXME: ??
     QStringList tokens = key.split('.');
     for (const QString& token : tokens) {
@@ -178,7 +178,7 @@ QString config_find_string(const QString& key) {
     }
 }
 
-QString config_replace(QString str) {
+QString config_get_string(QString str) {
     if (str == "transparent" || str == "none" || str == "null" || str == "") {
         return "";
     }
@@ -189,7 +189,7 @@ QString config_replace(QString str) {
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         QString key = match.captured(1);
-        QString replacement = config_find_string(key);
+        QString replacement = config_find_key(key);
 
         str.replace(match.capturedStart(0), match.capturedLength(0), replacement);
     }
@@ -199,7 +199,7 @@ QString config_replace(QString str) {
 
 QColor config_qcolor(const YAML::Node& node) {
     QString color = node.as<std::string>().c_str();
-    color = config_replace(color);
+    color = config_get_string(color);
     return QColor(color);
 }
 
@@ -211,7 +211,7 @@ QSvgRenderer* config_svg(YAML::Node config) {
         file.close();
     }
 
-    svg_str = config_replace(svg_str);
+    svg_str = config_get_string(svg_str);
     if (svg_str == "") {
         return nullptr;
     } 

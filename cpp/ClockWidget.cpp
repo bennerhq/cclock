@@ -106,7 +106,7 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw day number at 15:00 o'clock
     if (date_background_color.isValid()) {
-        int hour_marker = config["colors"]["date_position"].as<int>();
+        int hour_marker = config["decorate"]["date_position"].as<int>();
         int angle = 30*(hour_marker - 3); // ?
         int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
         int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));

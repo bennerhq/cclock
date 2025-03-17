@@ -15,10 +15,13 @@ YAML::Node default_config = YAML::Load(std::string(R"(
 # YAML format. The configuration file is used to set the appearance of the
 # clock window and the behavior of the application.
 
+# ---
+# The section 'farver:' contains the colors used in the clock
 farver:
   base: "#000000"
   highlight: "#FF0000"
   text: "#FFFFFF"
+  transparent: "#10FFFFFF"
 
 # ----
 # The section 'hands:' contains the svg drawings for the hands
@@ -42,12 +45,12 @@ hands:
     </svg>
 
 # ----
-# The section 'clock:' contains the colors of the clock.
+# The section 'clock:' contains the decoration of the clock.
 decorate:
   background: none                    # Background color of the clock window
 
   dial_frame: none                    # Color of the clock dial frame
-  dial: "#10FFFFFF"                   # Color of the clock dial
+  dial: "${farver.transparent}"       # Color of the clock dial
 
   date_background: "${farver.base}"   # Background color of the date display
   date_position: 3                    # Position of the date display; 1 to 12 o'clock
