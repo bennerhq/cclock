@@ -207,7 +207,7 @@ QColor config_qcolor(const YAML::Node& node) {
 
 QSvgRenderer* config_svg(YAML::Node config) {
     QString svg_str = config.as<std::string>().c_str();
-    if (svg_str.startsWith("$_")) {
+    if (svg_str.startsWith("$:")) {
         svg_str.remove(0, 2);
         QFile file(svg_str);
         if (file.open(QIODevice::ReadOnly)) {

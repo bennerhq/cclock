@@ -31,13 +31,14 @@ then
     content=$(<"$input_file")
 
     # Replace strings of format $_filename with the content of the file "filename"
-    while [[ "$content" =~ \$_([a-zA-Z0-9_/.-]+) ]]; do
+    while [[ "$content" =~ \$:([a-zA-Z0-9_/.-]+) ]]; do
         filename="${BASH_REMATCH[1]}"
         if [ -f "$filename" ]; 
         then
             file_content=$(<"$filename")
             file_content=$(echo "$file_content" | tr -d '\n')
-            content="${content//\$_$filename/$file_content}"
+            file_content=$(echo "$file_content" | tr -s ' ' | sed 's/  / /g')
+            content="${content//\$:$filename/$file_content}"
         else
             echo "Error: File $filename not found."
             exit 1
