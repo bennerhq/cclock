@@ -62,17 +62,17 @@ window:
 hands:
   animate_msecs: 50                   # Update clock every "animate_msecs" milliseconds
 
-  hour: |                             # $_image/hour-hand.svg
+  hour: |                             # image/hour-hand.svg
     <svg width="5" height="50" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="5" height="50" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  minute: |                           # $_image/minute-hand.svg
+  minute: |                           # image/minute-hand.svg
     <svg width="3" height="70" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="3" height="70" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  second: |                           # $_image/second-hand.svg
+  second: |                           # image/second-hand.svg
     <svg width="10" height="90" xmlns="http://www.w3.org/2000/svg">
         <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2" />
         <circle cx="5" cy="90" r="5" fill="${farver.base}" />
@@ -95,7 +95,7 @@ dial:
   hour_mark_color: none               # Color of the hour marks on the clock
   minute_mark_color: none             # Color of the minute marks on the clock
 
-  decorate: $_image/clock-dial.svg    # SVG drawing for the clock dial, read from file
+  decorate: $:image/clock-dial.svg    # SVG drawing for the clock dial, read from file
 ```
 
 ## Usage
