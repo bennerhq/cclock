@@ -60,22 +60,22 @@ window:
 # ----
 # The section 'hands:' contains the svg drawings for the hands
 hands:
-  animate_msecs: 50          # Update clock every "animate_msecs" milliseconds
+  animate_msecs: 50                   # Update clock every "animate_msecs" milliseconds
 
-  hour: |
+  hour: |                             #  $_decorate/hour-hand.svg
     <svg width="5" height="50" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="5" height="50" fill="${farver.base}" rx="2" ry="2"/>
+        <rect x="0" y="0" width="5" height="50" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  minute: |
+  minute: |                           # $_decorate/minute-hand.svg
     <svg width="3" height="70" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="3" height="70" fill="${farver.base}" rx="2" ry="2"/>
+        <rect x="0" y="0" width="3" height="70" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  second: |
+  second: |                           #$_decorate/second-hand.svg
     <svg width="10" height="90" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2"/>
-      <circle cx="5" cy="90" r="5" fill="farver.base"/>
+        <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2" />
+        <circle cx="5" cy="90" r="5" fill="${farver.base}" />
     </svg>
 
 # ----
@@ -95,7 +95,8 @@ dial:
   hour_mark_color: none               # Color of the hour marks on the clock
   minute_mark_color: none             # Color of the minute marks on the clock
 
-  decorate: "dials/clock-dial.svg"    # Dial drawing in svg file
+  decorate: $_decorate/clock-dial.svg
+```
 
 ## Usage
 

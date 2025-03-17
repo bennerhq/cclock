@@ -185,13 +185,15 @@ QString config_get_string(QString str) {
 
     QRegularExpression regex("\\$\\{([^}]+)\\}");
     QRegularExpressionMatchIterator i = regex.globalMatch(str);
-
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         QString key = match.captured(1);
         QString replacement = config_find_key(key);
 
         str.replace(match.capturedStart(0), match.capturedLength(0), replacement);
+
+        QRegularExpression regex("\\$\\{([^}]+)\\}"); // ??
+        i = regex.globalMatch(str);
     }
 
     return str;
@@ -205,17 +207,24 @@ QColor config_qcolor(const YAML::Node& node) {
 
 QSvgRenderer* config_svg(YAML::Node config) {
     QString svg_str = config.as<std::string>().c_str();
-    QFile file(svg_str);
-    if (file.open(QIODevice::ReadOnly)) {
-        svg_str = file.readAll();
-        file.close();
+    if (svg_str.startsWith("$_")) {
+        svg_str.remove(0, 2);
+        QFile file(svg_str);
+        if (file.open(QIODevice::ReadOnly)) {
+            svg_str = file.readAll();
+            file.close();
+        }
+        else {
+            std::cout << "*** Error: Can't open file " << svg_str.toStdString() << std::endl;
+            return nullptr;
+        }
     }
 
     svg_str = config_get_string(svg_str);
     if (svg_str == "") {
         return nullptr;
     } 
-
+qDebug() << ">>>>>>" << svg_str;
     QSvgRenderer* renderer = new QSvgRenderer();
     try {
         QByteArray svg_byte = svg_str.toUtf8();

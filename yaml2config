@@ -30,6 +30,19 @@ then
     # Read the content of the input file
     content=$(<"$input_file")
 
+    # Replace strings of format $$filename with the content of the file "filename"
+    while [[ "$content" =~ \$\$([a-zA-Z0-9_/.-]+) ]]; do
+        filename="${BASH_REMATCH[1]}"
+        if [ -f "$filename" ]; then
+            file_content=$(<"$filename")
+            file_content=$(echo "$file_content" | tr -d '\n')
+            content="${content//\$\$_filename/$file_content}"
+        else
+            echo "Error: File $filename not found."
+            exit 1
+        fi
+    done
+
     # Write the content to the output file in the specified format
     echo '/*' > "$output_file"
     echo " * THIS FILE IS AUTO GENERATED!" >> "$output_file"
