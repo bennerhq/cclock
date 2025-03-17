@@ -27,15 +27,15 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dial_color = config_qcolor(config["colors"]["dial"]);
-    dial_frame_color = config_qcolor(config["colors"]["dial_frame"]);
+    dial_color = config_qcolor(config["decorate"]["dial"]);
+    dial_frame_color = config_qcolor(config["decorate"]["dial_frame"]);
 
-    hour_mark_color = config_qcolor(config["colors"]["hour_mark"]);
-    minute_mark_color = config_qcolor(config["colors"]["minute_mark"]);
+    hour_mark_color = config_qcolor(config["decorate"]["hour_mark"]);
+    minute_mark_color = config_qcolor(config["decorate"]["minute_mark"]);
 
-    date_background_color = config_qcolor(config["colors"]["date_background"]);
-    date_text_color = config_qcolor(config["colors"]["date_text"]);
-    date_font = config["colors"]["date_font"].as<std::string>().c_str();
+    date_background_color = config_qcolor(config["decorate"]["date_background"]);
+    date_text_color = config_qcolor(config["decorate"]["date_text"]);
+    date_font = config["decorate"]["date_font"].as<std::string>().c_str();
 
     hourHandRenderer = config_svg(config["hands"]["hour"]);
     minuteHandRenderer = config_svg(config["hands"]["minute"]);
@@ -106,8 +106,13 @@ void ClockWidget::paintEvent(QPaintEvent*) {
 
     // Draw day number at 15:00 o'clock
     if (date_background_color.isValid()) {
+<<<<<<< HEAD
         int hour_marker = config["colors"]["date_position"].as<int>();
         int angle = 30*(hour_marker - 3); // ?
+=======
+        int hour_marker = config["decorate"]["date_position"].as<int>();
+        int angle = hour_marker * 30 - 30*3; // ?
+>>>>>>> 5dda4e2 (Refactor color configuration in YAML and C++ files to use a centralized 'farver' section for better maintainability)
         int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
         int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
         QRect rect(x - 10, y - 10, 20, 20);

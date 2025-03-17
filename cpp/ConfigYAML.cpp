@@ -14,6 +14,7 @@
 #include <QTextStream>
 #include <QString>
 #include <QFile>
+#include <QRegularExpression>
 #include <yaml-cpp/yaml.h>
 #include "h/ConfigYAML.h"
 #include "h/ConfigDefault.h"
@@ -159,36 +160,66 @@ bool config_save_default(const QString& yaml_filename) {
     return config_save_yaml(yaml_filename, default_config);
 }
 
-QColor config_qcolor(const YAML::Node& node) {
-    std::string color = node.as<std::string>();
-
-    if (color == "transparent" || color == "none" || color == "null" || color == "") {
-        return QColor();
+QString config_find_string(const QString& key) {
+    YAML::Node node = YAML::Clone(config); // FIXME: ??
+    QStringList tokens = key.split('.');
+    for (const QString& token : tokens) {
+        if (node[token.toStdString()]) {
+            node = node[token.toStdString()];
+        } else {
+            return "";
+        }
     }
 
-    return QColor(color.c_str());
+    if (node) {
+        return QString::fromStdString(node.as<std::string>());
+    } else {
+        return "";
+    }
+}
+
+QString config_replace(QString str) {
+    if (str == "transparent" || str == "none" || str == "null" || str == "") {
+        return "";
+    }
+
+    QRegularExpression regex("\\$\\{([^}]+)\\}");
+    QRegularExpressionMatchIterator i = regex.globalMatch(str);
+
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        QString key = match.captured(1);
+        QString replacement = config_find_string(key);
+
+        str.replace(match.capturedStart(0), match.capturedLength(0), replacement);
+    }
+
+    return str;
+}
+
+QColor config_qcolor(const YAML::Node& node) {
+    QString color = node.as<std::string>().c_str();
+    color = config_replace(color);
+    return QColor(color);
 }
 
 QSvgRenderer* config_svg(YAML::Node config) {
     QString svg_str = config.as<std::string>().c_str();
-    if (svg_str == "null" || svg_str == "none" || svg_str == "") {
-        return nullptr;
-    }
-
-    QByteArray svg_byte;
     QFile file(svg_str);
     if (file.open(QIODevice::ReadOnly)) {
-        svg_byte = file.readAll();
+        svg_str = file.readAll();
         file.close();
     }
-    else {
-        svg_byte = svg_str.toUtf8();
-    }
+
+    svg_str = config_replace(svg_str);
+    if (svg_str == "") {
+        return nullptr;
+    } 
 
     QSvgRenderer* renderer = new QSvgRenderer();
     try {
+        QByteArray svg_byte = svg_str.toUtf8();
         renderer->load(svg_byte);
-
         return renderer;
     } catch (...) {
         delete renderer;
