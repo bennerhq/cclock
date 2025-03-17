@@ -29,7 +29,7 @@ protected:
 private:
     QTimer* timer;
 
-    QColor dial_color;
+    QColor dial_background_color;
     QColor dial_frame_color;
     QColor hour_mark_color;
     QColor minute_mark_color;
@@ -38,11 +38,14 @@ private:
     int date_position;
     QString date_font;
 
+    QSvgRenderer* dialRenderer;
     QSvgRenderer* hourHandRenderer;
     QSvgRenderer* minuteHandRenderer;
     QSvgRenderer* secondHandRenderer; 
 
     void paintHand(QPainter* painter, QSvgRenderer* renderer, int angle);
+    void paintClock(QPainter* painter);
+    void saveAsSvg(const QString& filePath);
 };
 
 #endif // CLOCKWIDGET_H
