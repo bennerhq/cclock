@@ -1,10 +1,10 @@
-/*
- * THIS FILE IS AUTO GENERATED!
- * DON'T EDIT, CHANGES WILL BE LOST!
- *
- * Edit cclock.yaml to change the content of this file. By running
- * yaml2config the content of this file is generate.
- */
+// -------------------------------------------------------------------------------------
+//                           !!! THIS FILE IS AUTO GENERATED !!!
+//                       !!! DON'T EDIT, ALL CHANGES WILL BE LOST !!!
+//
+// Edit cclock.yaml to change the content of this file. By running
+// yaml2config the content of this file is generate.
+// -------------------------------------------------------------------------------------
 
 #ifndef H_CONFIGDEFAULT_H
 #define H_CONFIGDEFAULT_H
