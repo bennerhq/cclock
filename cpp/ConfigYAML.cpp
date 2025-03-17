@@ -224,7 +224,7 @@ QSvgRenderer* config_svg(YAML::Node config) {
     if (svg_str == "") {
         return nullptr;
     } 
-qDebug() << ">>>>>>" << svg_str;
+
     QSvgRenderer* renderer = new QSvgRenderer();
     try {
         QByteArray svg_byte = svg_str.toUtf8();
