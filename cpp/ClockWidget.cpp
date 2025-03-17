@@ -77,6 +77,13 @@ void ClockWidget::paintClock(QPainter* painter) {
     painter->translate(center);
     painter->scale(radius / 100.0, radius / 100.0);
 
+    if (dialRenderer != nullptr) {
+        painter->save();
+        painter->translate(-100, -100);
+        dialRenderer->render(painter);
+        painter->restore();
+    }
+
     if (dial_background_color.isValid()) {
         painter->save();
         painter->setBrush(dial_background_color);
@@ -90,13 +97,6 @@ void ClockWidget::paintClock(QPainter* painter) {
         painter->setPen(QPen(dial_frame_color, 3));
         painter->setBrush(Qt::NoBrush);
         painter->drawEllipse(-99, -99, 198, 198);
-        painter->restore();
-    }
-
-    if (dialRenderer != nullptr) {
-        painter->save();
-        painter->translate(-100, -100);
-        dialRenderer->render(painter);
         painter->restore();
     }
 
