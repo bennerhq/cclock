@@ -35,7 +35,10 @@ then
         filename="${BASH_REMATCH[1]}"
         if [ -f "$filename" ]; 
         then
+            echo "$input_file: including $filename"
+
             file_content=$(<"$filename")
+            file_content=$(echo "$file_content" | sed 's/"/\\"/g')
             file_content=$(echo "$file_content" | tr -d '\n')
             file_content=$(echo "$file_content" | tr -s ' ' | sed 's/  / /g')
             content="${content//\$:$filename/$file_content}"
@@ -66,5 +69,5 @@ then
     # Set the output file's timestamp to match the input file's timestamp
     touch -r "$input_file" "$output_file"
 
-    echo "$input_file: content written to $output_file."
+    echo "$input_file: written to $output_file"
 fi
