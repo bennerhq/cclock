@@ -25,6 +25,48 @@
 
 YAML::Node config;
 
+class SvgClockPainter : public ClockPainter {
+private:
+    QSvgRenderer* renderer;
+public:
+    SvgClockPainter(QSvgRenderer* renderer) : renderer(renderer) {}
+
+    void paint(QPainter* painter, int angle) override {
+        if (renderer == nullptr) {
+            return;
+        }
+
+        QSize size = renderer->defaultSize();
+        QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
+        QRect rect = rectF.toRect();
+
+        painter->save();
+        painter->rotate(angle);
+        renderer->render(painter, rect);
+        painter->restore();
+    }
+};
+
+class BitmapClockPainter : public ClockPainter {
+private:
+    QImage* image;
+public:
+    BitmapClockPainter(QImage* image) : image(image) {}
+
+    void paint(QPainter* painter, int angle) override {
+        if (image == nullptr) {
+            return;
+        }
+
+        QRect rect(-image->width() / 2, -image->height() / 2, image->width(), image->height());
+
+        painter->save();
+        painter->rotate(angle);
+        painter->drawImage(rect, *image);
+        painter->restore();
+    }
+};
+
 enum class NodeType {
     Null,
     String,
@@ -213,50 +255,6 @@ QColor config_get_qcolor(const YAML::Node& node) {
     return QColor(color);
 }
 
-class SvgClockPainter : public ClockPainter {
-private:
-    QSvgRenderer* renderer;
-public:
-    SvgClockPainter(QSvgRenderer* renderer) : renderer(renderer) {}
-
-    void paint(QPainter* painter, int angle, int tx, int ty) override {
-        if (renderer == nullptr) {
-            return;
-        }
-
-        QSize size = renderer->defaultSize();
-        QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
-        QRect rect = rectF.toRect();
-
-        painter->save();
-        painter->rotate(angle);
-        painter->translate(tx, ty);
-        renderer->render(painter, rect);
-        painter->restore();
-    }
-};
-
-class BitmapClockPainter : public ClockPainter {
-private:
-    QImage* image;
-public:
-    BitmapClockPainter(QImage* image) : image(image) {}
-
-    void paint(QPainter* painter, int angle, int tx, int ty) override {
-        if (image == nullptr) {
-            return;
-        }
-
-        QRect rect(-image->width() / 2, -image->height() / 2, image->width(), image->height());
-
-        painter->save();
-        painter->rotate(angle);
-        painter->translate(tx, ty);
-        painter->drawImage(rect, *image);
-        painter->restore();
-    }
-};
-
 ClockPainter* config_get_image(YAML::Node config) {
     QString svg_str = config.as<std::string>().c_str();
 
@@ -276,6 +274,8 @@ ClockPainter* config_get_image(YAML::Node config) {
         else {
             QImage* image = new QImage(svg_str);
             if (image->isNull()) {
+                std::cout << "*** Error: Can't read image: " << svg_str >> << std::endl;
+
                 delete image;
                 return nullptr;
             }
@@ -295,7 +295,7 @@ ClockPainter* config_get_image(YAML::Node config) {
         QByteArray byteArray = QByteArray::fromBase64(base64Data.toUtf8());
         QImage* image = new QImage();
         if (!image->loadFromData(byteArray)) {
-            std::cout << "*** Error: Can't create image: " << base64Data.toStdString() << std::endl;
+            std::cout << "*** Error: Can't create image from base64 image" << std::endl;
 
             delete image;
             return nullptr;

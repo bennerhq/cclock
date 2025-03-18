@@ -16,7 +16,7 @@
 
 class ClockPainter {
 public:
-    virtual void paint(QPainter* painter, int angle, int tx=0, int ty=0) = 0;
+    virtual void paint(QPainter* painter, int angle) = 0;
 };
         
 #endif // CLOCKPAINTER_H
