@@ -30,18 +30,26 @@ then
     # Read the content of the input file
     content=$(<"$input_file")
 
-    # Replace strings of format $_filename with the content of the file "filename"
-    while [[ "$content" =~ \$:([a-zA-Z0-9_/.-]+) ]]; do
+    # Replace strings of format $:filename with the content of the file "filename"
+    while [[ "$content" =~ \$:([a-zA-Z0-9_/.-]+) ]]; 
+    do
         filename="${BASH_REMATCH[1]}"
         if [ -f "$filename" ]; 
         then
-            echo "$input_file: including $filename"
-
             file_content=$(<"$filename")
-            file_content=$(echo "$file_content" | sed 's/"/\\"/g')
-            file_content=$(echo "$file_content" | tr -d '\n')
-            file_content=$(echo "$file_content" | tr -s ' ' | sed 's/  / /g')
-            content="${content//\$:$filename/$file_content}"
+
+            if [[ "$filename" = *.svg ]]; 
+            then
+                file_content=$(echo "$file_content" | sed 's/"/\\"/g')
+                file_content=$(echo "$file_content" | tr -d '\n')
+                file_content=$(echo "$file_content" | tr -s ' ' | sed 's/  / /g')
+
+                content="${content//\$:$filename/$file_content}"
+            else
+                file_content=$(base64 -i "$filename")
+
+                content="${content//\$:$filename/data:image/${filename##*.};base64,$file_content}"
+            fi
         else
             echo "Error: File $filename not found."
             exit 1

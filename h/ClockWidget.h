@@ -12,10 +12,13 @@
 #ifndef CLOCKWIDGET_H
 #define CLOCKWIDGET_H
 
+#include <QVector>
 #include <QWidget>
 #include <QColor>
 #include <QPainter>
 #include <QSvgRenderer>
+
+#include "h/ClockPainter.h"
 
 class ClockWidget : public QWidget {
     Q_OBJECT
@@ -31,20 +34,28 @@ private:
 
     QColor dial_background_color;
     QColor dial_frame_color;
+
     QColor hour_mark_color;
     QColor minute_mark_color;
+
     QColor date_background_color;
     QColor date_text_color;
+
     int date_position;
     QString date_font;
 
-    QSvgRenderer* dialRenderer;
-    QSvgRenderer* hourHandRenderer;
-    QSvgRenderer* minuteHandRenderer;
-    QSvgRenderer* secondHandRenderer; 
+    QVector<QString> no_positions;
+    QColor no_background_color;
+    QColor no_text_color;
+    QString no_font;
 
-    void paintHand(QPainter* painter, QSvgRenderer* renderer, int angle);
+    ClockPainter* dialRenderer;
+    ClockPainter* hourHandRenderer;
+    ClockPainter* minuteHandRenderer;
+    ClockPainter* secondHandRenderer; 
+
     void paintClock(QPainter* painter);
+    void paintNumbers(QPainter *painter, int hour_marker, QColor background_color, QColor text_color, QString font, QString number);
     void saveAsSvg(const QString& filePath);
 };
 

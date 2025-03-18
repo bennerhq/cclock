@@ -24,6 +24,33 @@ window:
   height: 200                         # Height of the window
 
 # ----
+# The section 'dial:' contains the svg drawing for the dial background
+dial:
+  frame_color: none                   # Color of the clock dial frame
+  background_color: none              # Color of the clock dial
+
+  hour_mark_color: none               # Color of the hour marks on the clock
+  minute_mark_color: none             # Color of the minute marks on the clock
+
+  decorate: "$:image/dial.svg"
+
+# ----
+# The section 'numbers:' contains the settings for the 12 hours around the clock
+numbers:
+  positions: ""
+  backgroud_color: none               # Background color of the number display
+  text_color: "${farver.text}"        # Color of the number text
+  font: "Courier New"                 # Font used for the number display
+
+# ----
+# The section 'date:' contains the settings for the date display
+date:
+  position: 3                         # Position of the date display; 1 to 12 o'clock
+  backgroud_color: "${farver.base}"   # Background color of the date display
+  text_color: "${farver.text}"        # Color of the date text
+  font: "Courier New"                 # Font used for the date display
+
+# ----
 # The section 'hands:' contains the svg drawings for the hands
 hands:
   animate_msecs: 50                   # Update clock every "animate_msecs" milliseconds
@@ -43,22 +70,3 @@ hands:
         <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2" />
         <circle cx="5" cy="90" r="5" fill="${farver.base}" />
     </svg>
-
-# ----
-# The section 'date:' contains the settings for the date display
-date:
-  position: 3                         # Position of the date display; 1 to 12 o'clock
-  backgroud_color: "${farver.base}"   # Background color of the date display
-  text_color: "${farver.text}"        # Color of the date text
-  font: "Courier New"                 # Font used for the date display
-
-# ----
-# The section 'dial:' contains the svg drawing for the dial background
-dial:
-  frame_color: none                   # Color of the clock dial frame
-  background_color: none              # Color of the clock dial
-
-  hour_mark_color: none               # Color of the hour marks on the clock
-  minute_mark_color: none             # Color of the minute marks on the clock
-
-  decorate: $:image/clock-dial.svg    # SVG drawing for the clock dial, read from file

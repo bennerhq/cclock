@@ -29,19 +29,32 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dialRenderer = config_svg(config["dial"]["decorate"]);
-    dial_background_color = config_qcolor(config["dial"]["background_color"]);
-    dial_frame_color = config_qcolor(config["dial"]["frame_color"]);
-    hour_mark_color = config_qcolor(config["dial"]["hour_mark_color"]);
-    minute_mark_color = config_qcolor(config["dial"]["minute_mark_color"]);
+    dialRenderer = config_get_image(config["dial"]["decorate"]);
+    dial_background_color = config_get_qcolor(config["dial"]["background_color"]);
+    dial_frame_color = config_get_qcolor(config["dial"]["frame_color"]);
 
-    date_background_color = config_qcolor(config["date"]["backgroud_color"]);
-    date_text_color = config_qcolor(config["date"]["text_color"]);
-    date_font = config["date"]["font"].as<std::string>().c_str();
+    hour_mark_color = config_get_qcolor(config["dial"]["hour_mark_color"]);
+    minute_mark_color = config_get_qcolor(config["dial"]["minute_mark_color"]);
 
-    hourHandRenderer = config_svg(config["hands"]["hour"]);
-    minuteHandRenderer = config_svg(config["hands"]["minute"]);
-    secondHandRenderer = config_svg(config["hands"]["second"]);
+    date_background_color = config_get_qcolor(config["date"]["backgroud_color"]);
+    date_text_color = config_get_qcolor(config["date"]["text_color"]);
+    date_font = config_get_string(config["date"]["font"]);
+
+    no_background_color = config_get_qcolor(config["numbers"]["backgroud_color"]);
+    no_text_color = config_get_qcolor(config["numbers"]["text_color"]);
+    no_font = config_get_string(config["numbers"]["font"]);  
+
+    QString no_positions_str = config_get_string(config["numbers"]["positions"]);
+    if (no_positions_str != "") {
+        QStringList no_positions_list = no_positions_str.split(",");
+        for (const QString& pos : no_positions_list) {
+            no_positions.append(pos);
+        }
+    }
+
+    hourHandRenderer = config_get_image(config["hands"]["hour"]);
+    minuteHandRenderer = config_get_image(config["hands"]["minute"]);
+    secondHandRenderer = config_get_image(config["hands"]["second"]);
 
     int animate_msecs = config["hands"]["animate_msecs"].as<int>();
     timer->start(animate_msecs);
@@ -52,17 +65,24 @@ void ClockWidget::paintEvent(QPaintEvent*) {
     paintClock(&painter);
 }
 
-void ClockWidget::saveAsSvg(const QString& filePath) {
-    QSvgGenerator generator;
-    generator.setFileName(filePath);
-    generator.setSize(QSize(200, 200));
-    generator.setViewBox(QRect(0, 0, 200, 200));
-    generator.setTitle(tr("Clock Face"));
+void ClockWidget::paintNumbers(QPainter *painter, int hour_marker, QColor background_color, QColor text_color, QString text_font, QString number) {
+    int angle = 30*(hour_marker - 3); // ?
+    int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
+    int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
+    QRect rect(x - 10, y - 10, 20, 20);
 
-    QPainter painter;
-    painter.begin(&generator);
-    paintClock(&painter);
-    painter.end();
+    QFont font = painter->font();
+    font.setFamily(text_font);
+    font.setPointSize(11);
+
+    painter->save();
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(background_color);
+    painter->drawRoundedRect(rect, 5, 5);
+    painter->setFont(font);
+    painter->setPen(QPen(text_color, 1));
+    painter->drawText(rect, Qt::AlignCenter, number);
+    painter->restore();
 }
 
 void ClockWidget::paintClock(QPainter* painter) {
@@ -78,10 +98,7 @@ void ClockWidget::paintClock(QPainter* painter) {
     painter->scale(radius / 100.0, radius / 100.0);
 
     if (dialRenderer != nullptr) {
-        painter->save();
-        painter->translate(-100, -100);
-        dialRenderer->render(painter);
-        painter->restore();
+        dialRenderer->paint(painter, 0, 0, 0);
     }
 
     if (dial_background_color.isValid()) {
@@ -126,46 +143,29 @@ void ClockWidget::paintClock(QPainter* painter) {
         painter->restore();
     }
 
-    if (date_background_color.isValid()) {
-        int hour_marker = config["date"]["position"].as<int>();
-        int angle = 30*(hour_marker - 3); // ?
-        int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
-        int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
-        QRect rect(x - 10, y - 10, 20, 20);
-        QString today = QDateTime::currentDateTime().toString("dd");
-
-        QFont font = painter->font();
-        font.setFamily(date_font);
-        font.setPointSize(11);
-
-        painter->save();
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(date_background_color);
-        painter->drawRoundedRect(rect, 5, 5);
-        painter->setFont(font);
-        painter->setPen(QPen(date_text_color, 1));
-        painter->drawText(rect, Qt::AlignCenter, today);
-        painter->restore();
+    for (int i = 0; i < no_positions.size(); ++i) {
+        QString no = no_positions[i];
+        paintNumbers(painter, i + 1, no_background_color, no_text_color, no_font, no);
     }
 
-    paintHand(painter, hourHandRenderer, 30 * (current_time.hour() + current_time.minute() / 60.0));
-    paintHand(painter, minuteHandRenderer, 6 * (current_time.minute() + current_time.second() / 60.0));
-    paintHand(painter, secondHandRenderer, 6 * (current_time.second() + current_time.msec() / 1000.0));
+    if (date_background_color.isValid()) {
+        int date_pos = config["date"]["position"].as<int>();
+        QString today = QDateTime::currentDateTime().toString("dd");
+        paintNumbers(painter, date_pos, date_background_color, date_text_color, date_font, today);
+    }
+
+    hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0));
+    minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0));
+    secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0));
 }
 
-void ClockWidget::paintHand(QPainter* painter, QSvgRenderer* renderer, int angle) {
-    if (renderer == nullptr) {
-        return;
-    }
+void ClockWidget::saveAsSvg(const QString& filePath) {
+    QSvgGenerator generator;
+    generator.setFileName(filePath);
+    generator.setSize(QSize(150, 150));
 
-    QSize size = renderer->defaultSize();
-    QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
-    QRect rect = rectF.toRect();
-
-    painter->save();
-
-    painter->rotate(angle);
-    renderer->render(painter, rect);
-
-    painter->restore();
+    QPainter painter;
+    painter.begin(&generator);
+    paintClock(&painter);
+    painter.end();
 }

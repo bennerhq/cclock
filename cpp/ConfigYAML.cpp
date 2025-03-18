@@ -10,12 +10,16 @@
 // ----------------------------------------------------------------------------
 
 #include <iostream>
+
 #include <QFileInfo>
 #include <QTextStream>
 #include <QString>
 #include <QFile>
 #include <QRegularExpression>
+#include <QImage>
+
 #include <yaml-cpp/yaml.h>
+
 #include "h/ConfigYAML.h"
 #include "h/ConfigDefault.h"
 
@@ -178,7 +182,7 @@ QString config_find_key(const QString& key) {
     }
 }
 
-QString config_get_string(QString str) {
+QString config_get_qstring(QString str) {
     if (str == "transparent" || str == "none" || str == "null" || str == "") {
         return "";
     }
@@ -199,28 +203,107 @@ QString config_get_string(QString str) {
     return str;
 }
 
-QColor config_qcolor(const YAML::Node& node) {
-    QString color = node.as<std::string>().c_str();
-    color = config_get_string(color);
+QString config_get_string(const YAML::Node& node) {
+    QString str = node.as<std::string>().c_str();
+    return config_get_qstring(str);
+}
+
+QColor config_get_qcolor(const YAML::Node& node) {
+    QString color = config_get_string(node);
     return QColor(color);
 }
 
-QSvgRenderer* config_svg(YAML::Node config) {
+class SvgClockPainter : public ClockPainter {
+private:
+    QSvgRenderer* renderer;
+public:
+    SvgClockPainter(QSvgRenderer* renderer) : renderer(renderer) {}
+
+    void paint(QPainter* painter, int angle, int tx, int ty) override {
+        if (renderer == nullptr) {
+            return;
+        }
+
+        QSize size = renderer->defaultSize();
+        QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
+        QRect rect = rectF.toRect();
+
+        painter->save();
+        painter->rotate(angle);
+        painter->translate(tx, ty);
+        renderer->render(painter, rect);
+        painter->restore();
+    }
+};
+
+class BitmapClockPainter : public ClockPainter {
+private:
+    QImage* image;
+public:
+    BitmapClockPainter(QImage* image) : image(image) {}
+
+    void paint(QPainter* painter, int angle, int tx, int ty) override {
+        if (image == nullptr) {
+            return;
+        }
+
+        QRect rect(-image->width() / 2, -image->height() / 2, image->width(), image->height());
+
+        painter->save();
+        painter->rotate(angle);
+        painter->translate(tx, ty);
+        painter->drawImage(rect, *image);
+        painter->restore();
+    }
+};
+
+ClockPainter* config_get_image(YAML::Node config) {
     QString svg_str = config.as<std::string>().c_str();
+
     if (svg_str.startsWith("$:")) {
         svg_str.remove(0, 2);
-        QFile file(svg_str);
-        if (file.open(QIODevice::ReadOnly)) {
-            svg_str = file.readAll();
-            file.close();
+        if (svg_str.endsWith(".svg")) {
+            QFile file(svg_str);
+            if (file.open(QIODevice::ReadOnly)) {
+                svg_str = file.readAll();
+                file.close();
+            }
+            else {
+                std::cout << "*** Error: Can't open file " << svg_str.toStdString() << std::endl;
+                return nullptr;
+            }
         }
         else {
-            std::cout << "*** Error: Can't open file " << svg_str.toStdString() << std::endl;
-            return nullptr;
+            QImage* image = new QImage(svg_str);
+            if (image->isNull()) {
+                delete image;
+                return nullptr;
+            }
+            return new BitmapClockPainter(image);
         }
     }
 
-    svg_str = config_get_string(svg_str);
+    if (svg_str.startsWith("data:image/")) {
+        QString base64Data = svg_str;
+        if (base64Data.startsWith("data:image/")) {
+            int commaIndex = base64Data.indexOf(',');
+            if (commaIndex != -1) {
+                base64Data = base64Data.mid(commaIndex + 1);
+            }
+        }
+
+        QByteArray byteArray = QByteArray::fromBase64(base64Data.toUtf8());
+        QImage* image = new QImage();
+        if (!image->loadFromData(byteArray)) {
+            std::cout << "*** Error: Can't create image: " << base64Data.toStdString() << std::endl;
+
+            delete image;
+            return nullptr;
+        }
+        return new BitmapClockPainter(image);
+    }
+
+    svg_str = config_get_qstring(svg_str);
     if (svg_str == "") {
         return nullptr;
     } 
@@ -229,7 +312,7 @@ QSvgRenderer* config_svg(YAML::Node config) {
     try {
         QByteArray svg_byte = svg_str.toUtf8();
         renderer->load(svg_byte);
-        return renderer;
+        return new SvgClockPainter(renderer);
     } catch (...) {
         delete renderer;
         return nullptr;
