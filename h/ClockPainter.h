@@ -16,7 +16,7 @@
 
 class ClockPainter {
 public:
-    virtual void paint(QPainter* painter, int angle) = 0;
+    virtual void paint(QPainter* painter, int angle, bool center) = 0;
 };
 
 class SvgClockPainter : public ClockPainter {
@@ -29,9 +29,9 @@ public:
         }
     }
 
-    void paint(QPainter* painter, int angle) override {
+    void paint(QPainter* painter, int angle, bool center) override {
         QSize size = svg->defaultSize();
-        QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
+        QRectF rectF(-size.width() / 2, -size.height() / (center ? 1 : 2), size.width(), size.height());
         QRect rect = rectF.toRect();
 
         painter->save();
@@ -51,8 +51,8 @@ public:
         }
     }
 
-    void paint(QPainter* painter, int angle) override {
-        QRect rect(-image->width() / 2, -image->height() / 2, image->width(), image->height());
+    void paint(QPainter* painter, int angle, bool center) override {
+        QRect rect(-image->width() / 2, -image->height() / (center ? 1 : 2), image->width(), image->height());
 
         painter->save();
         painter->rotate(angle);
@@ -60,5 +60,5 @@ public:
         painter->restore();
     }
 };    
-        
+
 #endif // CLOCKPAINTER_H

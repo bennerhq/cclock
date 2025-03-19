@@ -96,7 +96,7 @@ void ClockWidget::paintClock(QPainter* painter) {
     painter->scale(radius / 100.0, radius / 100.0);
 
     if (dialRenderer != nullptr) {
-        dialRenderer->paint(painter, 0);
+        dialRenderer->paint(painter, 0, false);
     }
 
     if (dial_background_color.isValid()) {
@@ -152,9 +152,9 @@ void ClockWidget::paintClock(QPainter* painter) {
         paintNumbers(painter, config["date"], date_pos, today);
     }
 
-    hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0));
-    minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0));
-    secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0));
+    hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);
+    minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0), true);
+    secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0), true);
 }
 
 void ClockWidget::saveAsSvg(const QString& filePath) {
