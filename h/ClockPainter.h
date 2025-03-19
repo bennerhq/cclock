@@ -21,22 +21,22 @@ public:
 
 class SvgClockPainter : public ClockPainter {
 private:
-    QSvgRenderer* renderer;
+    QSvgRenderer* svg;
 public:
-    SvgClockPainter(QSvgRenderer* renderer) : renderer(renderer) {}
-
-    void paint(QPainter* painter, int angle) override {
-        if (renderer == nullptr) {
+    SvgClockPainter(QSvgRenderer* svg) : svg(svg) {
+        if (svg == nullptr) {
             return;
         }
+    }
 
-        QSize size = renderer->defaultSize();
+    void paint(QPainter* painter, int angle) override {
+        QSize size = svg->defaultSize();
         QRectF rectF(-size.width() / 2, -size.height(), size.width(), size.height());
         QRect rect = rectF.toRect();
 
         painter->save();
         painter->rotate(angle);
-        renderer->render(painter, rect);
+        svg->render(painter, rect);
         painter->restore();
     }
 };
@@ -45,13 +45,13 @@ class BitmapClockPainter : public ClockPainter {
 private:
     QImage* image;
 public:
-    BitmapClockPainter(QImage* image) : image(image) {}
-
-    void paint(QPainter* painter, int angle) override {
+    BitmapClockPainter(QImage* image) : image(image) {
         if (image == nullptr) {
             return;
         }
+    }
 
+    void paint(QPainter* painter, int angle) override {
         QRect rect(-image->width() / 2, -image->height() / 2, image->width(), image->height());
 
         painter->save();
