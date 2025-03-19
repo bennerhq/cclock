@@ -53,14 +53,16 @@ numbers:
   backgroud_color: none               # Background color of the number display
   text_color: "${farver.text}"        # Color of the number text
   font: "Courier New"                 # Font used for the number display
+  font_size: 11                       # Font size of the number display 
 
 # ----
 # The section 'date:' contains the settings for the date display
 date:
-  position: 3                         # Position of the date display; 1 to 12 o'clock
+  position: 3                         # Position of the date display; 1 to 12 o'clock (0=no date)
   backgroud_color: "${farver.base}"   # Background color of the date display
   text_color: "${farver.text}"        # Color of the date text
   font: "Courier New"                 # Font used for the date display
+  font_size: 11                       # Font size of the number display 
 
 # ----
 # The section 'hands:' contains the svg drawings for the hands

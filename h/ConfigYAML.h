@@ -25,7 +25,7 @@ bool config_save(const QString& yaml_filename);
 bool config_save_default(const QString& yaml_filename);
 
 QString config_get_string(const YAML::Node& node);
-QColor config_get_qcolor(const YAML::Node& node);
+QColor config_get_color(const YAML::Node& node);
 ClockPainter* config_get_image(YAML::Node config);
 
 #endif // CONFIG_UTILS_H

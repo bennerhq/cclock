@@ -30,20 +30,13 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setAttribute(Qt::WA_TranslucentBackground);
 
     dialRenderer = config_get_image(config["dial"]["decorate"]);
-    dial_background_color = config_get_qcolor(config["dial"]["background_color"]);
-    dial_frame_color = config_get_qcolor(config["dial"]["frame_color"]);
+    dial_background_color = config_get_color(config["dial"]["background_color"]);
+    dial_frame_color = config_get_color(config["dial"]["frame_color"]);
 
-    hour_mark_color = config_get_qcolor(config["dial"]["hour_mark_color"]);
-    minute_mark_color = config_get_qcolor(config["dial"]["minute_mark_color"]);
+    hour_mark_color = config_get_color(config["dial"]["hour_mark_color"]);
+    minute_mark_color = config_get_color(config["dial"]["minute_mark_color"]);
 
-    date_background_color = config_get_qcolor(config["date"]["backgroud_color"]);
-    date_text_color = config_get_qcolor(config["date"]["text_color"]);
-    date_font = config_get_string(config["date"]["font"]);
-
-    no_background_color = config_get_qcolor(config["numbers"]["backgroud_color"]);
-    no_text_color = config_get_qcolor(config["numbers"]["text_color"]);
-    no_font = config_get_string(config["numbers"]["font"]);  
-
+    date_position = config["date"]["position"].as<int>();
     QString no_positions_str = config_get_string(config["numbers"]["positions"]);
     if (no_positions_str != "") {
         QStringList no_positions_list = no_positions_str.split(",");
@@ -65,22 +58,27 @@ void ClockWidget::paintEvent(QPaintEvent*) {
     paintClock(&painter);
 }
 
-void ClockWidget::paintNumbers(QPainter *painter, int hour_marker, QColor background_color, QColor text_color, QString text_font, QString number) {
-    int angle = 30*(hour_marker - 3); // ?
+void ClockWidget::paintNumbers(QPainter *painter, const YAML::Node& config, int hour_pos, QString number) {
+    QColor no_background_color = config_get_color(config["backgroud_color"]);
+    QColor no_text_color = config_get_color(config["text_color"]);
+    QString no_font = config_get_string(config["font"]);
+    int no_font_size = config["font_size"].as<int>();
+
+    int angle = 30*(hour_pos - 3); // ?
     int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
     int y = 90 * std::sin(qDegreesToRadians(static_cast<double>(angle)));
     QRect rect(x - 10, y - 10, 20, 20);
 
     QFont font = painter->font();
-    font.setFamily(text_font);
-    font.setPointSize(11);
+    font.setFamily(no_font);
+    font.setPointSize(no_font_size);
 
     painter->save();
     painter->setPen(Qt::NoPen);
-    painter->setBrush(background_color);
+    painter->setBrush(no_background_color);
     painter->drawRoundedRect(rect, 5, 5);
-    painter->setFont(font);
-    painter->setPen(QPen(text_color, 1));
+    painter->setFont(no_font);
+    painter->setPen(QPen(no_text_color, 1));
     painter->drawText(rect, Qt::AlignCenter, number);
     painter->restore();
 }
@@ -98,7 +96,7 @@ void ClockWidget::paintClock(QPainter* painter) {
     painter->scale(radius / 100.0, radius / 100.0);
 
     if (dialRenderer != nullptr) {
-        dialRenderer->paint(painter, 0, 0, 0);
+        dialRenderer->paint(painter, 0);
     }
 
     if (dial_background_color.isValid()) {
@@ -145,13 +143,13 @@ void ClockWidget::paintClock(QPainter* painter) {
 
     for (int i = 0; i < no_positions.size(); ++i) {
         QString no = no_positions[i];
-        paintNumbers(painter, i + 1, no_background_color, no_text_color, no_font, no);
+        paintNumbers(painter, config["numbers"], i + 1, no);
     }
 
-    if (date_background_color.isValid()) {
+    if (date_position) {
         int date_pos = config["date"]["position"].as<int>();
         QString today = QDateTime::currentDateTime().toString("dd");
-        paintNumbers(painter, date_pos, date_background_color, date_text_color, date_font, today);
+        paintNumbers(painter, config["date"], date_pos, today);
     }
 
     hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0));

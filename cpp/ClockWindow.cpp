@@ -36,7 +36,7 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     if (config["window"]["tool"].as<bool>()) winFlags |= Qt::Tool;
     setWindowFlags(winFlags);
 
-    QColor background_color = config_get_qcolor(config["window"]["background_color"]);
+    QColor background_color = config_get_color(config["window"]["background_color"]);
     if (background_color.isValid()) {
         setAutoFillBackground(true);
         QPalette palette = this->palette();

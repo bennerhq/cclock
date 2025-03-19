@@ -18,6 +18,7 @@
 #include <QPainter>
 #include <QSvgRenderer>
 
+#include "h/ConfigYAML.h"
 #include "h/ClockPainter.h"
 
 class ClockWidget : public QWidget {
@@ -38,24 +39,18 @@ private:
     QColor hour_mark_color;
     QColor minute_mark_color;
 
-    QColor date_background_color;
-    QColor date_text_color;
-
     int date_position;
-    QString date_font;
-
+    QColor date_background_color;
     QVector<QString> no_positions;
-    QColor no_background_color;
-    QColor no_text_color;
-    QString no_font;
 
     ClockPainter* dialRenderer;
     ClockPainter* hourHandRenderer;
     ClockPainter* minuteHandRenderer;
     ClockPainter* secondHandRenderer; 
 
+    void paintNumbers(QPainter *painter, const YAML::Node& config, int hour_pos, QString number);
     void paintClock(QPainter* painter);
-    void paintNumbers(QPainter *painter, int hour_marker, QColor background_color, QColor text_color, QString font, QString number);
+
     void saveAsSvg(const QString& filePath);
 };
 
