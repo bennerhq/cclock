@@ -36,7 +36,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     hour_mark_color = config_get_color(config["dial"]["hour_mark_color"]);
     minute_mark_color = config_get_color(config["dial"]["minute_mark_color"]);
 
-    date_position = config["date"]["position"].as<int>();
+    date_position = config_get_int(config["date"]["position"]);
     QString no_positions_str = config_get_string(config["numbers"]["positions"]);
     if (no_positions_str != "") {
         QStringList no_positions_list = no_positions_str.split(",");
@@ -49,7 +49,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     minuteHandRenderer = config_get_image(config["hands"]["minute"]);
     secondHandRenderer = config_get_image(config["hands"]["second"]);
 
-    int animate_msecs = config["hands"]["animate_msecs"].as<int>();
+    int animate_msecs = config_get_int(config["hands"]["animate_msecs"]);
     timer->start(animate_msecs);
 }
 
@@ -62,7 +62,7 @@ void ClockWidget::paintNumbers(QPainter *painter, const YAML::Node& config, int 
     QColor no_background_color = config_get_color(config["backgroud_color"]);
     QColor no_text_color = config_get_color(config["text_color"]);
     QString no_font = config_get_string(config["font"]);
-    int no_font_size = config["font_size"].as<int>();
+    int no_font_size = config_get_int(config["font_size"]);
 
     int angle = 30*(hour_pos - 3); // ?
     int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
@@ -147,7 +147,7 @@ void ClockWidget::paintClock(QPainter* painter) {
     }
 
     if (date_position) {
-        int date_pos = config["date"]["position"].as<int>();
+        int date_pos = config_get_int(config["date"]["position"]);
         QString today = QDateTime::currentDateTime().toString("dd");
         paintNumbers(painter, config["date"], date_pos, today);
     }

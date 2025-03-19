@@ -203,6 +203,12 @@ QString config_get_qstring(QString str) {
     return str;
 }
 
+int config_get_int(const YAML::Node& node) {
+    QString str = node.as<std::string>().c_str();
+    str = config_get_qstring(str);
+    return str.toInt();
+}
+
 QString config_get_string(const YAML::Node& node) {
     QString str = node.as<std::string>().c_str();
     return config_get_qstring(str);

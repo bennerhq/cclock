@@ -61,14 +61,14 @@ ClockWindow::ClockWindow(QString& config_save_filename)
 }
 
 void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {
-    int x = config["window"]["x"].as<int>(); 
+    int x = config_get_int(config["window"]["x"]); 
     if (x < 0) x = geometry.width() + x;
 
-    int y = config["window"]["y"].as<int>(); 
+    int y = config_get_int(config["window"]["y"]); 
     if (y < 0) y = geometry.height() + y;
 
-    int width = config["window"]["width"].as<int>() | 1;
-    int height = config["window"]["height"].as<int>() | 1;
+    int width = config_get_int(config["window"]["width"]) | 1;
+    int height = config_get_int(config["window"]["height"]) | 1;
 
     setGeometry(x, y, width, height);
 }
