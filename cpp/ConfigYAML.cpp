@@ -246,8 +246,7 @@ ClockPainter* config_get_image(YAML::Node config) {
             return new BitmapClockPainter(image);
         }
     }
-
-    if (svg_str.startsWith("data:image/")) {
+    else if (svg_str.startsWith("data:image/")) {
         QString base64Data = svg_str;
         if (base64Data.startsWith("data:image/")) {
             int commaIndex = base64Data.indexOf(',');

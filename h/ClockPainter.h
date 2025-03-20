@@ -13,10 +13,23 @@
 #define CLOCKPAINTER_H
 
 #include <QPainter>
+#include <QSvgRenderer>
+#include <QSvgGenerator>
+#include <QImage>
+#include <QBuffer>
+#include <QByteArray>
+#include <QString>
+#include <QRect>
+#include <QRectF>
+#include <QSize>
+#include <QPoint>
+#include <QDebug>
 
 class ClockPainter {
 public:
     virtual void paint(QPainter* painter, int angle, bool center) = 0;
+    virtual ~ClockPainter() {}
+    virtual QString getString(int angle, bool center) = 0;
 };
 
 class SvgClockPainter : public ClockPainter {
@@ -28,6 +41,10 @@ public:
             return;
         }
     }
+ 
+    ~SvgClockPainter() {
+        delete svg;
+    }
 
     void paint(QPainter* painter, int angle, bool center) override {
         QSize size = svg->defaultSize();
@@ -38,6 +55,23 @@ public:
         painter->rotate(angle);
         svg->render(painter, rect);
         painter->restore();
+    }
+
+    QString getString(int angle, bool center) override {
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+    
+        QSvgGenerator generator;
+        generator.setOutputDevice(&buffer);
+    
+        QPainter painter;
+        painter.begin(&generator);
+        paint(&painter, angle, center);
+        painter.end();
+    
+        buffer.close();
+        return QString::fromUtf8(byteArray);
     }
 };
 
@@ -51,6 +85,10 @@ public:
         }
     }
 
+    ~BitmapClockPainter() {
+        delete image;
+    }
+
     void paint(QPainter* painter, int angle, bool center) override {
         QRect rect(-image->width() / 2, -image->height() / (center ? 1 : 2), image->width(), image->height());
 
@@ -58,6 +96,23 @@ public:
         painter->rotate(angle);
         painter->drawImage(rect, *image);
         painter->restore();
+    }
+
+    QString getString(int angle, bool center) override {
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        buffer.open(QIODevice::WriteOnly);
+
+        QSvgGenerator generator;
+        generator.setOutputDevice(&buffer);
+
+        QPainter painter;
+        painter.begin(&generator);
+        paint(&painter, angle, center);
+        painter.end();
+
+        buffer.close();
+        return "data:image/png;base64," + QString::fromUtf8(byteArray.toBase64());
     }
 };    
 
