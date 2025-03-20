@@ -29,7 +29,8 @@ class ClockPainter {
 public:
     virtual void paint(QPainter* painter, int angle, bool center) = 0;
     virtual ~ClockPainter() {}
-    virtual QString getString(int angle, bool center) = 0;
+
+    virtual QString getString(int angle = 0, bool center = true) = 0; 
 };
 
 class SvgClockPainter : public ClockPainter {
@@ -57,7 +58,7 @@ public:
         painter->restore();
     }
 
-    QString getString(int angle, bool center) override {
+    QString getString(int angle = 0, bool center = true) {
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
@@ -71,8 +72,9 @@ public:
         painter.end();
     
         buffer.close();
+    
         return QString::fromUtf8(byteArray);
-    }
+    };
 };
 
 class BitmapClockPainter : public ClockPainter {
@@ -98,22 +100,21 @@ public:
         painter->restore();
     }
 
-    QString getString(int angle, bool center) override {
+    QString getString(int angle = 0, bool center = true) {
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
 
-        QSvgGenerator generator;
-        generator.setOutputDevice(&buffer);
-
-        QPainter painter;
-        painter.begin(&generator);
+        QImage tempImage(*image);
+        QPainter painter(&tempImage);
         paint(&painter, angle, center);
         painter.end();
-
+        
+        tempImage.save(&buffer, "PNG");
         buffer.close();
-        return "data:image/png;base64," + QString::fromUtf8(byteArray.toBase64());
-    }
-};    
+
+        return "data:image/png;base64," + byteArray.toBase64();
+    };
+};
 
 #endif // CLOCKPAINTER_H
