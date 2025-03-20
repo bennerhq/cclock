@@ -104,11 +104,12 @@ int main(int argc, char *argv[]) {
         if (config_save_filename == "config") {
             config_save_filename = config_path;
         }
-
-        if (parser.isSet(configVerbose)) {
-            if (config_save_filename != nullptr) {
+        if (config_save(config_save_filename)) {
+            if (parser.isSet(configVerbose)) {
                 std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
-            }   
+            }
+        } else {
+            std::cout << "Can't save config file: " << config_save_filename.toStdString() << std::endl;
         }
     }
 
