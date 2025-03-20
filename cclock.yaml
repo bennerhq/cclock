@@ -29,10 +29,10 @@ dial:
   frame_color: none                   # Color of the clock dial frame
   background_color: none              # Color of the clock dial
 
-  hour_mark_color: none               # Color of the hour marks on the clock
-  minute_mark_color: none             # Color of the minute marks on the clock
+  hour_mark_color: "${farver.base}"   # Color of the hour marks on the clock
+  minute_mark_color: "${farver.base}" # Color of the minute marks on the clock
 
-  decorate: "$:image/dial.svg"
+  decorate: none                      # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
 
 # ----
 # The section 'numbers:' contains the settings for the 12 hours around the clock
