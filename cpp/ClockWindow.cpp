@@ -12,7 +12,7 @@
 #include <QScreen>
 #include <QGuiApplication>
 
-#include "h/ConfigYAML.h"
+#include "h/Config.h"
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 
@@ -31,12 +31,12 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     onScreenGeometryChanged(screenGeometry);
 
     Qt::WindowFlags winFlags = Qt::Widget | Qt::WindowSystemMenuHint;
-    if (config["window"]["frameless"].as<bool>()) winFlags |= Qt::FramelessWindowHint;
-    if (config["window"]["always_on_top"].as<bool>()) winFlags |= Qt::WindowStaysOnTopHint;
-    if (config["window"]["tool"].as<bool>()) winFlags |= Qt::Tool;
+    if (config_get_bool("window.frameless")) winFlags |= Qt::FramelessWindowHint;
+    if (config_get_bool("window.always_on_top")) winFlags |= Qt::WindowStaysOnTopHint;
+    if (config_get_bool("window.tool")) winFlags |= Qt::Tool;
     setWindowFlags(winFlags);
 
-    QColor background_color = config_get_color(config["window"]["background_color"]);
+    QColor background_color = config_get_color("window.background_color");
     if (background_color.isValid()) {
         setAutoFillBackground(true);
         QPalette palette = this->palette();
@@ -61,14 +61,14 @@ ClockWindow::ClockWindow(QString& config_save_filename)
 }
 
 void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {
-    int x = config_get_int(config["window"]["x"]); 
+    int x = config_get_int("window.x"); 
     if (x < 0) x = geometry.width() + x;
 
-    int y = config_get_int(config["window"]["y"]); 
+    int y = config_get_int("window.y"); 
     if (y < 0) y = geometry.height() + y;
 
-    int width = config_get_int(config["window"]["width"]) | 1;
-    int height = config_get_int(config["window"]["height"]) | 1;
+    int width = config_get_int("window.width") | 1;
+    int height = config_get_int("window.height") | 1;
 
     setGeometry(x, y, width, height);
 }
@@ -113,8 +113,8 @@ void ClockWindow::mouseMoveEvent(QMouseEvent* event) {
         old_pos = event->globalPos();
 
         if (config_save_filename != nullptr) {
-            config["window"]["x"] = this->x();
-            config["window"]["y"] = this->y();
+            config_set_int("window.x", this->x());
+            config_set_int("window.y", this->y());
         }
     }
 }
@@ -126,7 +126,7 @@ void ClockWindow::wheelEvent(QWheelEvent *event) {
     resize(width, height);
 
     if (config_save_filename != nullptr) {
-        config["window"]["width"] = width;
-        config["window"]["height"] = height;
+        config_set_int("window.width", width);
+        config_set_int("window.height", height);
     }
 }

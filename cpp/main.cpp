@@ -20,7 +20,7 @@
 #include <QString>
 #include <QFileInfo>
 
-#include "h/ConfigYAML.h"
+#include "h/Config.h"
 #include "h/ClockWidget.h"
 #include "h/ClockWindow.h"
 

@@ -18,7 +18,7 @@
 #include <QPainter>
 #include <QSvgRenderer>
 
-#include "h/ConfigYAML.h"
+#include "h/Config.h"
 #include "h/ClockPainter.h"
 
 class ClockWidget : public QWidget {
@@ -48,7 +48,7 @@ private:
     ClockPainter* minuteHandRenderer;
     ClockPainter* secondHandRenderer; 
 
-    void paintNumbers(QPainter *painter, const YAML::Node& config, int hour_pos, QString number);
+    void paintNumbers(QPainter *painter, const QString root, int hour_pos, QString number);
     void paintClock(QPainter* painter);
 
     void saveAsSvg(const QString& filePath);

@@ -13,20 +13,19 @@
 #define CONFIG_UTILS_H
 
 #include <string>
-#include <yaml-cpp/yaml.h>
 #include <QColor>
-#include <QSvgRenderer>
 #include "h/ClockPainter.h"
-
-extern YAML::Node config;
 
 bool config_load(const QString& yaml_filename);
 bool config_save(const QString& yaml_filename);
 bool config_save_default(const QString& yaml_filename);
 
-QString config_get_string(const YAML::Node& node);
-int config_get_int(const YAML::Node& node);
-QColor config_get_color(const YAML::Node& node);
-ClockPainter* config_get_image(YAML::Node config);
+QString config_get_string(const QString& key);
+bool config_get_bool(const QString& key);
+int config_get_int(const QString& key);
+QColor config_get_color(const QString& key);
+ClockPainter* config_get_image(const QString& key);
+
+void config_set_int(const QString& key, int value);
 
 #endif // CONFIG_UTILS_H

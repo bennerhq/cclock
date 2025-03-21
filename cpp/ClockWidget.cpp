@@ -18,7 +18,7 @@
 #include <QSvgGenerator>
 #include <QDebug>
 
-#include "h/ConfigYAML.h"
+#include "h/Config.h"
 #include "h/ClockWindow.h"
 #include "h/ClockWidget.h"
 
@@ -29,15 +29,15 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dialRenderer = config_get_image(config["dial"]["decorate"]);
-    dial_background_color = config_get_color(config["dial"]["background_color"]);
-    dial_frame_color = config_get_color(config["dial"]["frame_color"]);
+    dialRenderer = config_get_image("dial.decorate");
+    dial_background_color = config_get_color("dial.background_color");
+    dial_frame_color = config_get_color("dial.frame_color");
 
-    hour_mark_color = config_get_color(config["dial"]["hour_mark_color"]);
-    minute_mark_color = config_get_color(config["dial"]["minute_mark_color"]);
+    hour_mark_color = config_get_color("dial.hour_mark_color");
+    minute_mark_color = config_get_color("dial.minute_mark_color");
 
-    date_position = config_get_int(config["date"]["position"]);
-    QString no_positions_str = config_get_string(config["numbers"]["positions"]);
+    date_position = config_get_int("date.position");
+    QString no_positions_str = config_get_string("numbers.positions");
     if (no_positions_str != "") {
         QStringList no_positions_list = no_positions_str.split(",");
         for (const QString& pos : no_positions_list) {
@@ -45,11 +45,11 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
         }
     }
 
-    hourHandRenderer = config_get_image(config["hands"]["hour"]);
-    minuteHandRenderer = config_get_image(config["hands"]["minute"]);
-    secondHandRenderer = config_get_image(config["hands"]["second"]);
+    hourHandRenderer = config_get_image("hands.hour");
+    minuteHandRenderer = config_get_image("hands.minute");
+    secondHandRenderer = config_get_image("hands.second");
 
-    int animate_msecs = config_get_int(config["hands"]["animate_msecs"]);
+    int animate_msecs = config_get_int("hands.animate_msecs");
     timer->start(animate_msecs);
 }
 
@@ -58,11 +58,11 @@ void ClockWidget::paintEvent(QPaintEvent*) {
     paintClock(&painter);
 }
 
-void ClockWidget::paintNumbers(QPainter *painter, const YAML::Node& config, int hour_pos, QString number) {
-    QColor no_background_color = config_get_color(config["backgroud_color"]);
-    QColor no_text_color = config_get_color(config["text_color"]);
-    QString no_font = config_get_string(config["font"]);
-    int no_font_size = config_get_int(config["font_size"]);
+void ClockWidget::paintNumbers(QPainter *painter, const QString root, int hour_pos, QString number) {
+    QColor no_background_color = config_get_color(root + ".backgroud_color");
+    QColor no_text_color = config_get_color(root + ".text_color");
+    QString no_font = config_get_string(root + ".font");
+    int no_font_size = config_get_int(root + ".font_size");
 
     int angle = 30*(hour_pos - 3); // ?
     int x = 90 * std::cos(qDegreesToRadians(static_cast<double>(angle)));
@@ -143,13 +143,13 @@ void ClockWidget::paintClock(QPainter* painter) {
 
     for (int i = 0; i < no_positions.size(); ++i) {
         QString no = no_positions[i];
-        paintNumbers(painter, config["numbers"], i + 1, no);
+        paintNumbers(painter, "numbers", i + 1, no);
     }
 
     if (date_position) {
-        int date_pos = config_get_int(config["date"]["position"]);
+        int date_pos = config_get_int("date.position");
         QString today = QDateTime::currentDateTime().toString("dd");
-        paintNumbers(painter, config["date"], date_pos, today);
+        paintNumbers(painter, "date", date_pos, today);
     }
 
     hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);

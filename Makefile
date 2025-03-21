@@ -15,12 +15,12 @@ SOURCES = \
 	main.cpp \
 	cpp/ClockWidget.cpp \
 	cpp/ClockWindow.cpp \
-	cpp/ConfigYAML.cpp
+	cpp/Config.cpp
 
 HEADERS = \
 	h/ClockWidget.h \
 	h/ClockWindow.h \
-	h/ConfigYAML.h \
+	h/Config.h \
 	h/ConfigDefault.h
 
 OBJECTS_DIR = \

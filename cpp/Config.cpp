@@ -10,20 +10,21 @@
 // ----------------------------------------------------------------------------
 
 #include <iostream>
-
+#include <unordered_map>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QString>
 #include <QFile>
 #include <QRegularExpression>
 #include <QImage>
-
+#include <QDebug>
 #include <yaml-cpp/yaml.h>
-
-#include "h/ConfigYAML.h"
+#include "h/Config.h"
 #include "h/ConfigDefault.h"
 
 YAML::Node config;
+
+std::unordered_map<QString, QString> config_map;
 
 enum class NodeType {
     Null,
@@ -35,6 +36,7 @@ enum class NodeType {
     Map,
     Undefined
 };
+
 static const char* NodeTypeStr[] = {
     "Null",         // NodeType::Null
     "String",       // NodeType::String
@@ -82,38 +84,36 @@ NodeType config_node_type(const YAML::Node& node) {
     }
 }
 
-YAML::Node config_merge(const YAML::Node& default_config, const YAML::Node& config) {
+YAML::Node config_merge(QString root, const YAML::Node& default_config, const YAML::Node& config) {
     YAML::Node merged_config = default_config;
     for (const auto& entry : config) {
         const std::string& key = entry.first.as<std::string>();
-
-        if (!default_config[key]) {
-            merged_config[key] = config[key]; // New key value pair
-            continue;
-        }
+        QString key_str = (root == "" ? "" : root + ".") + QString::fromStdString(key);
 
         if (default_config[key].IsMap() && config[key].IsMap()) {
-            merged_config[key] = config_merge(default_config[key], config[key]);
+            merged_config[key] = config_merge(key_str, default_config[key], config[key]);
             continue;
         }
 
-        NodeType left = config_node_type(default_config[key]);
-        NodeType right = config_node_type(config[key]);
-        if (left != right) {
-            std::cout
-                << "*** Error: Incompatible types for key "
-                << "'" << key << "' in yaml config file.\n"
-                << "           "
-                << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
-                << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
-                << "           Using default value: " << default_config[key]
-                << std::endl;
+        QString value = config[key].as<std::string>().c_str();
+        if (default_config[key]) {
+            NodeType left = config_node_type(default_config[key]);
+            NodeType right = config_node_type(config[key]);
+            if (left != right) {
+                std::cout
+                    << "*** Error: Incompatible types for key "
+                    << "'" << key << "' in yaml config file.\n"
+                    << "           "
+                    << "Must be of type " << NodeTypeStr[static_cast<int>(left)]
+                    << " but is of type " << NodeTypeStr[static_cast<int>(right)] << ".\n"
+                    << "           Using default value: " << default_config[key]
+                    << std::endl;
 
-                merged_config[key] = default_config[key]; // Overwrite
+                value = default_config[key].as<std::string>().c_str(); // Overwrite
+            }
         }
-        else {
-            merged_config[key] = config[key]; // Overwrite
-        }
+
+        config_map[key_str] = value;
     }
     return merged_config;
 }
@@ -130,7 +130,7 @@ bool config_load(const QString& yaml_filename) {
         // ...
     }
 
-    config = config_merge(default_config, config);
+    config = config_merge("", default_config, config);
     return res;
 }
 
@@ -164,25 +164,7 @@ bool config_save_default(const QString& yaml_filename) {
     return config_save_yaml(yaml_filename, default_config);
 }
 
-QString config_find_key(const QString& key) {
-    YAML::Node node = YAML::Clone(config); // FIXME: ??
-    QStringList tokens = key.split('.');
-    for (const QString& token : tokens) {
-        if (node[token.toStdString()]) {
-            node = node[token.toStdString()];
-        } else {
-            return "";
-        }
-    }
-
-    if (node) {
-        return QString::fromStdString(node.as<std::string>());
-    } else {
-        return "";
-    }
-}
-
-QString config_get_qstring(QString str) {
+QString config_get_replace(QString& str) {
     if (str == "transparent" || str == "none" || str == "null" || str == "") {
         return "";
     }
@@ -192,7 +174,7 @@ QString config_get_qstring(QString str) {
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
         QString key = match.captured(1);
-        QString replacement = config_find_key(key);
+        QString replacement = config_map[key];
 
         str.replace(match.capturedStart(0), match.capturedLength(0), replacement);
 
@@ -203,13 +185,18 @@ QString config_get_qstring(QString str) {
     return str;
 }
 
-QString config_get_string(const YAML::Node& node) {
-    QString str = node.as<std::string>().c_str();
-    return config_get_qstring(str);
+QString config_get_string(const QString& key) {
+    QString str = config_map[key];
+    return config_get_replace(str);
 }
 
-int config_get_int(const YAML::Node& node) {
-    QString str = config_get_string(node);
+bool config_get_bool(const QString& key) {
+    QString str = config_get_string(key);
+    return str == "true";
+}
+
+int config_get_int(const QString& key) {
+    QString str = config_get_string(key);
 
     bool ok;
     int value = str.toInt(&ok);
@@ -221,13 +208,13 @@ int config_get_int(const YAML::Node& node) {
     return value;
 }
 
-QColor config_get_color(const YAML::Node& node) {
-    QString color = config_get_string(node);
+QColor config_get_color(const QString& key) {
+    QString color = config_get_string(key);
     return QColor(color);
 }
  
-ClockPainter* config_get_image(YAML::Node config) {
-    QString svg_str = config_get_string(config);
+ClockPainter* config_get_image(const QString& key) {
+    QString svg_str = config_get_string(key);
 
     if (svg_str.startsWith("$:")) {
         svg_str.remove(0, 2);
@@ -273,7 +260,7 @@ ClockPainter* config_get_image(YAML::Node config) {
         return new BitmapClockPainter(image);
     }
 
-    svg_str = config_get_qstring(svg_str);
+    svg_str = config_get_replace(svg_str);
     if (svg_str == "") {
         return nullptr;
     } 
@@ -287,4 +274,8 @@ ClockPainter* config_get_image(YAML::Node config) {
         delete renderer;
         return nullptr;
     }
+}
+
+void config_set_int(const QString& key, int value) {
+    config_map[key] = QString::number(value);
 }
