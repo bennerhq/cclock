@@ -58,7 +58,7 @@ public:
         painter->restore();
     }
 
-    QString getString(int angle = 0, bool center = true) {
+    QString getString(int angle = 0, bool center = true) override {
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
@@ -100,7 +100,7 @@ public:
         painter->restore();
     }
 
-    QString getString(int angle = 0, bool center = true) {
+    QString getString(int angle = 0, bool center = true) override {
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         buffer.open(QIODevice::WriteOnly);
