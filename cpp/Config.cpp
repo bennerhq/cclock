@@ -200,7 +200,7 @@ int config_get_int(const QString& key) {
     bool ok;
     int value = str.toInt(&ok);
     if (!ok) {
-        std::cout << "*** Error: Value is not of type int: " << str.toStdString() << std::endl;
+        std::cout << "*** Error: " << key.toStdString() << " is not of type int: " << str.toStdString() << std::endl;
         return 0;
     }
 
