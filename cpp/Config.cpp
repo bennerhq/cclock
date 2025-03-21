@@ -40,7 +40,7 @@ enum class NodeType {
 static const char* NodeTypeStr[] = {
     "Null",         // NodeType::Null
     "String",       // NodeType::String
-    "true | false", // NodeType::Bool
+    "Boolean",      // NodeType::Bool
     "Number",       // NodeType::Double
     "Scalar",       // NodeType::Scalar
     "Sequence",     // NodeType::Sequence
@@ -278,4 +278,11 @@ ClockPainter* config_get_image(const QString& key) {
 
 void config_set_int(const QString& key, int value) {
     config_map[key] = QString::number(value);
+    QStringList keys = key.split('.');
+
+    YAML::Node node = config;
+    for (int i = 0; i < keys.size() - 1; ++i) {
+        node = node[keys[i].toStdString()];
+    }
+    node[keys.last().toStdString()] = value;
 }
