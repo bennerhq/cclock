@@ -88,10 +88,11 @@ YAML::Node config_merge(QString root, const YAML::Node& default_config, const YA
     YAML::Node merged_config = default_config;
     for (const auto& entry : config) {
         const std::string& key = entry.first.as<std::string>();
-        QString key_str = (root == "" ? "" : root + ".") + QString::fromStdString(key);
+        QString qkey = QString::fromStdString(key);
+        qkey = (root == "" ? qkey : root + "." + qkey);
 
         if (default_config[key].IsMap() && config[key].IsMap()) {
-            merged_config[key] = config_merge(key_str, default_config[key], config[key]);
+            merged_config[key] = config_merge(qkey, default_config[key], config[key]);
             continue;
         }
 
@@ -113,7 +114,7 @@ YAML::Node config_merge(QString root, const YAML::Node& default_config, const YA
             }
         }
 
-        config_map[key_str] = value;
+        config_map[qkey] = value;
     }
     return merged_config;
 }
