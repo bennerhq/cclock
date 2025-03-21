@@ -187,13 +187,11 @@ QString config_get_replace(QString& str) {
 }
 
 QString config_get_string(const QString& key) {
-    QString str = config_map[key];
-    return config_get_replace(str);
+    return config_get_replace(config_map[key]);
 }
 
 bool config_get_bool(const QString& key) {
-    QString str = config_get_string(key);
-    return str == "true";
+    return config_get_string(key) == "true";
 }
 
 int config_get_int(const QString& key) {
@@ -210,10 +208,9 @@ int config_get_int(const QString& key) {
 }
 
 QColor config_get_color(const QString& key) {
-    QString color = config_get_string(key);
-    return QColor(color);
+    return QColor(config_get_string(key));
 }
- 
+
 ClockPainter* config_get_image(const QString& key) {
     QString svg_str = config_get_string(key);
 
