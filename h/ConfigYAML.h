@@ -9,6 +9,8 @@
 #ifndef H_CONFIGYAML_H
 #define H_CONFIGYAML_H
 
+#include <yaml-cpp/yaml.h>
+
 YAML::Node default_config = YAML::Load(std::string(R"(
 # ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in

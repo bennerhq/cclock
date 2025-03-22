@@ -18,7 +18,6 @@
 #include <QRegularExpression>
 #include <QImage>
 #include <QDebug>
-#include <yaml-cpp/yaml.h>
 #include "h/Config.h"
 #include "h/ConfigYAML.h"
 
