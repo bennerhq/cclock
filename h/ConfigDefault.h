@@ -53,7 +53,6 @@ dial:
         <rect x="0" y="97" width="1" height="3" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-
 # ----
 # The section 'numbers:' contains the settings for the 12 hours around the clock
 numbers:

@@ -90,9 +90,9 @@ void ClockWidget::paintClock(QPainter* painter) {
     QPoint center = rect.center();
     int radius = std::min(rect.width(), rect.height()) / 2;
 
+    painter->setRenderHint(QPainter::Antialiasing);
     painter->translate(center);
     painter->scale(radius / 100.0, radius / 100.0);
-    painter->setRenderHint(QPainter::Antialiasing);
 
     if (dialRenderer != nullptr) {
         dialRenderer->paint(painter, 0, false);
