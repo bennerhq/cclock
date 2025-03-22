@@ -29,7 +29,7 @@ class ClockPainter {
 public:
     virtual ~ClockPainter() {}
 
-    virtual void paint(QPainter* painter, int angle, bool center) {
+    void paint(QPainter* painter, int angle, bool center) {
         painter->save();
         painter->rotate(angle);
         paintImage(painter, center);
