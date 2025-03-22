@@ -40,10 +40,9 @@ private:
     QColor date_background_color;
     QVector<QString> no_positions;
 
+    ClockPainter* dialRenderer;
     ClockPainter* minuteMarkerRenderer; 
     ClockPainter* hourMarkerRenderer; 
-
-    ClockPainter* dialRenderer;
     ClockPainter* hourHandRenderer;
     ClockPainter* minuteHandRenderer;
     ClockPainter* secondHandRenderer; 
