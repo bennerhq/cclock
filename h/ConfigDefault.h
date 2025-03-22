@@ -26,7 +26,6 @@ farver:
 # ----
 # The section 'window:' contains the window settings of the clock
 window:
-  background_color: none              # Background color of the clock window
   frameless: true                     # Whether the window is frameless
   always_on_top: true                 # Whether the window is always on top
   tool: true                          # Whether the window is a tool window
@@ -34,17 +33,26 @@ window:
   y: -210                             # Y position of the window; positive for top, negative for bottom
   width: 200                          # Width of the window
   height: 200                         # Height of the window
+  background_color: none              # Background color of the clock window
+  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
 
 # ----
 # The section 'dial:' contains the svg drawing for the dial background
 dial:
   frame_color: none                   # Color of the clock dial frame
   background_color: none              # Color of the clock dial
+  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
 
-  hour_mark_color: "${farver.base}"   # Color of the hour marks on the clock
-  minute_mark_color: "${farver.base}" # Color of the minute marks on the clock
+  hour_marker: |                      # SVG drawing for the hour markers
+    <svg width="3" height="5" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="95" width="3" height="10" fill="${farver.base}" rx="2" ry="2" />
+    </svg>
 
-  decorate: none                      # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
+  minute_marker: |                    # SVG drawing for the minute markers
+    <svg width="1" height="3" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="97" width="1" height="3" fill="${farver.base}" rx="2" ry="2" />
+    </svg>
+
 
 # ----
 # The section 'numbers:' contains the settings for the 12 hours around the clock

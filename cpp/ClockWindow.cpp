@@ -46,6 +46,7 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     else {
         setAttribute(Qt::WA_TranslucentBackground);
     }
+    backgroundRenderer = config_get_image("window.background");
 
     central_widget = new QWidget(this);
     central_widget->setAttribute(Qt::WA_TranslucentBackground);
@@ -58,6 +59,22 @@ ClockWindow::ClockWindow(QString& config_save_filename)
 
     // Connect to the screenGeometryChanged signal
     connect(QGuiApplication::primaryScreen(), &QScreen::geometryChanged, this, &ClockWindow::onScreenGeometryChanged);
+}
+
+void ClockWindow::paintEvent(QPaintEvent*) {
+    QPainter painter(this);
+
+    QRect rect = this->rect();
+    QPoint center = rect.center();
+    int radius = std::min(rect.width(), rect.height()) / 2;
+
+    painter.translate(center);
+    painter.scale(radius / 100.0, radius / 100.0);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    if (backgroundRenderer != nullptr) {
+        backgroundRenderer->paint(&painter, 0, false);
+    }
 }
 
 void ClockWindow::onScreenGeometryChanged(const QRect &geometry) {

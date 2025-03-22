@@ -36,12 +36,12 @@ private:
     QColor dial_background_color;
     QColor dial_frame_color;
 
-    QColor hour_mark_color;
-    QColor minute_mark_color;
-
     int date_position;
     QColor date_background_color;
     QVector<QString> no_positions;
+
+    ClockPainter* minuteMarkerRenderer; 
+    ClockPainter* hourMarkerRenderer; 
 
     ClockPainter* dialRenderer;
     ClockPainter* hourHandRenderer;

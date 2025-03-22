@@ -29,12 +29,12 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dialRenderer = config_get_image("dial.decorate");
+    dialRenderer = config_get_image("dial.background");
     dial_background_color = config_get_color("dial.background_color");
     dial_frame_color = config_get_color("dial.frame_color");
 
-    hour_mark_color = config_get_color("dial.hour_mark_color");
-    minute_mark_color = config_get_color("dial.minute_mark_color");
+    minuteMarkerRenderer = config_get_image("dial.minute_marker");
+    hourMarkerRenderer = config_get_image("dial.hour_marker");
 
     date_position = config_get_int("date.position");
     QString no_positions_str = config_get_string("numbers.positions");
@@ -86,14 +86,13 @@ void ClockWidget::paintNumbers(QPainter *painter, const QString root, int hour_p
 void ClockWidget::paintClock(QPainter* painter) {
     QTime current_time = QTime::currentTime();
 
-    painter->setRenderHint(QPainter::Antialiasing);
-
     QRect rect = this->rect();
     QPoint center = rect.center();
     int radius = std::min(rect.width(), rect.height()) / 2;
 
     painter->translate(center);
     painter->scale(radius / 100.0, radius / 100.0);
+    painter->setRenderHint(QPainter::Antialiasing);
 
     if (dialRenderer != nullptr) {
         dialRenderer->paint(painter, 0, false);
@@ -115,30 +114,17 @@ void ClockWidget::paintClock(QPainter* painter) {
         painter->restore();
     }
 
-    if (hour_mark_color.isValid()) {
-        QPen hour_mark_pen(hour_mark_color, 2);
-
-        painter->save();
-        painter->setPen(hour_mark_pen);
-        for (int i = 0; i < 12; ++i) {
-            painter->drawLine(88, 0, 96, 0);
-            painter->rotate(30);
-        }
-        painter->restore();
+    if (hourMarkerRenderer != nullptr) {
+        for (int i = 0; i < 12; ++i)
+            hourMarkerRenderer->paint(painter, 30 * i, true);
     }
 
-    if (minute_mark_color.isValid()) {
-        QPen minute_mark_pen(minute_mark_color, 1);
-
-        painter->save();
-        painter->setPen(minute_mark_pen);
+    if (minuteMarkerRenderer != nullptr) {
         for (int i = 0; i < 60; ++i) {
             if (i % 5 != 0) {
-                painter->drawLine(92, 0, 96, 0);
+                minuteMarkerRenderer->paint(painter, 6 * i, true);
             }
-            painter->rotate(6);
         }
-        painter->restore();
     }
 
     for (int i = 0; i < no_positions.size(); ++i) {
@@ -152,9 +138,15 @@ void ClockWidget::paintClock(QPainter* painter) {
         paintNumbers(painter, "date", date_pos, today);
     }
 
-    hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);
-    minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0), true);
-    secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0), true);
+    if (hourHandRenderer != nullptr) {
+        hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);
+    }
+    if (minuteHandRenderer != nullptr) {
+        minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0), true);
+    }
+    if (secondHandRenderer != nullptr) {
+        secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0), true);
+    }
 }
 
 void ClockWidget::saveAsSvg(const QString& filePath) {

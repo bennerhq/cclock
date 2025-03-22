@@ -27,9 +27,9 @@
 
 class ClockPainter {
 public:
-    virtual void paint(QPainter* painter, int angle, bool center) = 0;
     virtual ~ClockPainter() {}
 
+    virtual void paint(QPainter* painter, int angle, bool center) = 0;
     virtual QString getString(int angle = 0, bool center = true) = 0; 
 };
 

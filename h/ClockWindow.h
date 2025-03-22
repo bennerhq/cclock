@@ -27,6 +27,7 @@ public:
     ClockWindow(QString& config_save_filename);
 
 protected:
+    void paintEvent(QPaintEvent* event) override;
     void onScreenGeometryChanged(const QRect &geometry);
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
@@ -34,6 +35,8 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 private:
+    ClockPainter* backgroundRenderer; 
+
     QString config_save_filename;
     ClockWidget* clock_widget;
     QWidget* central_widget;
