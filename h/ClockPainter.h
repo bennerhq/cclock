@@ -29,7 +29,14 @@ class ClockPainter {
 public:
     virtual ~ClockPainter() {}
 
-    virtual void paint(QPainter* painter, int angle, bool center) = 0;
+    virtual void paint(QPainter* painter, int angle, bool center) {
+        painter->save();
+        painter->rotate(angle);
+        paintImage(painter, center);
+        painter->restore();
+    }
+
+    virtual void paintImage(QPainter* painter, bool center) = 0;
     virtual QString getString(int angle = 0, bool center = true) = 0; 
 };
 
@@ -47,15 +54,10 @@ public:
         delete svg;
     }
 
-    void paint(QPainter* painter, int angle, bool center) override {
+    void paintImage(QPainter* painter, bool center) override {
         QSize size = svg->defaultSize();
         QRectF rectF(-size.width() / 2, -size.height() / (center ? 1 : 2), size.width(), size.height());
-        QRect rect = rectF.toRect();
-
-        painter->save();
-        painter->rotate(angle);
-        svg->render(painter, rect);
-        painter->restore();
+        svg->render(painter, rectF.toRect());
     }
 
     QString getString(int angle = 0, bool center = true) override {
@@ -91,13 +93,9 @@ public:
         delete image;
     }
 
-    void paint(QPainter* painter, int angle, bool center) override {
+    void paintImage(QPainter* painter, bool center) override {
         QRect rect(-image->width() / 2, -image->height() / (center ? 1 : 2), image->width(), image->height());
-
-        painter->save();
-        painter->rotate(angle);
         painter->drawImage(rect, *image);
-        painter->restore();
     }
 
     QString getString(int angle = 0, bool center = true) override {
