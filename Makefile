@@ -21,7 +21,7 @@ HEADERS = \
 	h/ClockWidget.h \
 	h/ClockWindow.h \
 	h/Config.h \
-	h/ConfigDefault.h
+	h/ConfigYAML.h
 
 OBJECTS_DIR = \
 	./obj/
@@ -89,7 +89,7 @@ MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
 all: $(TARGET)
 
-h/ConfigDefault.h: cclock.yaml
+h/ConfigYAML.h: cclock.yaml
 	./yaml2config $< $@
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
@@ -111,7 +111,7 @@ $(OBJECTS_DIR)%.moc.cpp: h/%.h
 	moc $< -o $@
 
 clean:
-	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET) h/ConfigDefault.h
+	rm -f $(OBJECTS_DIR)*.o $(OBJECTS_DIR)*.moc.cpp $(TARGET) h/ConfigYAML.h
 
 mocables: \
 	$(MOC_SOURCES)

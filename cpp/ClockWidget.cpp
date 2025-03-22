@@ -152,7 +152,7 @@ void ClockWidget::paintClock(QPainter* painter) {
 void ClockWidget::saveAsSvg(const QString& filePath) {
     QSvgGenerator generator;
     generator.setFileName(filePath);
-    generator.setSize(QSize(150, 150));
+    generator.setSize(QSize(200, 200));
 
     QPainter painter;
     painter.begin(&generator);

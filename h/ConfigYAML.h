@@ -6,8 +6,8 @@
 // yaml2config the content of this file is generate.
 // -------------------------------------------------------------------------------------
 
-#ifndef H_CONFIGDEFAULT_H
-#define H_CONFIGDEFAULT_H
+#ifndef H_CONFIGYAML_H
+#define H_CONFIGYAML_H
 
 YAML::Node default_config = YAML::Load(std::string(R"(
 # ---------------------------------------------------------------------------
@@ -93,4 +93,4 @@ hands:
     </svg>
 )"));
 
-#endif /* H_CONFIGDEFAULT_H */
+#endif /* H_CONFIGYAML_H */

@@ -20,7 +20,7 @@
 #include <QDebug>
 #include <yaml-cpp/yaml.h>
 #include "h/Config.h"
-#include "h/ConfigDefault.h"
+#include "h/ConfigYAML.h"
 
 YAML::Node config;
 
