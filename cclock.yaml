@@ -33,7 +33,7 @@ dial:
 
   hour_marker: |                      # SVG drawing for the hour markers
     <svg width="3" height="5" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="95" width="3" height="10" fill="${farver.base}" rx="2" ry="2" />
+        <rect x="0" y="95" width="3" height="5" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
   minute_marker: |                    # SVG drawing for the minute markers

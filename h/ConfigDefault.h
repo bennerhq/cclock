@@ -34,14 +34,14 @@ window:
   width: 200                          # Width of the window
   height: 200                         # Height of the window
   background_color: none              # Background color of the clock window
-  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
+  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap or SVG file
 
 # ----
 # The section 'dial:' contains the svg drawing for the dial background
 dial:
   frame_color: none                   # Color of the clock dial frame
   background_color: none              # Color of the clock dial
-  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap og SVG file
+  background: none                    # Decoration of the clock dial; "$:<filename>", bitmap or SVG file
 
   hour_marker: |                      # SVG drawing for the hour markers
     <svg width="3" height="5" xmlns="http://www.w3.org/2000/svg">
@@ -76,17 +76,17 @@ date:
 hands:
   animate_msecs: 50                   # Update clock every "animate_msecs" milliseconds
 
-  hour: |                             # image/hour-hand.svg
+  hour: |                             # SVG drawing for the hour markers
     <svg width="5" height="50" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="5" height="50" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  minute: |                           # image/minute-hand.svg
+  minute: |                           # SVG drawing for the hour markers
     <svg width="3" height="70" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="3" height="70" fill="${farver.base}" rx="2" ry="2" />
     </svg>
 
-  second: |                           # image/second-hand.svg
+  second: |                           # SVG drawing for the hour markers
     <svg width="10" height="90" xmlns="http://www.w3.org/2000/svg">
         <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2" />
         <circle cx="5" cy="90" r="5" fill="${farver.base}" />
