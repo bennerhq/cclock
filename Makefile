@@ -76,7 +76,7 @@ else ifeq ($(UNAME_S), Darwin)
         -lpthread \
         -Wl,-rpath,$(QT_PATH)/lib
 else
-    $(error Unsupported operating system)
+    $(error Operating system "$(UNAME_S)" is not supported)
 endif
 
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
