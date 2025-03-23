@@ -19,7 +19,7 @@
 #include <yaml-cpp/yaml.h>
 #include "h/Config.h"
 
-std::string DEFAULT_CONFIG_YAML = ( 
+std::string DEFAULT_CONFIG_YAML = (
     #include "h/ConfigYAML.h" 
 );
 
@@ -160,7 +160,7 @@ bool config_save(const QString& yaml_filename, bool overwrite) {
 }
 
 bool config_save_default(const QString& yaml_filename, bool overwrite) {
-    return config_save_yaml(yaml_filename,DEFAULT_CONFIG_YAML, overwrite);
+    return config_save_yaml(yaml_filename, DEFAULT_CONFIG_YAML, overwrite);
 }
 
 QString config_get_replace(QString& str) {
