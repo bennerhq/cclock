@@ -6,9 +6,6 @@
 // yaml2config the content of this file is generate.
 // -------------------------------------------------------------------------------------
 
-#ifndef H_CONFIGYAML_H
-#define H_CONFIGYAML_H
-
 R"(# ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
 # YAML format. The configuration file is used to set the appearance of the
@@ -91,5 +88,3 @@ hands:
         <circle cx="5" cy="90" r="5" fill="${farver.base}" />
     </svg>
 )"
-
-#endif /* H_CONFIGYAML_H */

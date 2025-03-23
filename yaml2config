@@ -65,13 +65,8 @@ then
     echo "// $script_name the content of this file is generate." >> "$output_file"
     echo '// -------------------------------------------------------------------------------------' >> "$output_file"
     echo '' >> "$output_file"
-    echo "#ifndef $def_include" >> "$output_file"
-    echo "#define $def_include" >> "$output_file"
-    echo '' >> "$output_file"
     echo "R\"($content" >> "$output_file"
     echo ')"' >> "$output_file"
-    echo '' >> "$output_file"
-    echo "#endif /* $def_include */" >> "$output_file"
 
     # Set the output file's timestamp to match the input file's timestamp
     touch -r "$input_file" "$output_file"
