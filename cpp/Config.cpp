@@ -19,8 +19,8 @@
 #include <yaml-cpp/yaml.h>
 #include "h/Config.h"
 
-std::string DEFAULT_CONFIG_YAML = std::string(
-    #include "h/ConfigYAML.h"
+std::string DEFAULT_CONFIG_YAML = ( 
+    #include "h/ConfigYAML.h" 
 );
 
 YAML::Node default_config = YAML::Load(DEFAULT_CONFIG_YAML);
