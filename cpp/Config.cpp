@@ -22,7 +22,6 @@
 #include "h/ConfigYAML.h"
 
 YAML::Node config;
-
 std::unordered_map<QString, QString> config_map;
 
 enum class NodeType {
@@ -49,9 +48,6 @@ static const char* NodeTypeStr[] = {
 
 NodeType config_node_type(const YAML::Node& node) {
     switch (node.Type()) {
-        case YAML::NodeType::Null:
-            return NodeType::Null;
-
         case YAML::NodeType::Scalar:
             try {
                 node.as<double>();
@@ -71,6 +67,9 @@ NodeType config_node_type(const YAML::Node& node) {
             }
             return NodeType::Scalar;
 
+        case YAML::NodeType::Null:
+            return NodeType::Null;
+
         case YAML::NodeType::Sequence:
             return NodeType::Sequence;
 
@@ -78,7 +77,6 @@ NodeType config_node_type(const YAML::Node& node) {
             return NodeType::Map;
 
         case YAML::NodeType::Undefined:
-        default:
             return NodeType::Undefined;
     }
 }
@@ -186,6 +184,7 @@ QString config_get_replace(QString& str) {
 }
 
 QString config_get_string(const QString& key) {
+    QString value = config_map[key];
     return config_get_replace(config_map[key]);
 }
 
@@ -275,8 +274,8 @@ ClockPainter* config_get_image(const QString& key) {
 
 void config_set_int(const QString& key, int value) {
     config_map[key] = QString::number(value);
-    QStringList keys = key.split('.');
 
+    QStringList keys = key.split('.');
     YAML::Node node = config;
     for (int i = 0; i < keys.size() - 1; ++i) {
         node = node[keys[i].toStdString()];
