@@ -29,6 +29,7 @@ cclock
 .qmake.stash
 lkjsadlksdajdlkasjdlskdjfklajfsdlkjfdlkfj
 
+# Ignore tolles files
 fido*
 kalle*
 anton*
