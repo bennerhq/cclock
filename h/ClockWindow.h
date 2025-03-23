@@ -35,7 +35,7 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 private:
-    ClockPainter* backgroundRenderer; 
+    ClockPainter* backgroundPainter; 
 
     QString config_save_filename;
     ClockWidget* clock_widget;

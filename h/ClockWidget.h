@@ -40,12 +40,12 @@ private:
     QColor date_background_color;
     QVector<QString> no_positions;
 
-    ClockPainter* dialRenderer;
-    ClockPainter* minuteMarkerRenderer; 
-    ClockPainter* hourMarkerRenderer; 
-    ClockPainter* hourHandRenderer;
-    ClockPainter* minuteHandRenderer;
-    ClockPainter* secondHandRenderer; 
+    ClockPainter* dialPainter;
+    ClockPainter* minuteMarkerPainter; 
+    ClockPainter* hourMarkerPainter; 
+    ClockPainter* hourHandPainter;
+    ClockPainter* minuteHandPainter;
+    ClockPainter* secondHandPainter; 
 
     void paintNumbers(QPainter *painter, const QString root, int hour_pos, QString number);
     void paintClock(QPainter* painter);

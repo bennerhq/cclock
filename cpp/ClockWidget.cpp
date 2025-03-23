@@ -29,12 +29,12 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dialRenderer = factoryClockPainter("dial.background");
+    dialPainter = factoryClockPainter("dial.background");
     dial_background_color = config_get_color("dial.background_color");
     dial_frame_color = config_get_color("dial.frame_color");
 
-    minuteMarkerRenderer = factoryClockPainter("dial.minute_marker");
-    hourMarkerRenderer = factoryClockPainter("dial.hour_marker");
+    minuteMarkerPainter = factoryClockPainter("dial.minute_marker");
+    hourMarkerPainter = factoryClockPainter("dial.hour_marker");
 
     date_position = config_get_int("date.position");
     QString no_positions_str = config_get_string("numbers.positions");
@@ -45,9 +45,9 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
         }
     }
 
-    hourHandRenderer = factoryClockPainter("hands.hour");
-    minuteHandRenderer = factoryClockPainter("hands.minute");
-    secondHandRenderer = factoryClockPainter("hands.second");
+    hourHandPainter = factoryClockPainter("hands.hour");
+    minuteHandPainter = factoryClockPainter("hands.minute");
+    secondHandPainter = factoryClockPainter("hands.second");
 
     int animate_msecs = config_get_int("hands.animate_msecs");
     timer->start(animate_msecs);
@@ -94,8 +94,8 @@ void ClockWidget::paintClock(QPainter* painter) {
     painter->translate(center);
     painter->scale(radius / 100.0, radius / 100.0);
 
-    if (dialRenderer != nullptr) {
-        dialRenderer->paint(painter, 0, false);
+    if (dialPainter != nullptr) {
+        dialPainter->paint(painter, 0, false);
     }
 
     if (dial_background_color.isValid()) {
@@ -114,15 +114,15 @@ void ClockWidget::paintClock(QPainter* painter) {
         painter->restore();
     }
 
-    if (hourMarkerRenderer != nullptr) {
+    if (hourMarkerPainter != nullptr) {
         for (int i = 0; i < 12; ++i)
-            hourMarkerRenderer->paint(painter, 30 * i, true);
+            hourMarkerPainter->paint(painter, 30 * i, true);
     }
 
-    if (minuteMarkerRenderer != nullptr) {
+    if (minuteMarkerPainter != nullptr) {
         for (int i = 0; i < 60; ++i) {
             if (i % 5 != 0) {
-                minuteMarkerRenderer->paint(painter, 6 * i, true);
+                minuteMarkerPainter->paint(painter, 6 * i, true);
             }
         }
     }
@@ -138,14 +138,14 @@ void ClockWidget::paintClock(QPainter* painter) {
         paintNumbers(painter, "date", date_pos, today);
     }
 
-    if (hourHandRenderer != nullptr) {
-        hourHandRenderer->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);
+    if (hourHandPainter != nullptr) {
+        hourHandPainter->paint(painter, 30 * (current_time.hour() + current_time.minute() / 60.0), true);
     }
-    if (minuteHandRenderer != nullptr) {
-        minuteHandRenderer->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0), true);
+    if (minuteHandPainter != nullptr) {
+        minuteHandPainter->paint(painter, 6 * (current_time.minute() + current_time.second() / 60.0), true);
     }
-    if (secondHandRenderer != nullptr) {
-        secondHandRenderer->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0), true);
+    if (secondHandPainter != nullptr) {
+        secondHandPainter->paint(painter, 6 * (current_time.second() + current_time.msec() / 1000.0), true);
     }
 }
 

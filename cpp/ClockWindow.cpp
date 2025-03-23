@@ -46,7 +46,7 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     else {
         setAttribute(Qt::WA_TranslucentBackground);
     }
-    backgroundRenderer = factoryClockPainter("window.background");
+    backgroundPainter = factoryClockPainter("window.background");
 
     central_widget = new QWidget(this);
     central_widget->setAttribute(Qt::WA_TranslucentBackground);
@@ -72,8 +72,8 @@ void ClockWindow::paintEvent(QPaintEvent*) {
     painter.translate(center);
     painter.scale(radius / 100.0, radius / 100.0);
 
-    if (backgroundRenderer != nullptr) {
-        backgroundRenderer->paint(&painter, 0, false);
+    if (backgroundPainter != nullptr) {
+        backgroundPainter->paint(&painter, 0, false);
     }
 }
 
