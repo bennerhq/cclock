@@ -46,8 +46,8 @@ public:
         painter->rotate(angle);
 
         QSize size = svg->defaultSize();
-        QRectF rectF(-size.width() / 2, -size.height() / (center ? 1 : 2), size.width(), size.height());
-        svg->render(painter, rectF.toRect());
+        QRect rect(-size.width() / 2, -size.height() / (center ? 1 : 2), size.width(), size.height());
+        svg->render(painter, rect);
 
         painter->restore();
     }

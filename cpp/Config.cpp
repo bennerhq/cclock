@@ -16,13 +16,17 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QRegularExpression>
+#include <yaml-cpp/yaml.h>
 #include "h/Config.h"
-#include "h/ConfigYAML.h"
+
+std::string DEFAULT_CONFIG_YAML = std::string(
+    #include "h/ConfigYAML.h"
+);
 
 YAML::Node default_config = YAML::Load(DEFAULT_CONFIG_YAML);
 YAML::Node config;
 
-std::unordered_map<QString, QString> config_map; // Fast & simple, single string, lookup to config
+std::unordered_map<QString, QString> config_map; // Fast & simple, single string lookup to config
 
 enum class NodeType {
     Null,

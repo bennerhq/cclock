@@ -9,9 +9,6 @@
 #ifndef H_CONFIGYAML_H
 #define H_CONFIGYAML_H
 
-#include <yaml-cpp/yaml.h>
-
-std::string DEFAULT_CONFIG_YAML = std::string(
 R"(# ---------------------------------------------------------------------------
 # This is the configuration file for the cclock application. It is written in
 # YAML format. The configuration file is used to set the appearance of the
@@ -93,6 +90,6 @@ hands:
         <rect x="4" y="0" width="2" height="90" fill="${farver.highlight}" rx="2" ry="2" />
         <circle cx="5" cy="90" r="5" fill="${farver.base}" />
     </svg>
-)");
+)"
 
 #endif /* H_CONFIGYAML_H */
