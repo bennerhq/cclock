@@ -61,16 +61,16 @@ int main(int argc, char *argv[]) {
     QCommandLineOption configLoad(QStringList() << "c" << "config", "Path to the configuration file.", "config");
     parser.addOption(configLoad);
 
-    QCommandLineOption configDefault(QStringList() << "d" << "default", "Save default configuration to a file.", "config");
+    QCommandLineOption configDefault(QStringList() << "d" << "default", "Save default configuration.", "config");
     parser.addOption(configDefault);
 
-    QCommandLineOption configSave(QStringList() << "s" << "save", "Save config file, If 'config' same as loaded config.", "config");
+    QCommandLineOption configSave(QStringList() << "s" << "save", "Save configuration, incl. updates during usage.", "config");
     parser.addOption(configSave);
 
-    QCommandLineOption configVerbose(QStringList() << "v" << "verbose", "Show config file path.");
+    QCommandLineOption configVerbose(QStringList() << "v" << "verbose", "Be verbose when loading and saving config files.");
     parser.addOption(configVerbose);
 
-    parser.addPositionalArgument("config", "Path to the configuration file.");
+    parser.addPositionalArgument("config", "Path to the yaml configuration file.");
     parser.process(app);
 
     if (parser.isSet(configDefault)) {
@@ -91,22 +91,21 @@ int main(int argc, char *argv[]) {
         config_path = find_config_file(argv[0]);
     }
 
-    if (parser.isSet(configVerbose)) {
-        std::cout << "Read config file: " << config_path.toStdString() << std::endl;
+    if (config_load(config_path)) {
+        if (parser.isSet(configVerbose)) {
+            std::cout << "Using config file: " << config_path.toStdString() << std::endl;
+        }
     }
-    if (!config_load(config_path)) {
-        std::cout << "Can't load config file: " << config_path.toStdString() << std::endl;
+    else {
+        std::cout << "Can't load config file: " << config_path.toStdString() << ". Using defaults." << std::endl;
     }
 
     QString config_save_filename = nullptr;
     if (parser.isSet(configSave)) {
         config_save_filename = parser.value(configSave);
-        if (config_save_filename == "config") {
-            config_save_filename = config_path;
-        }
         if (config_save(config_save_filename)) {
             if (parser.isSet(configVerbose)) {
-                std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
+                std::cout << "Saved config file to: " << config_save_filename.toStdString() << std::endl;
             }
         } else {
             std::cout << "Can't save config file: " << config_save_filename.toStdString() << ". File exists." << std::endl;
