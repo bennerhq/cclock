@@ -11,18 +11,16 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <QFileInfo>
 #include <QTextStream>
 #include <QString>
+#include <QFileInfo>
 #include <QFile>
 #include <QRegularExpression>
-#include <QImage>
-#include <QDebug>
 #include "h/Config.h"
 #include "h/ConfigYAML.h"
 
 YAML::Node config;
-std::unordered_map<QString, QString> config_map;
+std::unordered_map<QString, QString> config_map; // Fast, single string, lookup to config
 
 enum class NodeType {
     Null,
@@ -211,67 +209,34 @@ QColor config_get_color(const QString& key) {
     return QColor(config_get_string(key));
 }
 
-ClockPainter* config_get_image(const QString& key) {
-    QString svg_str = config_get_string(key);
+QString config_get_image(const QString& key) {
+    QString image_str = config_get_string(key);
 
-    if (svg_str.startsWith("$:")) {
-        svg_str.remove(0, 2);
-        if (svg_str.endsWith(".svg")) {
-            QFile file(svg_str);
-            if (file.open(QIODevice::ReadOnly)) {
-                svg_str = file.readAll();
-                file.close();
-            }
-            else {
-                std::cout << "*** Error: Can't open file " << svg_str.toStdString() << std::endl;
-                return nullptr;
-            }
-        }
-        else {
-            QImage* image = new QImage(svg_str);
-            if (image->isNull()) {
-                std::cout << "*** Error: Can't read image: " << svg_str.toStdString() << std::endl;
+    if (image_str.startsWith("$:")) {
+        image_str.remove(0, 2);
 
-                delete image;
-                return nullptr;
-            }
-            return new BitmapClockPainter(image);
-        }
-    }
-    else if (svg_str.startsWith("data:image/")) {
-        QString base64Data = svg_str;
-        if (base64Data.startsWith("data:image/")) {
-            int commaIndex = base64Data.indexOf(',');
-            if (commaIndex != -1) {
-                base64Data = base64Data.mid(commaIndex + 1);
-            }
-        }
-
-        QByteArray byteArray = QByteArray::fromBase64(base64Data.toUtf8());
-        QImage* image = new QImage();
-        if (!image->loadFromData(byteArray)) {
-            std::cout << "*** Error: Can't create image from base64 image" << std::endl;
-
-            delete image;
+        QFile file(image_str);
+        if (!file.open(QIODevice::ReadOnly)) {
+            std::cout << "*** Error: Can't open file " << image_str.toStdString() << std::endl;
             return nullptr;
         }
-        return new BitmapClockPainter(image);
+
+        if (image_str.endsWith(".svg")) {
+            image_str = file.readAll();
+        }
+        else {
+            QByteArray imageData = file.readAll();
+            image_str = "data:image/" + QFileInfo(image_str).suffix() + ";base64," + imageData.toBase64();
+        }
+        file.close();
     }
 
-    svg_str = config_get_replace(svg_str);
-    if (svg_str == "") {
-        return nullptr;
-    } 
-
-    QSvgRenderer* renderer = new QSvgRenderer();
-    try {
-        QByteArray svg_byte = svg_str.toUtf8();
-        renderer->load(svg_byte);
-        return new SvgClockPainter(renderer);
-    } catch (...) {
-        delete renderer;
+    image_str = config_get_replace(image_str);
+    if (image_str == "") {
         return nullptr;
     }
+
+    return image_str;
 }
 
 void config_set_int(const QString& key, int value) {

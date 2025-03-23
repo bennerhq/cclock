@@ -29,12 +29,12 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     setMinimumSize(100, 100);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    dialRenderer = config_get_image("dial.background");
+    dialRenderer = createClockPainter("dial.background");
     dial_background_color = config_get_color("dial.background_color");
     dial_frame_color = config_get_color("dial.frame_color");
 
-    minuteMarkerRenderer = config_get_image("dial.minute_marker");
-    hourMarkerRenderer = config_get_image("dial.hour_marker");
+    minuteMarkerRenderer = createClockPainter("dial.minute_marker");
+    hourMarkerRenderer = createClockPainter("dial.hour_marker");
 
     date_position = config_get_int("date.position");
     QString no_positions_str = config_get_string("numbers.positions");
@@ -45,9 +45,9 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
         }
     }
 
-    hourHandRenderer = config_get_image("hands.hour");
-    minuteHandRenderer = config_get_image("hands.minute");
-    secondHandRenderer = config_get_image("hands.second");
+    hourHandRenderer = createClockPainter("hands.hour");
+    minuteHandRenderer = createClockPainter("hands.minute");
+    secondHandRenderer = createClockPainter("hands.second");
 
     int animate_msecs = config_get_int("hands.animate_msecs");
     timer->start(animate_msecs);

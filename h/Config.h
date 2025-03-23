@@ -14,7 +14,6 @@
 
 #include <string>
 #include <QColor>
-#include "h/ClockPainter.h"
 
 bool config_load(const QString& yaml_filename);
 
@@ -25,7 +24,7 @@ QString config_get_string(const QString& key);
 bool config_get_bool(const QString& key);
 int config_get_int(const QString& key);
 QColor config_get_color(const QString& key);
-ClockPainter* config_get_image(const QString& key);
+QString config_get_image(const QString& key);
 
 void config_set_int(const QString& key, int value);
 

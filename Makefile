@@ -12,16 +12,10 @@
 TARGET = cclock
 
 SOURCES = \
-	main.cpp \
-	cpp/ClockWidget.cpp \
-	cpp/ClockWindow.cpp \
-	cpp/Config.cpp
+    $(wildcard cpp/*.cpp)
 
 HEADERS = \
-	h/ClockWidget.h \
-	h/ClockWindow.h \
-	h/Config.h \
-	h/ConfigYAML.h
+    $(wildcard h/*.h)
 
 OBJECTS_DIR = \
 	./obj/
@@ -88,6 +82,10 @@ MOC_SOURCES = $(addprefix $(OBJECTS_DIR), $(notdir $(HEADERS:.h=.moc.cpp)))
 MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
 all: $(TARGET)
+
+ifeq ("$(wildcard h/ConfigYAML.h)","")
+    $(shell ./yaml2config cclock.yaml h/ConfigYAML.h)
+endif
 
 h/ConfigYAML.h: cclock.yaml
 	./yaml2config $< $@
