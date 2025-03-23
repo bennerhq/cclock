@@ -132,11 +132,13 @@ bool config_load(const QString& yaml_filename) {
     return res;
 }
 
-bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {
+bool config_save_yaml(const QString& yaml_filename, YAML::Node& config, bool overwrite) {
     try {
-        QFileInfo fileInfo(yaml_filename);
-        if (fileInfo.isFile()) {
-            return false;
+        if (!overwrite) {
+            QFileInfo fileInfo(yaml_filename);
+            if (fileInfo.isFile()) {
+                return false;
+            }
         }
 
         QFile file(yaml_filename);
@@ -154,12 +156,12 @@ bool config_save_yaml(const QString& yaml_filename, YAML::Node& config) {
     }
 }
 
-bool config_save(const QString& yaml_filename) {
-    return config_save_yaml(yaml_filename, config);
+bool config_save(const QString& yaml_filename, bool overwrite) {
+    return config_save_yaml(yaml_filename, config, overwrite);
 }
 
-bool config_save_default(const QString& yaml_filename) {
-    return config_save_yaml(yaml_filename, default_config);
+bool config_save_default(const QString& yaml_filename, bool overwrite) {
+    return config_save_yaml(yaml_filename, default_config, overwrite);
 }
 
 QString config_get_replace(QString& str) {
@@ -275,10 +277,11 @@ ClockPainter* config_get_image(const QString& key) {
 void config_set_int(const QString& key, int value) {
     config_map[key] = QString::number(value);
 
+    YAML::Node* node = &config;
     QStringList keys = key.split('.');
-    YAML::Node node = config;
     for (int i = 0; i < keys.size() - 1; ++i) {
-        node = node[keys[i].toStdString()];
+        YAML::Node temp = (*node)[keys[i].toStdString()];
+        node = &temp;
     }
-    node[keys.last().toStdString()] = value;
+    (*node)[keys.last().toStdString()] = value;
 }

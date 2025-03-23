@@ -112,7 +112,7 @@ void ClockWindow::mouseReleaseEvent(QMouseEvent* event) {
     }
 
     if (config_save_filename != nullptr) {
-        config_save(config_save_filename);
+        config_save(config_save_filename, true);
     }
 }
 

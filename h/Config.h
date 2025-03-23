@@ -17,8 +17,9 @@
 #include "h/ClockPainter.h"
 
 bool config_load(const QString& yaml_filename);
-bool config_save(const QString& yaml_filename);
-bool config_save_default(const QString& yaml_filename);
+
+bool config_save(const QString& yaml_filename, bool overwrite = false);
+bool config_save_default(const QString& yaml_filename, bool overwrite = false);
 
 QString config_get_string(const QString& key);
 bool config_get_bool(const QString& key);
