@@ -110,25 +110,23 @@ hands:
 
 ```console
 # ./cclock --help
-Usage: ./cclock [options] [config]
+Usage: ./cclock [options] config
 Displayes an analog clock. The clock can be configured using a YAML file.
 
 Options:
   -h, --help              Displays help on commandline options.
   --help-all              Displays help, including generic Qt options.
   -c, --config <config>   Path to the configuration file.
-  -d, --default <config>  Save default configuration to a file.
-  -s, --save <config>     Save config file, If 'config' same as loaded config.
-  -v, --verbose           Show config file path.
+  -d, --default <config>  Save default configuration.
+  -s, --save <config>     Save configuration, incl. updates during usage.
+  -v, --verbose           Be verbose when loading and saving config files.
 
 Arguments:
-  config                  Path to the configuration file.
-# ./cclock ./cclock.yaml
+  config                  Path to the yaml configuration file.
 ```
 
 ## TO-DO
 
-- Use SVG to decorate dial
 - MacOS: Clock always onto (bug)
 
 ## Contributing

@@ -24,7 +24,7 @@ farver:
   highlight: "#FF0000"
   text: "#FFFFFF"
   transparent: "#10FFFFFF"
-  
+
 # ----
 # The section 'window:' contains the window settings of the clock
 window:

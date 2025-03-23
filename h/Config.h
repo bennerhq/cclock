@@ -13,6 +13,7 @@
 #define CONFIG_UTILS_H
 
 #include <string>
+#include <QString>
 #include <QColor>
 
 bool config_load(const QString& yaml_filename);
