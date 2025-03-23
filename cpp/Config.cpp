@@ -132,28 +132,35 @@ bool config_load(const QString& yaml_filename) {
     }
 }
 
-bool config_save_file(const QString& yaml_filename, const std::string& yaml_config, bool overwrite) {
-    if (!overwrite && QFileInfo::exists(yaml_filename)) {
-        return false;
-    }
+bool config_save_yaml(const QString& yaml_filename, std::string yaml_config, bool overwrite) {
+    try {
+        if (!overwrite) {
+            QFileInfo fileInfo(yaml_filename);
+            if (fileInfo.isFile()) {
+                return false;
+            }
+        }
 
-    QFile file(yaml_filename);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream out(&file);
-        out << QString::fromStdString(yaml_config);
-        file.close();
-        return true;
+        QFile file(yaml_filename);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << QString::fromStdString(yaml_config);
+            file.close();
+
+            return true;
+        }
+    } catch (const std::exception& e) {
     }
 
     return false;
 }
 
 bool config_save(const QString& yaml_filename, bool overwrite) {
-    return config_save_file(yaml_filename, YAML::Dump(config), overwrite);
+    return config_save_yaml(yaml_filename, YAML::Dump(config), overwrite);
 }
 
 bool config_save_default(const QString& yaml_filename, bool overwrite) {
-    return config_save_file(yaml_filename, DEFAULT_CONFIG_YAML, overwrite);
+    return config_save_yaml(yaml_filename, DEFAULT_CONFIG_YAML, overwrite);
 }
 
 QString config_get_replace(QString& str) {
@@ -216,15 +223,22 @@ QString config_get_image(const QString& key) {
             return nullptr;
         }
 
-        if (!image_str.endsWith(".svg")) {
-            QByteArray imageData = file.readAll();
-            return "data:image/" + QFileInfo(image_str).suffix() + ";base64," + imageData.toBase64();
+        if (image_str.endsWith(".svg")) {
+            image_str = file.readAll();
         }
-
-        image_str = file.readAll();
+        else {
+            QByteArray imageData = file.readAll();
+            image_str = "data:image/" + QFileInfo(image_str).suffix() + ";base64," + imageData.toBase64();
+        }
+        file.close();
     }
 
-    return config_get_replace(image_str);
+    image_str = config_get_replace(image_str);
+    if (image_str == "") {
+        return nullptr;
+    }
+
+    return image_str;
 }
 
 void config_set_int(const QString& key, int value) {
