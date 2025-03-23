@@ -24,21 +24,16 @@
 #include "h/ClockPainter.h"
 
 // ----------------------------------------------------------------------------
-// ClockPainter - Abstract class
-//
-void ClockPainter::paint(QPainter* painter, int angle, bool center) {
-    painter->save();
-    painter->rotate(angle);
-    paintImage(painter, center);
-    painter->restore();
-}
-    
-// ----------------------------------------------------------------------------
 // SvgClockPainter - SVG Clock Painter
 //
 class SvgClockPainter : public ClockPainter {
 private:
     QSvgRenderer* svg;
+
+    ~SvgClockPainter() {
+        delete svg;
+    }
+
 public:
     SvgClockPainter(QSvgRenderer* svg) : svg(svg) {
         if (svg == nullptr) {
@@ -46,33 +41,15 @@ public:
         }
     }
     
-    ~SvgClockPainter() {
-        delete svg;
-    }
+    void paint(QPainter* painter, int angle, bool center) override {
+        painter->save();
+        painter->rotate(angle);
 
-    QString getString(int angle = 0, bool center = true) override {
-        QByteArray byteArray;
-        QBuffer buffer(&byteArray);
-        buffer.open(QIODevice::WriteOnly);
-    
-        QSvgGenerator generator;
-        generator.setOutputDevice(&buffer);
-    
-        QPainter painter;
-        painter.begin(&generator);
-        paint(&painter, angle, center);
-        painter.end();
-    
-        buffer.close();
-    
-        return QString::fromUtf8(byteArray);
-    };
-
-protected:
-    void paintImage(QPainter* painter, bool center) override {
         QSize size = svg->defaultSize();
         QRectF rectF(-size.width() / 2, -size.height() / (center ? 1 : 2), size.width(), size.height());
         svg->render(painter, rectF.toRect());
+
+        painter->restore();
     }
 };
 
@@ -82,6 +59,11 @@ protected:
 class BitmapClockPainter : public ClockPainter {
 private:
     QImage* image;
+
+    ~BitmapClockPainter() {
+        delete image;
+    }
+
 public:
     BitmapClockPainter(QImage* image) : image(image) {
         if (image == nullptr) {
@@ -89,30 +71,14 @@ public:
         }
     }
 
-    ~BitmapClockPainter() {
-        delete image;
-    }
+    void paint(QPainter* painter, int angle, bool center) override {
+        painter->save();
+        painter->rotate(angle);
 
-    QString getString(int angle = 0, bool center = true) override {
-        QByteArray byteArray;
-        QBuffer buffer(&byteArray);
-        buffer.open(QIODevice::WriteOnly);
-
-        QImage tempImage(*image);
-        QPainter painter(&tempImage);
-        paint(&painter, angle, center);
-        painter.end();
-        
-        tempImage.save(&buffer, "PNG");
-        buffer.close();
-
-        return "data:image/png;base64," + byteArray.toBase64();
-    };
-
-protected:
-    void paintImage(QPainter* painter, bool center) override {
         QRect rect(-image->width() / 2, -image->height() / (center ? 1 : 2), image->width(), image->height());
         painter->drawImage(rect, *image);
+
+        painter->restore();
     }
 };
 

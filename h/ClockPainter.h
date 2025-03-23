@@ -18,12 +18,7 @@
 class ClockPainter {
 public:
     virtual ~ClockPainter() {}
-
-    void paint(QPainter* painter, int angle, bool center);
-    virtual QString getString(int angle = 0, bool center = true) = 0; 
-
-protected:
-    virtual void paintImage(QPainter* painter, bool center) = 0;
+    virtual void paint(QPainter* painter, int angle, bool center) = 0;
 };
 
 ClockPainter* factoryClockPainter(const QString& key);
