@@ -145,11 +145,10 @@ bool config_save_yaml(const QString& yaml_filename, std::string yaml_config, boo
 
             return true;
         }
-
-        return false;
     } catch (const std::exception& e) {
-        return false;
     }
+
+    return false;
 }
 
 bool config_save(const QString& yaml_filename, bool overwrite) {
@@ -187,7 +186,8 @@ QString config_get_string(const QString& key) {
 }
 
 bool config_get_bool(const QString& key) {
-    return config_get_string(key) == "true";
+    QString value =  config_get_string(key);
+    return value == "true";
 }
 
 int config_get_int(const QString& key) {
