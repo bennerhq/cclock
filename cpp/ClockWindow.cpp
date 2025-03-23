@@ -46,7 +46,7 @@ ClockWindow::ClockWindow(QString& config_save_filename)
     else {
         setAttribute(Qt::WA_TranslucentBackground);
     }
-    backgroundRenderer = createClockPainter("window.background");
+    backgroundRenderer = factoryClockPainter("window.background");
 
     central_widget = new QWidget(this);
     central_widget->setAttribute(Qt::WA_TranslucentBackground);

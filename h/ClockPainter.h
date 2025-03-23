@@ -19,19 +19,13 @@ class ClockPainter {
 public:
     virtual ~ClockPainter() {}
 
-    void paint(QPainter* painter, int angle, bool center) {
-        painter->save();
-        painter->rotate(angle);
-        paintImage(painter, center);
-        painter->restore();
-    }
-
+    void paint(QPainter* painter, int angle, bool center);
     virtual QString getString(int angle = 0, bool center = true) = 0; 
 
 protected:
     virtual void paintImage(QPainter* painter, bool center) = 0;
 };
 
-ClockPainter* createClockPainter(const QString& key);
+ClockPainter* factoryClockPainter(const QString& key);
 
 #endif // CLOCKPAINTER_H

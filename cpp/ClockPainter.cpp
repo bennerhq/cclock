@@ -23,6 +23,19 @@
 #include "h/Config.h"
 #include "h/ClockPainter.h"
 
+// ----------------------------------------------------------------------------
+// ClockPainter - Abstract class
+//
+void ClockPainter::paint(QPainter* painter, int angle, bool center) {
+    painter->save();
+    painter->rotate(angle);
+    paintImage(painter, center);
+    painter->restore();
+}
+    
+// ----------------------------------------------------------------------------
+// SvgClockPainter - SVG Clock Painter
+//
 class SvgClockPainter : public ClockPainter {
 private:
     QSvgRenderer* svg;
@@ -63,6 +76,9 @@ protected:
     }
 };
 
+// ----------------------------------------------------------------------------
+// BitmapClockPainter - Bitmap Clock Painter
+//
 class BitmapClockPainter : public ClockPainter {
 private:
     QImage* image;
@@ -100,7 +116,10 @@ protected:
     }
 };
 
-ClockPainter* createClockPainter(const QString& key) {
+// ----------------------------------------------------------------------------
+// factoryClockPainter - Factory method for creating ClockPainter
+//
+ClockPainter* factoryClockPainter(const QString& key) {
     QString data_str = config_get_image(key);
     if (data_str.isEmpty()) {
         return nullptr;
