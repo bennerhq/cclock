@@ -19,8 +19,10 @@
 #include "h/Config.h"
 #include "h/ConfigYAML.h"
 
+YAML::Node default_config = YAML::Load(DEFAULT_CONFIG_YAML);
 YAML::Node config;
-std::unordered_map<QString, QString> config_map; // Fast, single string, lookup to config
+
+std::unordered_map<QString, QString> config_map; // Fast & simple, single string, lookup to config
 
 enum class NodeType {
     Null,
@@ -126,7 +128,7 @@ bool config_load(const QString& yaml_filename) {
     }
 }
 
-bool config_save_yaml(const QString& yaml_filename, YAML::Node& config, bool overwrite) {
+bool config_save_yaml(const QString& yaml_filename, std::string yaml_config, bool overwrite) {
     try {
         if (!overwrite) {
             QFileInfo fileInfo(yaml_filename);
@@ -138,7 +140,7 @@ bool config_save_yaml(const QString& yaml_filename, YAML::Node& config, bool ove
         QFile file(yaml_filename);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
-            out << QString::fromStdString(YAML::Dump(config));
+            out << QString::fromStdString(yaml_config);
             file.close();
 
             return true;
@@ -151,11 +153,11 @@ bool config_save_yaml(const QString& yaml_filename, YAML::Node& config, bool ove
 }
 
 bool config_save(const QString& yaml_filename, bool overwrite) {
-    return config_save_yaml(yaml_filename, config, overwrite);
+    return config_save_yaml(yaml_filename, YAML::Dump(config), overwrite);
 }
 
 bool config_save_default(const QString& yaml_filename, bool overwrite) {
-    return config_save_yaml(yaml_filename, default_config, overwrite);
+    return config_save_yaml(yaml_filename,DEFAULT_CONFIG_YAML, overwrite);
 }
 
 QString config_get_replace(QString& str) {

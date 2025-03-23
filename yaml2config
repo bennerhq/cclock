@@ -70,9 +70,9 @@ then
     echo '' >> "$output_file"
     echo '#include <yaml-cpp/yaml.h>' >> "$output_file"
     echo '' >> "$output_file"
-    echo 'YAML::Node default_config = YAML::Load(std::string(R"(' >> "$output_file"
-    echo "$content" >> "$output_file"
-    echo ')"));' >> "$output_file"
+    echo 'std::string DEFAULT_CONFIG_YAML = std::string(' >> "$output_file"
+    echo "R\"($content" >> "$output_file"
+    echo ')");' >> "$output_file"
     echo '' >> "$output_file"
     echo "#endif /* $def_include */" >> "$output_file"
 
