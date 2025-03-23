@@ -223,22 +223,15 @@ QString config_get_image(const QString& key) {
             return nullptr;
         }
 
-        if (image_str.endsWith(".svg")) {
-            image_str = file.readAll();
-        }
-        else {
+        if (!image_str.endsWith(".svg")) {
             QByteArray imageData = file.readAll();
-            image_str = "data:image/" + QFileInfo(image_str).suffix() + ";base64," + imageData.toBase64();
+            return "data:image/" + QFileInfo(image_str).suffix() + ";base64," + imageData.toBase64();
         }
-        file.close();
+
+        image_str = file.readAll();
     }
 
-    image_str = config_get_replace(image_str);
-    if (image_str == "") {
-        return nullptr;
-    }
-
-    return image_str;
+    return config_get_replace(image_str);
 }
 
 void config_set_int(const QString& key, int value) {
