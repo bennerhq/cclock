@@ -75,6 +75,7 @@ NodeType config_node_type(const YAML::Node& node) {
             return NodeType::Map;
 
         case YAML::NodeType::Undefined:
+        default:
             return NodeType::Undefined;
     }
 }

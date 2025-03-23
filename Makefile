@@ -83,12 +83,7 @@ MOC_OBJECTS = $(MOC_SOURCES:.cpp=.o)
 
 all: $(TARGET)
 
-ifeq ("$(wildcard h/ConfigYAML.h)","")
-    $(shell ./yaml2config cclock.yaml h/ConfigYAML.h)
-endif
-
-h/ConfigYAML.h: cclock.yaml
-	./yaml2config $< $@
+$(shell ./yaml2config cclock.yaml h/ConfigYAML.h)
 
 $(TARGET): $(OBJECTS) $(MOC_OBJECTS)
 	$(CXX) -o $(TARGET) $(OBJECTS) $(MOC_OBJECTS) $(LIBS)
