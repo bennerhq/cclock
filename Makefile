@@ -75,6 +75,8 @@ else ifeq ($(UNAME_S), Darwin)
         -framework OpenGL \
         -lpthread \
         -Wl,-rpath,$(QT_PATH)/lib
+else
+    $(error Unsupported operating system)
 endif
 
 OBJECTS = $(addprefix $(OBJECTS_DIR), $(notdir $(SOURCES:.cpp=.o)))
