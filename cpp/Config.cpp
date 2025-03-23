@@ -116,19 +116,14 @@ YAML::Node config_merge(QString root, const YAML::Node& default_config, const YA
 }
 
 bool config_load(const QString& yaml_filename) {
-    bool res = false;
     try {
-        QFileInfo fileInfo(yaml_filename);
-        if (fileInfo.isFile()) {
-            config = YAML::LoadFile(yaml_filename.toStdString());
-            res = true;
-        }
+        config = YAML::LoadFile(yaml_filename.toStdString());
+        config = config_merge("", default_config, config);
+        return true;
     } catch (const std::exception& e) {
-        // ...
+        config = config_merge("", default_config, default_config);
+        return false;
     }
-
-    config = config_merge("", default_config, config);
-    return res;
 }
 
 bool config_save_yaml(const QString& yaml_filename, YAML::Node& config, bool overwrite) {
@@ -199,7 +194,7 @@ int config_get_int(const QString& key) {
     bool ok;
     int value = str.toInt(&ok);
     if (!ok) {
-        std::cout << "*** Error: " << key.toStdString() << " is not of type int: " << str.toStdString() << std::endl;
+        std::cout << "*** Error: " << key.toStdString() << " is not of type int: '" << str.toStdString() <<"'" << std::endl;
         return 0;
     }
 
