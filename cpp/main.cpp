@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Save config file: " << config_save_filename.toStdString() << std::endl;
             }
         } else {
-            std::cout << "Can't save config file: " << config_save_filename.toStdString() << std::endl;
+            std::cout << "Can't save config file: " << config_save_filename.toStdString() << ". File exists." << std::endl;
         }
     }
 
