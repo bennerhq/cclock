@@ -38,7 +38,7 @@ private:
 
     int date_position;
     QColor date_background_color;
-    QVector<QString> no_positions;
+    QVector<int> no_positions;
 
     ClockPainter* dialPainter;
     ClockPainter* minuteMarkerPainter; 

@@ -41,7 +41,7 @@ ClockWidget::ClockWidget() : QWidget(nullptr) {
     if (no_positions_str != "") {
         QStringList no_positions_list = no_positions_str.split(",");
         for (const QString& pos : no_positions_list) {
-            no_positions.append(pos);
+            no_positions.append(pos.toInt());
         }
     }
 
@@ -128,8 +128,8 @@ void ClockWidget::paintClock(QPainter* painter) {
     }
 
     for (int i = 0; i < no_positions.size(); ++i) {
-        QString no = no_positions[i];
-        paintNumbers(painter, "numbers", i + 1, no);
+        int no = no_positions[i];
+        paintNumbers(painter, "numbers", no, QString::number(no));
     }
 
     if (date_position) {

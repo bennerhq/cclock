@@ -55,7 +55,7 @@ dial:
 # ----
 # The section 'numbers:' contains the settings for the 12 hours around the clock
 numbers:
-  positions: ""
+  positions: "12,6,9"
   backgroud_color: none               # Background color of the number display
   text_color: "${farver.text}"        # Color of the number text
   font: "Courier New"                 # Font used for the number display
