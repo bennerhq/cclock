@@ -83,9 +83,9 @@ public:
 };
 
 // ----------------------------------------------------------------------------
-// factoryClockPainter - Factory method for creating ClockPainter
+// Factory method for creating ClockPainter
 //
-ClockPainter* factoryClockPainter(const QString& key) {
+ClockPainter* ClockPainter::factory(const QString& key) {
     QString data_str = config_get_image(key);
     if (data_str.isEmpty()) {
         return nullptr;

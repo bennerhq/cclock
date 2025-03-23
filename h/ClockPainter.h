@@ -19,8 +19,7 @@ class ClockPainter {
 public:
     virtual ~ClockPainter() {}
     virtual void paint(QPainter* painter, int angle, bool center) = 0;
+    static ClockPainter* factory(const QString& key);
 };
-
-ClockPainter* factoryClockPainter(const QString& key);
 
 #endif // CLOCKPAINTER_H
