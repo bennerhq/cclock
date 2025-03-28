@@ -28,26 +28,11 @@ YAML::Node config;
 
 std::unordered_map<QString, QString> config_map; // Fast & simple, single string lookup to config
 
-enum class NodeType {
-    Null,
-    String,
-    Bool,
-    Double,
-    Scalar,
-    Sequence,
-    Map,
-    Undefined
+enum class NodeType { 
+    Null, String, Bool, Double, Scalar, Sequence, Map, Undefined 
 };
-
-static const char* NodeTypeStr[] = {
-    "Null",         // NodeType::Null
-    "String",       // NodeType::String
-    "Boolean",      // NodeType::Bool
-    "Number",       // NodeType::Double
-    "Scalar",       // NodeType::Scalar
-    "Sequence",     // NodeType::Sequence
-    "Map",          // NodeType::Map
-    "Undefined"     // NodeType::Undefined
+static const char* NodeTypeStr[] = { 
+    "Null", "String", "Boolean", "Number", "Scalar", "Sequence", "Map", "Undefined" 
 };
 
 NodeType config_node_type(const YAML::Node& node) {
